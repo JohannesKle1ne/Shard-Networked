@@ -446,7 +446,7 @@ namespace Shard
 
                         if (ob.B.Kinematic == false)
                         {
-                            Debug.Log ("Applying force to B " + impulse + ", " + massProp);
+                            //Debug.Log ("Applying force to B " + impulse + ", " + massProp);
                             ob.B.Parent.Transform.translate(-1 * (impulse.X * massProp), -1 * (impulse.Y * massProp));
                         }
 

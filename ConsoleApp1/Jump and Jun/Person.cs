@@ -84,7 +84,7 @@ namespace JumpAndRun
         public override void update()
         {
 
-            Debug.Log("Fallcounter is " + fallCounter);
+            //Debug.Log("Fallcounter is " + fallCounter);
 
 
             if (left)

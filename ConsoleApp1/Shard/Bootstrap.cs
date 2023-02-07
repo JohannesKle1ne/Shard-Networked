@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
+
 namespace Shard
 {
     class Bootstrap
@@ -169,6 +170,10 @@ namespace Shard
             int tfro = 1;
             bool physUpdate = false;
 
+
+            Client client = new Client();
+            client.Start();
+
             // Setup the engine.
             setup();
 
@@ -255,7 +260,7 @@ namespace Shard
                 lastTick = timeInMillisecondsStart;
 
                 //                deltaTime = (getCurrentMillis() - timeInMillisecondsStart) / 1000.0f;
-
+                
             }
 
 

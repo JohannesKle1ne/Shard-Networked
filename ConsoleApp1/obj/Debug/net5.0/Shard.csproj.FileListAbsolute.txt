@@ -597,3 +597,6 @@ C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\obj\Debug\net5.0
 C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\obj\Debug\net5.0\Shard.pdb
 C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\obj\Debug\net5.0\Shard.genruntimeconfig.cache
 C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\obj\Debug\net5.0\ref\Shard.dll
+C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\bin\Debug\net5.0\websocket-sharp.dll
+C:\Users\jojok\Documents\Projects\1.0.0\1.0.0\Shard\ConsoleApp1\obj\Debug\net5.0\Shard.csproj.CopyComplete
