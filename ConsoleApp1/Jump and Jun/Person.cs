@@ -32,8 +32,24 @@ namespace JumpAndRun
             MyBody.Kinematic = false;
 
             spriteCounterDir = 1;
+
+            Client client = Client.GetInstance();
+            client.setGameObject(this);
         }
 
+        public void move(double x, double y)
+        {
+            Debug.Log(x.ToString());
+            Debug.Log(y.ToString());
+            //this.Transform?.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
+            if (this.Transform != null)
+            {
+                this.Transform.Y = y;
+                this.Transform.X = x;
+            }
+            
+        }
+         
 
         public void handleInput(InputEvent inp, string eventType)
         {
@@ -91,12 +107,17 @@ namespace JumpAndRun
             {
                 this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
+                Debug.Log($"x:{this.Transform.X}, y:{this.Transform.Y}");
+                Client client = Client.GetInstance();
+                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
             }
 
             if (right)
             {
                 this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
+                Client client = Client.GetInstance();
+                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
             }
 
             if (jumpUp) {

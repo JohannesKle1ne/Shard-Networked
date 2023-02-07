@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using WebSocketSharp;
 using Newtonsoft.Json;
+using JumpAndRun;
 
 namespace Shard
 {
@@ -15,20 +16,39 @@ namespace Shard
     }
 
 
-    class Client
+    public sealed class Client
     {
+        private Client() { }
+
+        private static Client _instance;
+        private WebSocket ws;
+        private Person per;
+        private bool isSet = false;
+        public double id;
+
+        public static Client GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new Client();
+            }
+            return _instance;
+        }
 
         public void Start()
         {
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
-            WebSocket ws = new WebSocket("ws://127.0.0.1:7890/EchoAll");
+            ws = new WebSocket("ws://127.0.0.1:7890/EchoAll");
+            Random rd = new Random();
 
+            id =  rd.Next(1000, 9999);
 
             ws.OnMessage += Ws_OnMessage;
 
             ws.Connect();
-            ws.Send("Hello from Client 1!");
+            //ws.Send($"{234},{234},{23432}");
+            ws.Send($"Hello!");
             Debug.Log("Connected");
             Console.WriteLine("Connected 2");
 
@@ -36,22 +56,58 @@ namespace Shard
 
         }
 
+        public void Send(String message)
+        {
+            ws.Send(message);
+        }
+
+        public void setGameObject(Object p)
+        {
+            per = (Person)p;
+            isSet = true;
+        }
+
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Debug.Log("Received from the server: " + e.Data);
-            Console.WriteLine("Created a vector: ");
 
-            try
+            string subString = e.Data[..4];
+            string[] strlist = e.Data.Split(";");
+            //Debug.Log(strlist[0]);
+            //Debug.Log(strlist[1]);
+            //Debug.Log(strlist[2]);
+
+            if(strlist.Length > 2 )
             {
-                MyVector pos = JsonConvert.DeserializeObject<MyVector>(e.Data);
-                //Console.WriteLine("Created a vector: " + pos.x + "," + pos.y);
-                DrawDot(pos.x, pos.y, 50, 15, 1);
+                string id = strlist[0];
+                double x = Convert.ToDouble(strlist[1]);
+                double y = Convert.ToDouble(strlist[2]);
+
+
+                if (id != this.id.ToString())
+                {
+                    //Debug.Log("Other Client found!");
+                    if (isSet)
+                    {
+                        per.move(x, y);
+                    }
+
+                }
             }
-            catch (Exception ex)
-            {
-                //Console.WriteLine(ex);
-                Debug.Log("I don't know what to do with \"" + e.Data + "\"");
-            }
+
+            
+
+            //try
+            //{
+            //    MyVector pos = JsonConvert.DeserializeObject<MyVector>(e.Data);
+            //    //Console.WriteLine("Created a vector: " + pos.x + "," + pos.y);
+            //    DrawDot(pos.x, pos.y, 50, 15, 1);
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Console.WriteLine(ex);
+            //    Debug.Log("I don't know what to do with \"" + e.Data + "\"");
+            //}
 
         }
 

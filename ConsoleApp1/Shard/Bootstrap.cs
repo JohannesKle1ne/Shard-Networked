@@ -171,7 +171,7 @@ namespace Shard
             bool physUpdate = false;
 
 
-            Client client = new Client();
+            Client client = Client.GetInstance();
             client.Start();
 
             // Setup the engine.
