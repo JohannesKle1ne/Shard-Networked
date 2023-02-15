@@ -22,7 +22,7 @@ namespace Shard
 
         private static Client _instance;
         private WebSocket ws;
-        private Person per;
+        private Mate per;
         private bool isSet = false;
         public double id;
 
@@ -39,19 +39,21 @@ namespace Shard
         {
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
-            ws = new WebSocket("ws://127.0.0.1:7890/EchoAll");
+            ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
             Random rd = new Random();
 
             id =  rd.Next(1000, 9999);
 
             ws.OnMessage += Ws_OnMessage;
 
+            ws.OnError += Ws_OnError;
+
             ws.Connect();
+
             //ws.Send($"{234},{234},{23432}");
             ws.Send($"Hello!");
             Debug.Log("Connected");
             Console.WriteLine("Connected 2");
-
             //Console.ReadKey();
 
         }
@@ -63,7 +65,7 @@ namespace Shard
 
         public void setGameObject(Object p)
         {
-            per = (Person)p;
+            per = (Mate)p;
             isSet = true;
         }
 
@@ -109,6 +111,11 @@ namespace Shard
             //    Debug.Log("I don't know what to do with \"" + e.Data + "\"");
             //}
 
+        }
+
+        private void Ws_OnError(object sender, ErrorEventArgs e)
+        {
+            Debug.Log("Received from the server: " + e.Message);
         }
 
         private void DrawDot(double xpos, double ypos, int width, int height, int borderWidth)

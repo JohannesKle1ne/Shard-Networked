@@ -4,7 +4,7 @@ using SDL2;
 
 namespace JumpAndRun
 {
-    class Person : GameObject, InputListener, CollisionHandler
+    class Mate : GameObject, InputListener, CollisionHandler
     {
         private string sprite;
         private bool left, right, jumpUp, jumpDown, fall, canJump;
@@ -13,27 +13,23 @@ namespace JumpAndRun
         private double spriteTimer, jumpCount;
         private double speed = 100, jumpSpeed = 260;
         private double fallCounter;
-        private double updateCounter;
-        private bool movingStarted;
 
         public override void initialize()
         {
             spriteName = "right";
             spriteCounter = 1;
-            updateCounter = 0;
-            movingStarted= false;
-            setPhysicsEnabled();
-            MyBody.addRectCollider();
+            //setPhysicsEnabled();
+            //MyBody.addRectCollider();
             addTag("MinerWilly");
             spriteTimer = 0;
             jumpCount = 0;
-            MyBody.Mass = 1;
-            Bootstrap.getInput().addListener(this);
+            //MyBody.Mass = 1;
+            //Bootstrap.getInput().addListener(this);
 
 
             Transform.translate (50, 480);
-            MyBody.StopOnCollision = false;
-            MyBody.Kinematic = false;
+            //MyBody.StopOnCollision = false;
+            //MyBody.Kinematic = false;
 
             spriteCounterDir = 1;
         }
@@ -102,21 +98,23 @@ namespace JumpAndRun
         {
 
             //Debug.Log("Fallcounter is " + fallCounter);
-            double oldX = Transform.X;
-            double oldY = Transform.Y;
+
 
             if (left)
             {
                 this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-                movingStarted = true;
+                Debug.Log($"x:{this.Transform.X}, y:{this.Transform.Y}");
+                Client client = Client.GetInstance();
+                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
             }
 
             if (right)
             {
                 this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-                movingStarted = true;
+                Client client = Client.GetInstance();
+                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
             }
 
             if (jumpUp) {
@@ -168,17 +166,8 @@ namespace JumpAndRun
 
             this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + spriteCounter + ".png";
 
-            Client client = Client.GetInstance();
-
-            if (updateCounter % 10 == 0 && movingStarted)
-            {
-                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
-            }
-
 
             Bootstrap.getDisplay().addToDraw(this);
-
-            updateCounter++;
         }
 
         public bool shouldReset(PhysicsBody x)

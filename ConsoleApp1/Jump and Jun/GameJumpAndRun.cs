@@ -11,6 +11,7 @@ namespace Shard
     {
         Random rand;
         Person player;
+        Mate mate;
         List<Star> collect;
 
         public override bool isRunning() {       
@@ -51,6 +52,9 @@ namespace Shard
             rand = new Random();
         
             player = new Person();
+            mate = new Mate();
+            Client client = Client.GetInstance();
+            client.setGameObject(mate);
             collect = new List<Star>();
             for (int i = 0; i < 10; i++)
             {
@@ -61,7 +65,7 @@ namespace Shard
                     p.MoveDirX = 1;
                 }
                 else {
-                    p.setPosition(0 + (i * 256), 832, 0, 0);
+                    p.setPosition(0 + (i * 256), 500, 0, 0);
                 }
 
           }
