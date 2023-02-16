@@ -1,6 +1,7 @@
 ﻿using Shard;
 using System.Collections.Generic;
 using SDL2;
+using Newtonsoft.Json;
 
 namespace JumpAndRun
 {
@@ -31,7 +32,7 @@ namespace JumpAndRun
             Bootstrap.getInput().addListener(this);
 
 
-            Transform.translate (50, 480);
+            Transform.translate (50, 330);
             MyBody.StopOnCollision = false;
             MyBody.Kinematic = false;
 
@@ -172,7 +173,8 @@ namespace JumpAndRun
 
             if (updateCounter % 10 == 0 && movingStarted)
             {
-                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
+                string message = JsonConvert.SerializeObject(new Message(MessageType.MatePosition , new MatePosition(client.id,this.Transform.X, this.Transform.Y)));
+                client.Send(message);
             }
 
 

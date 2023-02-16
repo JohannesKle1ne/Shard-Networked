@@ -56,41 +56,44 @@ namespace Shard
             Client client = Client.GetInstance();
             client.setGameObject(mate);
             collect = new List<Star>();
-            for (int i = 0; i < 10; i++)
-            {
-                p = new Box();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    p = new Box();
 
-                if (i == 2) {
-                    p.setPosition(450, 800, 256, 50);
-                    p.MoveDirX = 1;
-                }
-                else {
-                    p.setPosition(0 + (i * 256), 500, 0, 0);
-                }
+            //    if (i == 2) {
+            //        p.setPosition(450, 800, 256, 50);
+            //       // p.MoveDirX = 1;
+            //    }
+            //    else {
+            //        p.setPosition(0 + (i * 256), 500, 0, 0);
+            //    }
 
-          }
+            //}
 
 
-            p = new Box();
-            p.setPosition(30, 800, 600, 150);
+           // p = new Box();
+           // p.setPosition(30, 800, 600, 150);
 
-            p = new Box();
-            p.setPosition(128, 780, 600, 150);
-            p.MoveDirY = -1;
+           // p = new Box();
+           // p.setPosition(128, 780, 600, 150);
+           // //p.MoveDirY = -1;
 
-            p = new Box();
-            p.setPosition(400, 605, 600, 100);
-            p.MoveDirY = -1;
+           // p = new Box();
+           // p.setPosition(400, 605, 600, 100);
+           //// p.MoveDirY = -1;
 
-            p = new Box ();
-            p.setPosition(600, 700, 700, 200);
-            p.MoveDirY = -1;
-
-            p = new Box();
-            p.setPosition(800, 105, 600, 200);
+           // p = new Box ();
+           // p.setPosition(600, 700, 700, 200);
+           // //p.MoveDirY = -1;
 
             p = new Box();
-            p.setPosition(800, 605, 600, 200);
+            p.setPosition(0, 350, 600, 200);
+
+            p = new Box();
+            p.setPosition(200, 350, 600, 200);
+
+            //p = new Box();
+            //p.setPosition(800, 605, 600, 200);
 
 
 

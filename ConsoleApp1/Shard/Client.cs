@@ -24,7 +24,7 @@ namespace Shard
         private WebSocket ws;
         private Mate per;
         private bool isSet = false;
-        public double id;
+        public int id;
 
         public static Client GetInstance()
         {
@@ -73,43 +73,45 @@ namespace Shard
         {
             Debug.Log("Received from the server: " + e.Data);
 
-            string subString = e.Data[..4];
-            string[] strlist = e.Data.Split(";");
-            //Debug.Log(strlist[0]);
-            //Debug.Log(strlist[1]);
-            //Debug.Log(strlist[2]);
+           
 
-            if(strlist.Length > 2 )
+            //if (strlist.Length > 2 )
+            //{
+            //    string id = strlist[0];
+            //    double x = Convert.ToDouble(strlist[1]);
+            //    double y = Convert.ToDouble(strlist[2]);
+
+
+            //    if (id != this.id.ToString())
+            //    {
+            //        //Debug.Log("Other Client found!");
+            //        if (isSet)
+            //        {
+            //            per.move(x, y);
+            //        }
+
+            //    }
+            //}
+
+
+
+            try
             {
-                string id = strlist[0];
-                double x = Convert.ToDouble(strlist[1]);
-                double y = Convert.ToDouble(strlist[2]);
-
-
-                if (id != this.id.ToString())
+                Message message = JsonConvert.DeserializeObject<Message>(e.Data);
+                if (message.type == MessageType.MatePosition)
                 {
-                    //Debug.Log("Other Client found!");
-                    if (isSet)
+                    MatePosition mPos = (MatePosition) message.content;
+                    if (isSet && mPos.id != this.id)
                     {
-                        per.move(x, y);
+                        per.move(mPos.x, mPos.y);
                     }
-
                 }
             }
-
-            
-
-            //try
-            //{
-            //    MyVector pos = JsonConvert.DeserializeObject<MyVector>(e.Data);
-            //    //Console.WriteLine("Created a vector: " + pos.x + "," + pos.y);
-            //    DrawDot(pos.x, pos.y, 50, 15, 1);
-            //}
-            //catch (Exception ex)
-            //{
-            //    //Console.WriteLine(ex);
-            //    Debug.Log("I don't know what to do with \"" + e.Data + "\"");
-            //}
+            catch (Exception ex)
+            {
+                Debug.Log("I don't know what to do with \"" + e.Data + "\"");
+                Debug.Log(ex.Message);
+            }
 
         }
 
