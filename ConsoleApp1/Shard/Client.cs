@@ -94,25 +94,55 @@ namespace Shard
             //}
 
 
-
-            try
+            MessageType type = getMessageType(e.Data);
+            Debug.Log(type.ToString());
+            if (type == MessageType.MatePosition)
             {
-                Message message = JsonConvert.DeserializeObject<Message>(e.Data);
-                if (message.type == MessageType.MatePosition)
+                MatePosition mPos = JsonConvert.DeserializeObject<MatePosition>(e.Data);
+                if (isSet && mPos.id != this.id)
                 {
-                    MatePosition mPos = (MatePosition) message.content;
-                    if (isSet && mPos.id != this.id)
-                    {
-                        per.move(mPos.x, mPos.y);
-                    }
+                    per.move(mPos.x, mPos.y);
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.Log("I don't know what to do with \"" + e.Data + "\"");
-                Debug.Log(ex.Message);
-            }
+            
 
+            
+
+            //try
+            //{
+            //    Message message = JsonConvert.DeserializeObject<Message>(e.Data);
+            //    if (message.type == MessageType.MatePosition)
+            //    {
+            //        MatePosition mPos = (MatePosition) message.content;
+            //        if (isSet && mPos.id != this.id)
+            //        {
+            //            per.move(mPos.x, mPos.y);
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.Log("I don't know what to do with \"" + e.Data + "\"");
+            //    Debug.Log(ex.Message);
+            //}
+
+        }
+
+        private MessageType getMessageType(String messageString)
+        {
+            try
+            {
+                MatePosition mPos  = JsonConvert.DeserializeObject<MatePosition>(messageString);
+                if (mPos != null)
+                {
+                    return mPos.type;
+                }
+            }
+            catch(Exception ex)
+            {
+                return MessageType.Unknown;
+            }
+            return MessageType.Unknown;
         }
 
         private void Ws_OnError(object sender, ErrorEventArgs e)

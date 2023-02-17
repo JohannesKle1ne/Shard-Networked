@@ -173,7 +173,7 @@ namespace JumpAndRun
 
             if (updateCounter % 10 == 0 && movingStarted)
             {
-                string message = JsonConvert.SerializeObject(new Message(MessageType.MatePosition , new MatePosition(client.id,this.Transform.X, this.Transform.Y)));
+                string message = JsonConvert.SerializeObject(new MatePosition(client.id,this.Transform.X, this.Transform.Y));
                 client.Send(message);
             }
 
