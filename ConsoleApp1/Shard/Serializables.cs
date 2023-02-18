@@ -11,44 +11,47 @@ namespace Shard
     {
         public double x; 
         public double y;
-        public int id;
         public MessageType type;
-        public MatePosition(int id, double x, double y) {
+        public MatePosition( double x, double y) {
             this.x = x;
             this.y = y;
-            this.id = id;
             type = MessageType.MatePosition;
         }
 
-        public string getJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this);
         }
     }
-    
+
+    class EnemyPosition
+    {
+        public double x;
+        public double y;
+        public int enemyId;
+        public MessageType type;
+        public EnemyPosition(int id, double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+            this.enemyId = id;
+            type = MessageType.EnemyPosition;
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
 
 
-    //class Message
-    //{
-    //    public MessageType type;
-    //    public MatePosition content;
-    //    public Message(MessageType type, MatePosition content)
-    //    {
 
-    //        this.type = type;
-    //        this.content = content;
-    //    }
-
-    //    public string getJson()
-    //    {
-    //        return JsonConvert.SerializeObject(this);
-    //    }
-    //}
 
     enum MessageType
     {
-        Unknown=1,
-        MatePosition = 2,
+        Unknown,
+        MatePosition,
+        EnemyPosition,
         
     }
 }

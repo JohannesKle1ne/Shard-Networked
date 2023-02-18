@@ -12,21 +12,22 @@ namespace Shard
 {
     class MyVector
     {
-        public double x, y;
+        internal double x, y;
     }
 
 
-    public sealed class Client
+    internal sealed class Client
     {
         private Client() { }
 
         private static Client _instance;
         private WebSocket ws;
         private Mate per;
+        private Enemy enemy;
         private bool isSet = false;
-        public int id;
+        internal int id;
 
-        public static Client GetInstance()
+        internal static Client GetInstance()
         {
             if (_instance == null)
             {
@@ -35,11 +36,12 @@ namespace Shard
             return _instance;
         }
 
-        public void Start()
+        internal void Start()
         {
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
-            ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
+            //ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
+            ws = new WebSocket("ws://localhost:3000");
             Random rd = new Random();
 
             id =  rd.Next(1000, 9999);
@@ -51,22 +53,27 @@ namespace Shard
             ws.Connect();
 
             //ws.Send($"{234},{234},{23432}");
-            ws.Send($"Hello!");
+            ws.Send("Hello!");
             Debug.Log("Connected");
             Console.WriteLine("Connected 2");
             //Console.ReadKey();
 
         }
 
-        public void Send(String message)
+        internal void Send(String message)
         {
             ws.Send(message);
         }
 
-        public void setGameObject(Object p)
+        internal void setMate(Mate m)
         {
-            per = (Mate)p;
+            per = m;
             isSet = true;
+        }
+
+        internal void setEnemy(Enemy e)
+        {
+            enemy = e;
         }
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
@@ -99,14 +106,22 @@ namespace Shard
             if (type == MessageType.MatePosition)
             {
                 MatePosition mPos = JsonConvert.DeserializeObject<MatePosition>(e.Data);
-                if (isSet && mPos.id != this.id)
+                if (isSet)
                 {
-                    per.move(mPos.x, mPos.y);
+                    per.Move(mPos.x, mPos.y);
                 }
             }
-            
+            if (type == MessageType.EnemyPosition)
+            {
+                EnemyPosition ePos = JsonConvert.DeserializeObject<EnemyPosition>(e.Data);
+                if (isSet)
+                {
+                    enemy.Move(ePos.x, ePos.y);
+                }
+            }
 
-            
+
+
 
             //try
             //{

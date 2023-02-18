@@ -12,7 +12,7 @@ namespace Shard
         Random rand;
         Person player;
         Mate mate;
-        List<Star> collect;
+        List<Enemy> enemies;
 
         public override bool isRunning() {       
 
@@ -20,7 +20,7 @@ namespace Shard
                 return false;
             }
 
-            foreach (Star c in collect)
+            foreach (Enemy c in enemies)
             {
                 if (c != null && !c.ToBeDestroyed)
                 {
@@ -54,37 +54,9 @@ namespace Shard
             player = new Person();
             mate = new Mate();
             Client client = Client.GetInstance();
-            client.setGameObject(mate);
-            collect = new List<Star>();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    p = new Box();
-
-            //    if (i == 2) {
-            //        p.setPosition(450, 800, 256, 50);
-            //       // p.MoveDirX = 1;
-            //    }
-            //    else {
-            //        p.setPosition(0 + (i * 256), 500, 0, 0);
-            //    }
-
-            //}
-
-
-           // p = new Box();
-           // p.setPosition(30, 800, 600, 150);
-
-           // p = new Box();
-           // p.setPosition(128, 780, 600, 150);
-           // //p.MoveDirY = -1;
-
-           // p = new Box();
-           // p.setPosition(400, 605, 600, 100);
-           //// p.MoveDirY = -1;
-
-           // p = new Box ();
-           // p.setPosition(600, 700, 700, 200);
-           // //p.MoveDirY = -1;
+            client.setMate(mate);
+            enemies = new List<Enemy>();
+           
 
             p = new Box();
             p.setPosition(0, 350, 600, 200);
@@ -92,23 +64,11 @@ namespace Shard
             p = new Box();
             p.setPosition(200, 350, 600, 200);
 
-            //p = new Box();
-            //p.setPosition(800, 605, 600, 200);
 
-
-
-            Star c = new Star();
-            c.Transform.translate(100, 780);
-            collect.Add(c);
-
-
-            c = new Star();
-            c.Transform.translate (840, 560);
-            collect.Add (c);
-
-            c = new Star();
-            c.Transform.translate(840, 60);
-            collect.Add(c);
+            Enemy e = new Enemy();
+            e.Transform.translate(50, 50);
+            enemies.Add(e);
+            client.setEnemy(e);
 
         }
 

@@ -41,9 +41,6 @@ namespace JumpAndRun
 
         public void move(double x, double y)
         {
-            Debug.Log(x.ToString());
-            Debug.Log(y.ToString());
-            //this.Transform?.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
             if (this.Transform != null)
             {
                 this.Transform.Y = y;
@@ -173,7 +170,7 @@ namespace JumpAndRun
 
             if (updateCounter % 10 == 0 && movingStarted)
             {
-                string message = JsonConvert.SerializeObject(new MatePosition(client.id,this.Transform.X, this.Transform.Y));
+                string message = new MatePosition(this.Transform.X, this.Transform.Y).ToJson();
                 client.Send(message);
             }
 

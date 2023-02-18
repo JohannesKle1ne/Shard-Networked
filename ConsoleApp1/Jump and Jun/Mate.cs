@@ -34,7 +34,7 @@ namespace JumpAndRun
             spriteCounterDir = 1;
         }
 
-        public void move(double x, double y)
+        public void Move(double x, double y)
         {
             Debug.Log(x.ToString());
             Debug.Log(y.ToString());

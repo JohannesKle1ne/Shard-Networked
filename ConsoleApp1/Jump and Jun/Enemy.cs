@@ -4,11 +4,13 @@ using System.Drawing;
 
 namespace JumpAndRun
 {
-    class Star : GameObject, CollisionHandler
+    class Enemy : GameObject, CollisionHandler
     {
-
+        private int id;
         public override void initialize()
         {
+            id= 1;
+
             setPhysicsEnabled();
             
             addTag ("Collectible");
@@ -17,6 +19,15 @@ namespace JumpAndRun
 
         }
 
+        public void Move(double x, double y)
+        {
+            if (this.Transform != null)
+            {
+                this.Transform.Y = y;
+                this.Transform.X = x;
+            }
+
+        }
 
         public override void update()
         {
