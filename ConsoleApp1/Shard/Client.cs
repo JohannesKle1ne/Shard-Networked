@@ -78,7 +78,7 @@ namespace Shard
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log("Received from the server: " + e.Data);
+            //Debug.Log("Received from the server: " + e.Data);
 
            
 
@@ -102,7 +102,7 @@ namespace Shard
 
 
             MessageType type = getMessageType(e.Data);
-            Debug.Log(type.ToString());
+            //Debug.Log(type.ToString());
             if (type == MessageType.MatePosition)
             {
                 MatePosition mPos = JsonConvert.DeserializeObject<MatePosition>(e.Data);

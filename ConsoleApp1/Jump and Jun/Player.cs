@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 
 namespace JumpAndRun
 {
-    class Person : GameObject, InputListener, CollisionHandler
+    class Player : GameObject, InputListener, CollisionHandler
     {
         private string sprite;
-        private bool left, right, jumpUp, jumpDown, fall, canJump;
+        private bool left, right, jumpUp, jumpDown, fall, canJump, shoot;
         private int spriteCounter, spriteCounterDir;
         private string spriteName;
         private double spriteTimer, jumpCount;
@@ -16,23 +16,24 @@ namespace JumpAndRun
         private double fallCounter;
         private double updateCounter;
         private bool movingStarted;
+        private Bullet bullet;
 
         public override void initialize()
         {
             spriteName = "right";
             spriteCounter = 1;
             updateCounter = 0;
-            movingStarted= false;
+            movingStarted = false;
             setPhysicsEnabled();
             MyBody.addRectCollider();
-            addTag("MinerWilly");
+            addTag("Player");
             spriteTimer = 0;
             jumpCount = 0;
             MyBody.Mass = 1;
             Bootstrap.getInput().addListener(this);
 
 
-            Transform.translate (50, 330);
+            Transform.translate(50, 330);
             MyBody.StopOnCollision = false;
             MyBody.Kinematic = false;
 
@@ -46,9 +47,9 @@ namespace JumpAndRun
                 this.Transform.Y = y;
                 this.Transform.X = x;
             }
-            
+
         }
-         
+
 
         public void handleInput(InputEvent inp, string eventType)
         {
@@ -71,26 +72,31 @@ namespace JumpAndRun
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE && canJump == true)
                 {
                     jumpUp = true;
-                    Debug.Log ("Jumping up");
-                }
+                    Debug.Log("Jumping up");
 
+                }
+                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_RETURN)
+                {
+                    shoot = true;
+                    Debug.Log("Shoot");
+                }
             }
 
             else if (eventType == "KeyUp")
+            {
+
+                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
                 {
+                    right = false;
 
-                    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                    {
-                        right = false;
+                }
 
-                    }
+                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+                {
+                    left = false;
+                }
 
-                    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                    {
-                        left = false;
-                    }
 
-                   
 
             }
 
@@ -117,19 +123,40 @@ namespace JumpAndRun
                 movingStarted = true;
             }
 
-            if (jumpUp) {
+            if (jumpUp)
+            {
                 fall = false;
                 fallCounter = 0;
-                if (jumpCount < 0.3f) {
+                if (jumpCount < 0.3f)
+                {
                     this.Transform.translate(0, -1 * jumpSpeed * Bootstrap.getDeltaTime());
                     jumpCount += Bootstrap.getDeltaTime();
                 }
-                else {
+                else
+                {
                     jumpCount = 0;
                     jumpUp = false;
                     fall = true;
 
                 }
+            }
+
+            if (shoot)
+            {
+                bullet = new Bullet();
+                if (spriteName == "right")
+                {
+                    bullet.setPosition(Transform.X+40, Transform.Y);
+                    bullet.setDirection(1);
+                }
+                else
+                {
+                    bullet.setPosition(Transform.X - 10, Transform.Y);
+                    bullet.setDirection(-1);
+                }
+                
+               
+                shoot = false;
             }
 
 
@@ -142,7 +169,7 @@ namespace JumpAndRun
                 if (spriteCounter >= 4)
                 {
                     spriteCounterDir = -1;
-                    
+
                 }
 
                 if (spriteCounter <= 1)
@@ -154,11 +181,13 @@ namespace JumpAndRun
 
             }
 
-            if (fall) {
+            if (fall)
+            {
                 Transform.translate(0, jumpSpeed * Bootstrap.getDeltaTime());
                 fallCounter += Bootstrap.getDeltaTime();
 
-                if (Transform.Y > 900) {
+                if (Transform.Y > 900)
+                {
                     ToBeDestroyed = true;
                 }
 
@@ -185,10 +214,12 @@ namespace JumpAndRun
             float[] minAndMaxX = x.getMinAndMax(true);
             float[] minAndMaxY = x.getMinAndMax(false);
 
-            if (Transform.X + Transform.Wid >= minAndMaxX[0] && Transform.X <= minAndMaxX[1]) {
+            if (Transform.X + Transform.Wid >= minAndMaxX[0] && Transform.X <= minAndMaxX[1])
+            {
                 // We're in the centre, so it's fine.
 
-                if (Transform.Y + Transform.Ht >= minAndMaxY[0]) {
+                if (Transform.Y + Transform.Ht >= minAndMaxY[0])
+                {
                     return true;
                 }
             }
@@ -198,16 +229,23 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag ("Collectible")) {
-                return;
-            }
 
-            if (fallCounter > 2) {
+            if (x.Parent.checkTag("Enemy"))
+            {
                 ToBeDestroyed = true;
             }
-            
+            //if (x.Parent.checkTag("Collectible"))
+            //{
+            //    return;
+            //}
+
+            if (fallCounter > 2)
+            {
+                ToBeDestroyed = true;
+            }
+
             fallCounter = 0;
- 
+
             if (shouldReset(x))
             {
                 fall = true;

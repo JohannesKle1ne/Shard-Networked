@@ -13,7 +13,7 @@ namespace JumpAndRun
 
             setPhysicsEnabled();
             
-            addTag ("Collectible");
+            addTag ("Enemy");
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
             MyBody.PassThrough = true;
 
@@ -54,7 +54,7 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag ("MinerWilly")) {
+            if (x.Parent.checkTag ("Bullet")) {
                 this.ToBeDestroyed = true;
             }
 

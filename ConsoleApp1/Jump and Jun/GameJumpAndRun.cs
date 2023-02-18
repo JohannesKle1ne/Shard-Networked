@@ -10,7 +10,7 @@ namespace Shard
     class GameJumpAndRun : Game, InputListener
     {
         Random rand;
-        Person player;
+        Player player;
         Mate mate;
         List<Enemy> enemies;
 
@@ -19,6 +19,8 @@ namespace Shard
             if (player == null || player.ToBeDestroyed) {
                 return false;
             }
+
+            return true;
 
             foreach (Enemy c in enemies)
             {
@@ -51,7 +53,7 @@ namespace Shard
             Bootstrap.getInput().addListener(this);
             rand = new Random();
         
-            player = new Person();
+            player = new Player();
             mate = new Mate();
             Client client = Client.GetInstance();
             client.setMate(mate);
