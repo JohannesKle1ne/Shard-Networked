@@ -4,7 +4,7 @@ using SDL2;
 
 namespace JumpAndRun
 {
-    class Mate : GameObject, InputListener, CollisionHandler
+    class NetworkedPlayer : GameObject, InputListener, CollisionHandler
     {
         private string sprite;
         private bool left, right, jumpUp, jumpDown, fall, canJump;
@@ -13,7 +13,13 @@ namespace JumpAndRun
         private double spriteTimer, jumpCount;
         private double speed = 100, jumpSpeed = 260;
         private double fallCounter;
+        private int id;
+        private NetworkedBullet nBullet;
 
+        public NetworkedPlayer(int id)
+        {
+            this.id = id;
+        }
         public override void initialize()
         {
             spriteName = "right";
@@ -34,6 +40,20 @@ namespace JumpAndRun
             spriteCounterDir = 1;
         }
 
+        public NetworkedBullet GetBullet()
+        {
+            return nBullet;
+        }
+
+        public void MoveBullet(double x, double y)
+        {
+            if (nBullet == null)
+            {
+                nBullet = new NetworkedBullet();
+            }
+            nBullet.Move(x, y);
+        }
+
         public void Move(double x, double y)
         {
             Debug.Log(x.ToString());
@@ -46,7 +66,12 @@ namespace JumpAndRun
             }
             
         }
-         
+
+        public int GetId()
+        {
+            return id;
+        }
+
 
         public void handleInput(InputEvent inp, string eventType)
         {

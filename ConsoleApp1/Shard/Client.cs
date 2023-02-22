@@ -22,8 +22,7 @@ namespace Shard
 
         private static Client _instance;
         private WebSocket ws;
-        private Mate per;
-        private Enemy enemy;
+        private GameJumpAndRun game;
         private bool isSet = false;
         internal int id;
 
@@ -53,7 +52,7 @@ namespace Shard
             ws.Connect();
 
             //ws.Send($"{234},{234},{23432}");
-            ws.Send("Hello!");
+            ws.Send($"{id}");
             Debug.Log("Connected");
             Console.WriteLine("Connected 2");
             //Console.ReadKey();
@@ -65,81 +64,53 @@ namespace Shard
             ws.Send(message);
         }
 
-        internal void setMate(Mate m)
+        internal void setGame(GameJumpAndRun g)
         {
-            per = m;
+            game = g;
             isSet = true;
         }
 
-        internal void setEnemy(Enemy e)
-        {
-            enemy = e;
-        }
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
-            //Debug.Log("Received from the server: " + e.Data);
-
-           
-
-            //if (strlist.Length > 2 )
-            //{
-            //    string id = strlist[0];
-            //    double x = Convert.ToDouble(strlist[1]);
-            //    double y = Convert.ToDouble(strlist[2]);
-
-
-            //    if (id != this.id.ToString())
-            //    {
-            //        //Debug.Log("Other Client found!");
-            //        if (isSet)
-            //        {
-            //            per.move(x, y);
-            //        }
-
-            //    }
-            //}
 
 
             MessageType type = getMessageType(e.Data);
-            //Debug.Log(type.ToString());
-            if (type == MessageType.MatePosition)
+            
+            Debug.Log(e.Data);
+            Debug.Log(type.ToString());
+            if (type == MessageType.PlayerPosition)
             {
-                MatePosition mPos = JsonConvert.DeserializeObject<MatePosition>(e.Data);
+                Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);
                 if (isSet)
                 {
-                    per.Move(mPos.x, mPos.y);
+                    game.MovePlayer(mPos.clientId, mPos.x, mPos.y);
                 }
             }
-            if (type == MessageType.EnemyPosition)
+            if (type == MessageType.BulletPosition)
             {
-                EnemyPosition ePos = JsonConvert.DeserializeObject<EnemyPosition>(e.Data);
+                Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
                 if (isSet)
                 {
-                    enemy.Move(ePos.x, ePos.y);
+                    game.MoveBullet(ePos.clientId, ePos.x, ePos.y);
                 }
             }
-
-
-
-
-            //try
-            //{
-            //    Message message = JsonConvert.DeserializeObject<Message>(e.Data);
-            //    if (message.type == MessageType.MatePosition)
-            //    {
-            //        MatePosition mPos = (MatePosition) message.content;
-            //        if (isSet && mPos.id != this.id)
-            //        {
-            //            per.move(mPos.x, mPos.y);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.Log("I don't know what to do with \"" + e.Data + "\"");
-            //    Debug.Log(ex.Message);
-            //}
+            if (type == MessageType.PlayerStartPosition)
+            {
+                Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
+                if (isSet)
+                {
+                    if (ePos.clientId == id)
+                    {
+                        game.setPlayerStart(ePos.x, ePos.y);
+                    }
+                    else
+                    {
+                        game.MovePlayer(id, ePos.x, ePos.y);
+                    }
+                    
+                }
+            }
 
         }
 
@@ -147,7 +118,7 @@ namespace Shard
         {
             try
             {
-                MatePosition mPos  = JsonConvert.DeserializeObject<MatePosition>(messageString);
+                Position mPos  = JsonConvert.DeserializeObject<Position>(messageString);
                 if (mPos != null)
                 {
                     return mPos.type;

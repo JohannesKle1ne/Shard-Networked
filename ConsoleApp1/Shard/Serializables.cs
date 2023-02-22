@@ -7,35 +7,17 @@ using Newtonsoft.Json;
 
 namespace Shard
 {
-    class MatePosition
+    class Position
     {
+        public int clientId;
         public double x; 
         public double y;
         public MessageType type;
-        public MatePosition( double x, double y) {
+        public Position(int id, MessageType type, double x, double y) {
+            clientId = id;
             this.x = x;
             this.y = y;
-            type = MessageType.MatePosition;
-        }
-
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
-    }
-
-    class EnemyPosition
-    {
-        public double x;
-        public double y;
-        public int enemyId;
-        public MessageType type;
-        public EnemyPosition(int id, double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-            this.enemyId = id;
-            type = MessageType.EnemyPosition;
+            this.type = type;
         }
 
         public string ToJson()
@@ -50,8 +32,9 @@ namespace Shard
     enum MessageType
     {
         Unknown,
-        MatePosition,
-        EnemyPosition,
+        PlayerPosition,
+        PlayerStartPosition,
+        BulletPosition,
         
     }
 }

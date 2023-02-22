@@ -4,33 +4,31 @@ using JumpAndRun;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using static System.Formats.Asn1.AsnWriter;
+using System.Xml.Linq;
+using System.Numerics;
 
 namespace Shard
 {
     class GameJumpAndRun : Game, InputListener
     {
         Random rand;
-        Player player;
-        Mate mate;
-        List<Enemy> enemies;
+        Player myPlayer;
+        NetworkedBullet myBullet;
+        Dictionary<int, NetworkedPlayer> nPlayers;
 
-        public override bool isRunning() {       
+        public override bool isRunning()
+        {
 
-            if (player == null || player.ToBeDestroyed) {
+            if (myPlayer != null && myPlayer.ToBeDestroyed)
+            {
                 return false;
             }
 
             return true;
 
-            foreach (Enemy c in enemies)
-            {
-                if (c != null && !c.ToBeDestroyed)
-                {
-                    return true;
-                }
-            }
 
-            return false;
+
 
         }
 
@@ -47,18 +45,49 @@ namespace Shard
 
         }
 
+        public void setPlayerStart(double x, double y)
+        {
+            Debug.Log("called");
+            myPlayer = new Player();
+            myPlayer.Move(x, y);
+        }
+
+        public void MovePlayer(int id, double x, double y)
+        {
+            NetworkedPlayer player;
+            if (nPlayers.ContainsKey(id))
+            {
+                player = nPlayers[id];
+            }
+            else
+            {
+                player = new NetworkedPlayer(id);
+                nPlayers.Add(id, player);
+            }
+            player.Move(x, y);
+        }
+
+        public void MoveBullet(int id, double x, double y)
+        {
+            if (nPlayers.ContainsKey(id))
+            {
+                NetworkedPlayer player = nPlayers[id];
+                player.MoveBullet(x, y);
+            }
+        }
+
         public override void initialize()
         {
             Box p;
             Bootstrap.getInput().addListener(this);
             rand = new Random();
-        
-            player = new Player();
-            mate = new Mate();
+
+            
+            myBullet = new NetworkedBullet();
             Client client = Client.GetInstance();
-            client.setMate(mate);
-            enemies = new List<Enemy>();
-           
+            client.setGame(this);
+            nPlayers = new Dictionary<int, NetworkedPlayer>();
+
 
             p = new Box();
             p.setPosition(0, 350, 600, 200);
@@ -66,17 +95,11 @@ namespace Shard
             p = new Box();
             p.setPosition(200, 350, 600, 200);
 
-
-            Enemy e = new Enemy();
-            e.Transform.translate(50, 50);
-            enemies.Add(e);
-            client.setEnemy(e);
-
         }
 
 
         public void handleInput(InputEvent inp, string eventType)
-        {            
+        {
         }
     }
 }

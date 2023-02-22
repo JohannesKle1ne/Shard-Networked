@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace JumpAndRun
 {
-    class Enemy : GameObject, CollisionHandler
+    class NetworkedBullet : GameObject, CollisionHandler
     {
         private int id;
         public override void initialize()

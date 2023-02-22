@@ -14,9 +14,10 @@ namespace JumpAndRun
         private double spriteTimer, jumpCount;
         private double speed = 100, jumpSpeed = 260;
         private double fallCounter;
-        private double updateCounter;
+        private int updateCounter;
         private bool movingStarted;
         private Bullet bullet;
+        private int id;
 
         public override void initialize()
         {
@@ -32,6 +33,8 @@ namespace JumpAndRun
             MyBody.Mass = 1;
             Bootstrap.getInput().addListener(this);
 
+            id = Client.GetInstance().id;
+
 
             Transform.translate(50, 330);
             MyBody.StopOnCollision = false;
@@ -40,7 +43,7 @@ namespace JumpAndRun
             spriteCounterDir = 1;
         }
 
-        public void move(double x, double y)
+        public void Move(double x, double y)
         {
             if (this.Transform != null)
             {
@@ -48,6 +51,11 @@ namespace JumpAndRun
                 this.Transform.X = x;
             }
 
+        }
+
+        public int GetId()
+        {
+            return id;
         }
 
 
@@ -69,13 +77,13 @@ namespace JumpAndRun
                     spriteName = "left";
                 }
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE && canJump == true)
+                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_W && canJump == true)
                 {
                     jumpUp = true;
                     Debug.Log("Jumping up");
 
                 }
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_RETURN)
+                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
                 {
                     shoot = true;
                     Debug.Log("Shoot");
@@ -102,6 +110,19 @@ namespace JumpAndRun
 
         }
 
+        private void sendPosition()
+        {
+            Client client = Client.GetInstance();
+
+            if (updateCounter % 50 == 0)
+            {
+                string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y).ToJson();
+                client.Send(message);
+            }
+        }
+
+
+
         public override void update()
         {
 
@@ -113,14 +134,15 @@ namespace JumpAndRun
             {
                 this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-                movingStarted = true;
+                this.sendPosition();
             }
 
             if (right)
             {
                 this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-                movingStarted = true;
+
+                this.sendPosition();
             }
 
             if (jumpUp)
@@ -139,21 +161,26 @@ namespace JumpAndRun
                     fall = true;
 
                 }
+                this.sendPosition();
             }
 
             if (shoot)
             {
-                bullet = new Bullet();
-                if (spriteName == "right")
+                if(bullet==null || bullet.ToBeDestroyed)
                 {
-                    bullet.setPosition(Transform.X+40, Transform.Y);
-                    bullet.setDirection(1);
+                    bullet = new Bullet();
+                    if (spriteName == "right")
+                    {
+                        bullet.setPosition(Transform.X + 40, Transform.Y);
+                        bullet.setDirection(1);
+                    }
+                    else
+                    {
+                        bullet.setPosition(Transform.X - 10, Transform.Y);
+                        bullet.setDirection(-1);
+                    }
                 }
-                else
-                {
-                    bullet.setPosition(Transform.X - 10, Transform.Y);
-                    bullet.setDirection(-1);
-                }
+                
                 
                
                 shoot = false;
@@ -190,18 +217,11 @@ namespace JumpAndRun
                 {
                     ToBeDestroyed = true;
                 }
+                this.sendPosition();
 
             }
 
             this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + spriteCounter + ".png";
-
-            Client client = Client.GetInstance();
-
-            if (updateCounter % 10 == 0 && movingStarted)
-            {
-                string message = new MatePosition(this.Transform.X, this.Transform.Y).ToJson();
-                client.Send(message);
-            }
 
 
             Bootstrap.getDisplay().addToDraw(this);

@@ -7,11 +7,12 @@ namespace JumpAndRun
     class Bullet : GameObject, CollisionHandler
     {
 
-        int direction = 1;
+        private int direction = 1;
+        private int updateCounter = 0;
         public override void initialize()
         {
             setPhysicsEnabled();
-            
+
             addTag ("Bullet");
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
 
@@ -25,10 +26,31 @@ namespace JumpAndRun
             Transform.translate(x, y);
         }
 
+        private void sendPosition()
+        {
+            Client client = Client.GetInstance();
+
+            if (updateCounter % 50 == 0)
+            {
+                string message = new Position(client.id, MessageType.BulletPosition, this.Transform.X, this.Transform.Y).ToJson();
+                client.Send(message);
+            }
+        }
+
 
         public override void update()
         {
-            Transform.translate(direction*300 * Bootstrap.getDeltaTime(), 0);
+            if (Transform.X > 600 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
+            {
+                this.ToBeDestroyed= true;
+            }
+            else
+            {
+                Transform.translate(direction * 300 * Bootstrap.getDeltaTime(), 0);
+                sendPosition();
+                updateCounter++;
+            }
+           
         }
 
         public void onCollisionEnter(PhysicsBody x)
