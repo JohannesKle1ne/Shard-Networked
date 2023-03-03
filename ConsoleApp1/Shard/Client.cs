@@ -25,6 +25,15 @@ namespace Shard
         private GameJumpAndRun game;
         private bool isSet = false;
         internal int id;
+        private readonly (int x, int y)[] startPositions = new[] {
+        (50, 330),
+         (60, 330),
+          (70, 330),
+           (80, 330),
+            (90, 330),
+            (100, 330),
+
+    };
 
         internal static Client GetInstance()
         {
@@ -40,7 +49,7 @@ namespace Shard
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
             //ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
-            ws = new WebSocket("ws://localhost:3000");
+            ws = new WebSocket("ws://localhost:3001");
             Random rd = new Random();
 
             id =  rd.Next(1000, 9999);
@@ -61,6 +70,7 @@ namespace Shard
 
         internal void Send(String message)
         {
+            Debug.Log(message);
             ws.Send(message);
         }
 
@@ -76,15 +86,25 @@ namespace Shard
 
 
             MessageType type = getMessageType(e.Data);
-            
             Debug.Log(e.Data);
             Debug.Log(type.ToString());
+            if (e.Data == "Welcome")
+            {
+                Debug.Log("Received Welcome");
+                if (isSet)
+                {
+                    (int x, int y) sPos = GetRandomStartPosition();
+                    game.setPlayerStart(sPos.x, sPos.y);
+                    string message = new Position(id, MessageType.PlayerPosition, sPos.x, sPos.y, "right").ToJson();
+                    Send(message);
+                }
+            }
             if (type == MessageType.PlayerPosition)
             {
                 Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);
                 if (isSet)
                 {
-                    game.MovePlayer(mPos.clientId, mPos.x, mPos.y);
+                    game.MovePlayer(mPos.clientId, mPos.x, mPos.y, mPos.sprite);
                 }
             }
             if (type == MessageType.BulletPosition)
@@ -106,13 +126,23 @@ namespace Shard
                     }
                     else
                     {
-                        game.MovePlayer(id, ePos.x, ePos.y);
+                        game.MovePlayer(id, ePos.x, ePos.y, "right");
                     }
                     
                 }
             }
 
         }
+
+
+
+
+        private (int x, int y) GetRandomStartPosition()
+        {
+            Random rnd = new Random();
+            return startPositions[rnd.Next(0, 6)];
+        }
+
 
         private MessageType getMessageType(String messageString)
         {

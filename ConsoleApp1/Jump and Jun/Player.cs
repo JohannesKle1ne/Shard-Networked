@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SDL2;
 using Newtonsoft.Json;
+using System;
 
 namespace JumpAndRun
 {
@@ -18,6 +19,16 @@ namespace JumpAndRun
         private bool movingStarted;
         private Bullet bullet;
         private int id;
+
+        private List<int> xPositions = new List<int> { 50, 300 };
+        private List<int> yPositions = new List<int> { 330, 330 };
+
+        class Vector
+        {
+
+        }
+
+
 
         public override void initialize()
         {
@@ -116,9 +127,15 @@ namespace JumpAndRun
 
             if (updateCounter % 50 == 0)
             {
-                string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y).ToJson();
+                string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y,spriteName).ToJson();
                 client.Send(message);
             }
+        }
+
+        private int getRandom(int max)
+        {
+            Random rand = new Random();
+            return rand.Next(max);
         }
 
 

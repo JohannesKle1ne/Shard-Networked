@@ -12,12 +12,15 @@ namespace Shard
         public int clientId;
         public double x; 
         public double y;
+        public string sprite;
         public MessageType type;
-        public Position(int id, MessageType type, double x, double y) {
+        public Position(int id, MessageType type, double x, double y, string sprite)
+        {
             clientId = id;
             this.x = x;
             this.y = y;
             this.type = type;
+            this.sprite = sprite;
         }
 
         public string ToJson()

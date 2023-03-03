@@ -32,7 +32,7 @@ namespace JumpAndRun
 
             if (updateCounter % 50 == 0)
             {
-                string message = new Position(client.id, MessageType.BulletPosition, this.Transform.X, this.Transform.Y).ToJson();
+                string message = new Position(client.id, MessageType.BulletPosition, this.Transform.X, this.Transform.Y, "right").ToJson();
                 client.Send(message);
             }
         }

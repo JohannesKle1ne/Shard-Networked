@@ -17,6 +17,7 @@ namespace Shard
         NetworkedBullet myBullet;
         Dictionary<int, NetworkedPlayer> nPlayers;
 
+
         public override bool isRunning()
         {
 
@@ -34,6 +35,11 @@ namespace Shard
 
         public override void update()
         {
+            if (myPlayer != null && myPlayer.ToBeDestroyed)
+            {
+
+            }
+
 
             if (isRunning() == false)
             {
@@ -52,7 +58,7 @@ namespace Shard
             myPlayer.Move(x, y);
         }
 
-        public void MovePlayer(int id, double x, double y)
+        public void MovePlayer(int id, double x, double y, string sprite)
         {
             NetworkedPlayer player;
             if (nPlayers.ContainsKey(id))
@@ -65,6 +71,7 @@ namespace Shard
                 nPlayers.Add(id, player);
             }
             player.Move(x, y);
+            player.setSpriteName(sprite);
         }
 
         public void MoveBullet(int id, double x, double y)

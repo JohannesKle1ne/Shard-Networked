@@ -20,6 +20,11 @@ namespace JumpAndRun
         {
             this.id = id;
         }
+
+        public void setSpriteName(string sprite)
+        {
+            spriteName = sprite;
+        }
         public override void initialize()
         {
             spriteName = "right";
