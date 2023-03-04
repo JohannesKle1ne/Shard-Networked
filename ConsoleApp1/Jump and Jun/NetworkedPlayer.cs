@@ -14,7 +14,7 @@ namespace JumpAndRun
         private double speed = 100, jumpSpeed = 260;
         private double fallCounter;
         private int id;
-        private NetworkedBullet nBullet;
+        public NetworkedBullet nBullet;
 
         public NetworkedPlayer(int id)
         {

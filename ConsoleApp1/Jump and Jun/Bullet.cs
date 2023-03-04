@@ -9,11 +9,12 @@ namespace JumpAndRun
 
         private int direction = 1;
         private int updateCounter = 0;
+        private int speed = 500;
         public override void initialize()
         {
             setPhysicsEnabled();
 
-            addTag ("Bullet");
+            addTag("Bullet");
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
 
             MyBody.StopOnCollision = false;
@@ -37,25 +38,41 @@ namespace JumpAndRun
             }
         }
 
+        private void sendDestroy()
+        {
+            Client client = Client.GetInstance();
+
+
+            string message = new Shard.Action(client.id, MessageType.BulletDestroy).ToJson();
+            client.Send(message);
+
+        }
+
 
         public override void update()
         {
-            if (Transform.X > 600 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
+            if (!this.ToBeDestroyed)
             {
-                this.ToBeDestroyed= true;
+                if (Transform.X > 600 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
+                {
+                    this.ToBeDestroyed = true;
+                    sendDestroy();
+                }
+                else
+                {
+                    Transform.translate(direction * speed * Bootstrap.getDeltaTime(), 0);
+                    sendPosition();
+                    updateCounter++;
+                }
             }
-            else
-            {
-                Transform.translate(direction * 300 * Bootstrap.getDeltaTime(), 0);
-                sendPosition();
-                updateCounter++;
-            }
-           
+
+
         }
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag ("Enemy")) {
+            if (x.Parent.checkTag("Enemy"))
+            {
                 this.ToBeDestroyed = true;
                 Debug.Log("Collsions");
             }
@@ -77,7 +94,7 @@ namespace JumpAndRun
 
         internal void setDirection(int direction)
         {
-            this.direction= direction;
+            this.direction = direction;
         }
     }
 }

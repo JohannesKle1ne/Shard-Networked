@@ -14,8 +14,8 @@ namespace Shard
     {
         Random rand;
         Player myPlayer;
-        NetworkedBullet myBullet;
         Dictionary<int, NetworkedPlayer> nPlayers;
+        int respawnTime  = 0;
 
 
         public override bool isRunning()
@@ -33,18 +33,42 @@ namespace Shard
 
         }
 
+        private void sendPlayerRemove()
+        {
+            Client client = Client.GetInstance();
+
+            string message = new Action(client.id, MessageType.PlayerDestroy).ToJson();
+            client.Send(message);
+
+        }
+
         public override void update()
         {
-            if (myPlayer != null && myPlayer.ToBeDestroyed)
+            if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime==0)
             {
-
+                respawnTime = 1000;
+                sendPlayerRemove();
             }
 
 
-            if (isRunning() == false)
+            if (respawnTime>0)
             {
+                Debug.Log(respawnTime.ToString());
                 Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
                 Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 128, col);
+                
+
+
+                if (respawnTime == 1)
+                {
+                    Client client = Client.GetInstance();
+                    (int x, int y) sPos = client.GetRandomStartPosition();
+                    setPlayerStart(sPos.x, sPos.y);
+                    string message = new Position(client.id, MessageType.PlayerPosition, sPos.x, sPos.y, "right").ToJson();
+                    client.Send(message);
+                }
+
+                respawnTime--;
                 return;
             }
 
@@ -58,7 +82,7 @@ namespace Shard
             myPlayer.Move(x, y);
         }
 
-        public void MovePlayer(int id, double x, double y, string sprite)
+        public void MoveNetworkedPlayer(int id, double x, double y, string sprite)
         {
             NetworkedPlayer player;
             if (nPlayers.ContainsKey(id))
@@ -72,6 +96,27 @@ namespace Shard
             }
             player.Move(x, y);
             player.setSpriteName(sprite);
+        }
+
+        public void removeNetworkedPlayer(int id)
+        {
+            if (nPlayers.ContainsKey(id))
+            {
+                NetworkedPlayer player = nPlayers[id];
+                player.ToBeDestroyed = true;
+                nPlayers.Remove(id);
+            }
+            
+        }
+        public void removeNetworkedBullet(int id)
+        {
+            if (nPlayers.ContainsKey(id))
+            {
+                NetworkedPlayer player = nPlayers[id];
+                player.nBullet.ToBeDestroyed = true;
+                player.nBullet = null;
+            }
+
         }
 
         public void MoveBullet(int id, double x, double y)
@@ -90,7 +135,6 @@ namespace Shard
             rand = new Random();
 
             
-            myBullet = new NetworkedBullet();
             Client client = Client.GetInstance();
             client.setGame(this);
             nPlayers = new Dictionary<int, NetworkedPlayer>();
@@ -108,5 +152,7 @@ namespace Shard
         public void handleInput(InputEvent inp, string eventType)
         {
         }
+
+        
     }
 }

@@ -29,6 +29,22 @@ namespace Shard
         }
     }
 
+    class Action
+    {
+        public int clientId;
+        public MessageType type;
+        public Action(int id, MessageType type)
+        {
+            clientId = id;
+            this.type = type;
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
 
 
 
@@ -38,6 +54,9 @@ namespace Shard
         PlayerPosition,
         PlayerStartPosition,
         BulletPosition,
+        PlayerDestroy,
+        BulletDestroy
+
         
     }
 }

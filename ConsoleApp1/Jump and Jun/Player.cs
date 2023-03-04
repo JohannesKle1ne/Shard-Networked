@@ -132,6 +132,7 @@ namespace JumpAndRun
             }
         }
 
+
         private int getRandom(int max)
         {
             Random rand = new Random();
@@ -251,15 +252,20 @@ namespace JumpAndRun
             float[] minAndMaxX = x.getMinAndMax(true);
             float[] minAndMaxY = x.getMinAndMax(false);
 
-            if (Transform.X + Transform.Wid >= minAndMaxX[0] && Transform.X <= minAndMaxX[1])
+            if (Transform != null)
             {
-                // We're in the centre, so it's fine.
-
-                if (Transform.Y + Transform.Ht >= minAndMaxY[0])
+                if (Transform.X + Transform.Wid >= minAndMaxX[0] && Transform.X <= minAndMaxX[1])
                 {
-                    return true;
+                    // We're in the centre, so it's fine.
+
+                    if (Transform.Y + Transform.Ht >= minAndMaxY[0])
+                    {
+                        return true;
+                    }
                 }
             }
+
+            
 
             return false;
         }
