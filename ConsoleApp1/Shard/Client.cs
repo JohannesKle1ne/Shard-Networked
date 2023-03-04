@@ -87,13 +87,16 @@ namespace Shard
 
             MessageType type = getMessageType(e.Data);
             Debug.Log(type.ToString());
-            if (e.Data == "Welcome")
+            if (type == MessageType.Color)
             {
-                Debug.Log("Received Welcome");
+               
+                Action a = JsonConvert.DeserializeObject<Action>(e.Data);
+                Debug.Log(a.color);
                 if (isSet)
                 {
                     (int x, int y) sPos = GetRandomStartPosition();
                     game.setPlayerStart(sPos.x, sPos.y);
+                    game.setPlayerColor(a.color);
                     string message = new Position(id, MessageType.PlayerPosition, sPos.x, sPos.y, "right").ToJson();
                     Send(message);
                 }
@@ -115,22 +118,22 @@ namespace Shard
                     game.MoveBullet(ePos.clientId, ePos.x, ePos.y);
                 }
             }
-            if (type == MessageType.PlayerStartPosition)
-            {
-                Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
-                if (isSet)
-                {
-                    if (ePos.clientId == id)
-                    {
-                        game.setPlayerStart(ePos.x, ePos.y);
-                    }
-                    else
-                    {
-                        game.MoveNetworkedPlayer(id, ePos.x, ePos.y, "right");
-                    }
+            //if (type == MessageType.PlayerStartPosition)
+            //{
+            //    Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
+            //    if (isSet)
+            //    {
+            //        if (ePos.clientId == id)
+            //        {
+            //            game.setPlayerStart(ePos.x, ePos.y);
+            //        }
+            //        else
+            //        {
+            //            game.MoveNetworkedPlayer(id, ePos.x, ePos.y, "right");
+            //        }
                     
-                }
-            }
+            //    }
+            //}
             if (type == MessageType.PlayerDestroy)
             {
                 Action action = JsonConvert.DeserializeObject<Action>(e.Data);

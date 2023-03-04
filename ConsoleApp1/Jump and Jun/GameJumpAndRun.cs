@@ -77,9 +77,13 @@ namespace Shard
 
         public void setPlayerStart(double x, double y)
         {
-            Debug.Log("called");
             myPlayer = new Player();
             myPlayer.Move(x, y);
+        }
+
+        public void setPlayerColor(string color)
+        {
+            myPlayer.spriteColor = color;
         }
 
         public void MoveNetworkedPlayer(int id, double x, double y, string sprite)

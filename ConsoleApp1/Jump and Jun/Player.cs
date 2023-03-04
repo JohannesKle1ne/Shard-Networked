@@ -19,6 +19,7 @@ namespace JumpAndRun
         private bool movingStarted;
         private Bullet bullet;
         private int id;
+        public string spriteColor = "red";
 
         private List<int> xPositions = new List<int> { 50, 300 };
         private List<int> yPositions = new List<int> { 330, 330 };
@@ -239,7 +240,9 @@ namespace JumpAndRun
 
             }
 
-            this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + spriteCounter + ".png";
+            this.Transform.SpritePath = "ManicMinerSprites/" +spriteColor+ spriteName + spriteCounter + ".png";
+
+            Debug.Log(this.Transform.SpritePath);
 
 
             Bootstrap.getDisplay().addToDraw(this);
