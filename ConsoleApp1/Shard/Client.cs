@@ -49,7 +49,7 @@ namespace Shard
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
             //ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
-            ws = new WebSocket("ws://localhost:3002");
+            ws = new WebSocket("ws://localhost:3000");
             Random rd = new Random();
 
             id =  rd.Next(1000, 9999);

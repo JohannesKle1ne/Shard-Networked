@@ -61,9 +61,8 @@ namespace JumpAndRun
 
         public void Move(double x, double y)
         {
-            Debug.Log(x.ToString());
-            Debug.Log(y.ToString());
-            //this.Transform?.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
+            spriteTimer += Bootstrap.getDeltaTime()*4;
+
             if (this.Transform != null)
             {
                 this.Transform.Y = y;
@@ -80,47 +79,47 @@ namespace JumpAndRun
 
         public void handleInput(InputEvent inp, string eventType)
         {
-            if (eventType == "KeyDown")
-            {
+            //if (eventType == "KeyDown")
+            //{
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    right = true;
-                    spriteName = "right";
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        right = true;
+            //        spriteName = "right";
 
-                }
+            //    }
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    left = true;
-                    spriteName = "left";
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        left = true;
+            //        spriteName = "left";
+            //    }
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE && canJump == true)
-                {
-                    jumpUp = true;
-                    Debug.Log ("Jumping up");
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE && canJump == true)
+            //    {
+            //        jumpUp = true;
+            //        Debug.Log ("Jumping up");
+            //    }
 
-            }
+            //}
 
-            else if (eventType == "KeyUp")
-                {
+            //else if (eventType == "KeyUp")
+            //    {
 
-                    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                    {
-                        right = false;
+            //        if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //        {
+            //            right = false;
 
-                    }
+            //        }
 
-                    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                    {
-                        left = false;
-                    }
+            //        if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //        {
+            //            left = false;
+            //        }
 
                    
 
-            }
+            //}
 
         }
 
@@ -130,37 +129,37 @@ namespace JumpAndRun
             //Debug.Log("Fallcounter is " + fallCounter);
 
 
-            if (left)
-            {
-                this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
-                spriteTimer += Bootstrap.getDeltaTime();
-                Debug.Log($"x:{this.Transform.X}, y:{this.Transform.Y}");
-                Client client = Client.GetInstance();
-                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
-            }
+            //if (left)
+            //{
+            //    this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
+            //    spriteTimer += Bootstrap.getDeltaTime();
+            //    Debug.Log($"x:{this.Transform.X}, y:{this.Transform.Y}");
+            //    Client client = Client.GetInstance();
+            //    client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
+            //}
 
-            if (right)
-            {
-                this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
-                spriteTimer += Bootstrap.getDeltaTime();
-                Client client = Client.GetInstance();
-                client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
-            }
+            //if (right)
+            //{
+            //    this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
+            //    spriteTimer += Bootstrap.getDeltaTime();
+            //    Client client = Client.GetInstance();
+            //    client.Send($"{client.id};{this.Transform.X};{this.Transform.Y}");
+            //}
 
-            if (jumpUp) {
-                fall = false;
-                fallCounter = 0;
-                if (jumpCount < 0.3f) {
-                    this.Transform.translate(0, -1 * jumpSpeed * Bootstrap.getDeltaTime());
-                    jumpCount += Bootstrap.getDeltaTime();
-                }
-                else {
-                    jumpCount = 0;
-                    jumpUp = false;
-                    fall = true;
+            //if (jumpUp) {
+            //    fall = false;
+            //    fallCounter = 0;
+            //    if (jumpCount < 0.3f) {
+            //        this.Transform.translate(0, -1 * jumpSpeed * Bootstrap.getDeltaTime());
+            //        jumpCount += Bootstrap.getDeltaTime();
+            //    }
+            //    else {
+            //        jumpCount = 0;
+            //        jumpUp = false;
+            //        fall = true;
 
-                }
-            }
+            //    }
+            //}
 
 
 
@@ -184,15 +183,15 @@ namespace JumpAndRun
 
             }
 
-            if (fall) {
-                Transform.translate(0, jumpSpeed * Bootstrap.getDeltaTime());
-                fallCounter += Bootstrap.getDeltaTime();
+            //if (fall) {
+            //    Transform.translate(0, jumpSpeed * Bootstrap.getDeltaTime());
+            //    fallCounter += Bootstrap.getDeltaTime();
 
-                if (Transform.Y > 900) {
-                    ToBeDestroyed = true;
-                }
+            //    if (Transform.Y > 900) {
+            //        ToBeDestroyed = true;
+            //    }
 
-            }
+            //}
 
             this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + spriteCounter + ".png";
 
