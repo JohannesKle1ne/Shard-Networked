@@ -231,7 +231,7 @@ namespace Shard
                         GameObjectManager.getInstance().physicsUpdate();
                     }
 
-                    phys.drawDebugColliders();
+                    //phys.drawDebugColliders();
                 }
 
                 // Render the screen.

@@ -128,9 +128,14 @@ namespace JumpAndRun
 
             if (updateCounter % 50 == 0)
             {
-                string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y,spriteName).ToJson();
+                string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y,getFullSpriteName()).ToJson();
                 client.Send(message);
             }
+        }
+
+        private string getFullSpriteName()
+        {
+            return spriteColor + spriteName + spriteCounter;
         }
 
 
@@ -188,6 +193,7 @@ namespace JumpAndRun
                 if(bullet==null || bullet.ToBeDestroyed)
                 {
                     bullet = new Bullet();
+                    bullet.setSpriteName(spriteColor+"bullet");
                     if (spriteName == "right")
                     {
                         bullet.setPosition(Transform.X + 40, Transform.Y);
@@ -240,9 +246,9 @@ namespace JumpAndRun
 
             }
 
-            this.Transform.SpritePath = "ManicMinerSprites/" +spriteColor+ spriteName + spriteCounter + ".png";
+            this.Transform.SpritePath = "ManicMinerSprites/" +getFullSpriteName()+ ".png";
 
-            Debug.Log(this.Transform.SpritePath);
+            //Debug.Log(this.Transform.SpritePath);
 
 
             Bootstrap.getDisplay().addToDraw(this);

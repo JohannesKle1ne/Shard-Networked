@@ -1,6 +1,7 @@
 ﻿using Shard;
 using System;
 using System.Drawing;
+using WebSocketSharp;
 
 namespace JumpAndRun
 {
@@ -18,6 +19,12 @@ namespace JumpAndRun
             MyBody.PassThrough = true;
 
         }
+        public void setSpriteName(string name)
+        {
+            Debug.Log("ManicMinerSprites/" + name + ".png");
+            this.Transform.SpritePath = "ManicMinerSprites/" + name + ".png";
+        }
+
 
         public void Move(double x, double y)
         {
@@ -31,25 +38,25 @@ namespace JumpAndRun
 
         public override void update()
         {
-            Random r = new Random();
-            Color col = Color.FromArgb(r.Next(0, 256), r.Next(0, 256), 0);
+            //Random r = new Random();
+            //Color col = Color.FromArgb(r.Next(0, 256), r.Next(0, 256), 0);
 
-            Bootstrap.getDisplay().drawLine(
-                         (int)Transform.X,
-                         (int)Transform.Y,
-                         (int)Transform.X + 10,
-                         (int)Transform.Y + 10,
-                         col);
+            //Bootstrap.getDisplay().drawLine(
+            //             (int)Transform.X,
+            //             (int)Transform.Y,
+            //             (int)Transform.X + 10,
+            //             (int)Transform.Y + 10,
+            //             col);
 
-            Bootstrap.getDisplay().drawLine(
-                (int)Transform.X + 10,
-                (int)Transform.Y,
-                (int)Transform.X,
-                (int)Transform.Y + 10,
-                col);
+            //Bootstrap.getDisplay().drawLine(
+            //    (int)Transform.X + 10,
+            //    (int)Transform.Y,
+            //    (int)Transform.X,
+            //    (int)Transform.Y + 10,
+            //    col);
 
 
-
+            Bootstrap.getDisplay().addToDraw(this);
         }
 
         public void onCollisionEnter(PhysicsBody x)

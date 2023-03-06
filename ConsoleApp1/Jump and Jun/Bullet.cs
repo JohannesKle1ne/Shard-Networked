@@ -10,6 +10,7 @@ namespace JumpAndRun
         private int direction = 1;
         private int updateCounter = 0;
         private int speed = 500;
+        private string spriteName;
         public override void initialize()
         {
             setPhysicsEnabled();
@@ -19,7 +20,14 @@ namespace JumpAndRun
 
             MyBody.StopOnCollision = false;
             MyBody.Kinematic = false;
+            this.Transform.SpritePath = "ManicMinerSprites/" + "bullet" + ".png";
 
+        }
+
+        public void setSpriteName(string name)
+        {
+            this.spriteName = name;
+            this.Transform.SpritePath = "ManicMinerSprites/" + name + ".png";
         }
 
         public void setPosition(double x, double y)
@@ -33,7 +41,7 @@ namespace JumpAndRun
 
             if (updateCounter % 50 == 0)
             {
-                string message = new Position(client.id, MessageType.BulletPosition, this.Transform.X, this.Transform.Y, "right").ToJson();
+                string message = new Position(client.id, MessageType.BulletPosition, this.Transform.X, this.Transform.Y, spriteName).ToJson();
                 client.Send(message);
             }
         }
@@ -65,7 +73,7 @@ namespace JumpAndRun
                     updateCounter++;
                 }
             }
-
+            Bootstrap.getDisplay().addToDraw(this);
 
         }
 

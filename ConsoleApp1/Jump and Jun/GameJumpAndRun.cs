@@ -63,7 +63,9 @@ namespace Shard
                 {
                     Client client = Client.GetInstance();
                     (int x, int y) sPos = client.GetRandomStartPosition();
+                    string oldColor = myPlayer.spriteColor;
                     setPlayerStart(sPos.x, sPos.y);
+                    setPlayerColor(oldColor);
                     string message = new Position(client.id, MessageType.PlayerPosition, sPos.x, sPos.y, "right").ToJson();
                     client.Send(message);
                 }
@@ -88,18 +90,18 @@ namespace Shard
 
         public void MoveNetworkedPlayer(int id, double x, double y, string sprite)
         {
-            NetworkedPlayer player;
+            NetworkedPlayer nPlayer;
             if (nPlayers.ContainsKey(id))
             {
-                player = nPlayers[id];
+                nPlayer = nPlayers[id];
             }
             else
             {
-                player = new NetworkedPlayer(id);
-                nPlayers.Add(id, player);
+                nPlayer = new NetworkedPlayer(id);
+                nPlayers.Add(id, nPlayer);
             }
-            player.Move(x, y);
-            player.setSpriteName(sprite);
+            nPlayer.Move(x, y);
+            nPlayer.setSpriteName(sprite);
         }
 
         public void removeNetworkedPlayer(int id)
@@ -123,12 +125,12 @@ namespace Shard
 
         }
 
-        public void MoveBullet(int id, double x, double y)
+        public void MoveNetworkedBullet(int id, double x, double y, string sprite)
         {
             if (nPlayers.ContainsKey(id))
             {
                 NetworkedPlayer player = nPlayers[id];
-                player.MoveBullet(x, y);
+                player.MoveBullet(x, y,sprite);
             }
         }
 

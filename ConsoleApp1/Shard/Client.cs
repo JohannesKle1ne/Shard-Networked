@@ -115,7 +115,7 @@ namespace Shard
                 Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
                 if (isSet)
                 {
-                    game.MoveBullet(ePos.clientId, ePos.x, ePos.y);
+                    game.MoveNetworkedBullet(ePos.clientId, ePos.x, ePos.y,ePos.sprite);
                 }
             }
             //if (type == MessageType.PlayerStartPosition)

@@ -10,6 +10,7 @@ namespace JumpAndRun
         private bool left, right, jumpUp, jumpDown, fall, canJump;
         private int spriteCounter, spriteCounterDir;
         private string spriteName;
+        private string fullSpriteName;
         private double spriteTimer, jumpCount;
         private double speed = 100, jumpSpeed = 260;
         private double fallCounter;
@@ -23,7 +24,7 @@ namespace JumpAndRun
 
         public void setSpriteName(string sprite)
         {
-            spriteName = sprite;
+            fullSpriteName = sprite;
         }
         public override void initialize()
         {
@@ -50,13 +51,16 @@ namespace JumpAndRun
             return nBullet;
         }
 
-        public void MoveBullet(double x, double y)
+        public void MoveBullet(double x, double y, string sprite)
         {
+            Debug.Log(sprite);
             if (nBullet == null)
             {
                 nBullet = new NetworkedBullet();
+                
             }
             nBullet.Move(x, y);
+            nBullet.setSpriteName(sprite);
         }
 
         public void Move(double x, double y)
@@ -193,7 +197,7 @@ namespace JumpAndRun
 
             //}
 
-            this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + spriteCounter + ".png";
+            this.Transform.SpritePath = "ManicMinerSprites/" + fullSpriteName + ".png";
 
 
             Bootstrap.getDisplay().addToDraw(this);
