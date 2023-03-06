@@ -13,7 +13,7 @@ namespace Shard
     class GameJumpAndRun : Game, InputListener
     {
         Random rand;
-        Player myPlayer;
+        public Player myPlayer;
         Dictionary<int, NetworkedPlayer> nPlayers;
         int respawnTime  = 0;
 
@@ -66,7 +66,7 @@ namespace Shard
                     string oldColor = myPlayer.spriteColor;
                     setPlayerStart(sPos.x, sPos.y);
                     setPlayerColor(oldColor);
-                    string message = new Position(client.id, MessageType.PlayerPosition, sPos.x, sPos.y, "right").ToJson();
+                    string message = new Position(client.id, MessageType.PlayerPosition, sPos.x, sPos.y, myPlayer.getFullSpriteName()).ToJson();
                     client.Send(message);
                 }
 

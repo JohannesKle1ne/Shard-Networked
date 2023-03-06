@@ -97,7 +97,7 @@ namespace Shard
                     (int x, int y) sPos = GetRandomStartPosition();
                     game.setPlayerStart(sPos.x, sPos.y);
                     game.setPlayerColor(a.color);
-                    string message = new Position(id, MessageType.PlayerPosition, sPos.x, sPos.y, "right").ToJson();
+                    string message = new Position(id, MessageType.PlayerPosition, sPos.x, sPos.y,game.myPlayer.getFullSpriteName() ).ToJson();
                     Send(message);
                 }
             }

@@ -133,7 +133,7 @@ namespace JumpAndRun
             }
         }
 
-        private string getFullSpriteName()
+        public string getFullSpriteName()
         {
             return spriteColor + spriteName + spriteCounter;
         }
