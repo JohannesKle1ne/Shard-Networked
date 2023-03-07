@@ -126,7 +126,7 @@ namespace JumpAndRun
         {
             Client client = Client.GetInstance();
 
-            if (updateCounter % 50 == 0)
+            if (updateCounter % 20 == 0)
             {
                 string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y,getFullSpriteName()).ToJson();
                 client.Send(message);
