@@ -15,7 +15,7 @@ namespace Shard
         Random rand;
         public Player myPlayer;
         Dictionary<int, NetworkedPlayer> nPlayers;
-        int respawnTime  = 0;
+        private double respawnTime  = 0;
 
 
         public override bool isRunning()
@@ -44,9 +44,10 @@ namespace Shard
 
         public override void update()
         {
-            if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime==0)
+            //Debug.Log(Math.Round(Bootstrap.getDeltaTime()*1000).ToString());
+            if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime<=0)
             {
-                respawnTime = 1000;
+                respawnTime = 5;
                 sendPlayerRemove();
             }
 
@@ -54,12 +55,17 @@ namespace Shard
             if (respawnTime>0)
             {
                 Debug.Log(respawnTime.ToString());
-                Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
-                Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 128, col);
-                
+                Color col = Color.White;
+                Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
+                Bootstrap.getDisplay().showText("Respawn in: "+(((int)respawnTime)+1), 30, 80, 20, col);
 
 
-                if (respawnTime == 1)
+
+
+                respawnTime = respawnTime - Bootstrap.getDeltaTime();
+                Debug.Log(respawnTime.ToString());
+
+                if (respawnTime <= 0)
                 {
                     Client client = Client.GetInstance();
                     (int x, int y) sPos = client.GetRandomStartPosition();
@@ -70,8 +76,6 @@ namespace Shard
                     client.Send(message);
                 }
 
-                respawnTime--;
-                return;
             }
 
 

@@ -161,6 +161,10 @@ namespace Shard
                     {
                         game.myPlayer.bullet.ToBeDestroyed= true;
                     }
+                    else
+                    {
+                        game.removeNetworkedBullet(action.bulletId);
+                    }
                     
 
                 }
