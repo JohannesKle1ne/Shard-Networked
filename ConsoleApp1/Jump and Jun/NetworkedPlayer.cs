@@ -53,7 +53,7 @@ namespace JumpAndRun
 
         public void MoveBullet(double x, double y, string sprite)
         {
-            Debug.Log(sprite);
+           // Debug.Log(sprite);
             if (nBullet == null)
             {
                 nBullet = new NetworkedBullet(id);

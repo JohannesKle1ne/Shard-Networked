@@ -286,6 +286,12 @@ namespace JumpAndRun
             {
                 ToBeDestroyed = true;
             }
+
+            if (x.Parent.checkTag("MovingBox"))
+            {
+                ///Debug.Log("MovingBox collide");
+                sendPosition();
+            }
             //if (x.Parent.checkTag("Collectible"))
             //{
             //    return;
@@ -311,18 +317,30 @@ namespace JumpAndRun
 
         public void onCollisionExit(PhysicsBody x)
         {
-            if (x.Parent.checkTag("Collectible"))
-            {
-                return;
-            }
+            //if (x.Parent.checkTag("Collectible"))
+            //{
+            //    return;
+            //}
 
             canJump = false;
             fall = true;
+
+            if (x.Parent.checkTag("MovingBox"))
+            {
+                //Debug.Log("MovingBox collide");
+                sendPosition();
+            }
 
         }
 
         public void onCollisionStay(PhysicsBody x)
         {
+            if (x.Parent.checkTag("MovingBox"))
+            {
+                //Debug.Log("MovingBox collide");
+                sendPosition();
+            }
+
             if (x.Parent.checkTag("Collectible"))
             {
                 return;

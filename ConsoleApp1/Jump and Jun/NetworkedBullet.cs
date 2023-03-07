@@ -26,7 +26,7 @@ namespace JumpAndRun
         }
         public void setSpriteName(string name)
         {
-            Debug.Log("ManicMinerSprites/" + name + ".png");
+            //Debug.Log("ManicMinerSprites/" + name + ".png");
             if (this.Transform != null)
             {
                 this.Transform.SpritePath = "ManicMinerSprites/" + name + ".png";

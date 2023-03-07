@@ -15,7 +15,16 @@ namespace Shard
         Random rand;
         public Player myPlayer;
         Dictionary<int, NetworkedPlayer> nPlayers;
-        private double respawnTime  = 0;
+        private double respawnTime = 0;
+        private MovingBox movingBox1;
+
+        private MovingBox movingBox2;
+        private MovingBox movingBox3;
+        private MovingBox movingBox4;
+        private MovingBox movingBox5;
+        private MovingBox movingBox6;
+
+        private MovingBox movingBox7;
 
 
         public override bool isRunning()
@@ -45,25 +54,25 @@ namespace Shard
         public override void update()
         {
             //Debug.Log(Math.Round(Bootstrap.getDeltaTime()*1000).ToString());
-            if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime<=0)
+            if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime <= 0)
             {
                 respawnTime = 5;
                 sendPlayerRemove();
             }
 
 
-            if (respawnTime>0)
+            if (respawnTime > 0)
             {
-                Debug.Log(respawnTime.ToString());
+                //Debug.Log(respawnTime.ToString());
                 Color col = Color.White;
                 Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
-                Bootstrap.getDisplay().showText("Respawn in: "+(((int)respawnTime)+1), 30, 80, 20, col);
+                Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 30, 80, 20, col);
 
 
 
 
                 respawnTime = respawnTime - Bootstrap.getDeltaTime();
-                Debug.Log(respawnTime.ToString());
+                //Debug.Log(respawnTime.ToString());
 
                 if (respawnTime <= 0)
                 {
@@ -78,6 +87,67 @@ namespace Shard
 
             }
 
+
+        }
+
+        public void setBoxPosition(int position, int index)
+        {
+            
+            if (index == 0)
+            {
+                if (movingBox1 == null)
+                {
+                    movingBox1 = new MovingBox();
+                    movingBox1.setPosition(0, 600, 300, 100);
+                    movingBox1.MoveDirY = 1;
+                }
+                    movingBox1.Transform.Y = position;
+            }
+            if (index == 1)
+            {
+                if (movingBox2 == null)
+                {
+                   
+
+                    movingBox2 = new MovingBox();
+                    movingBox2.setPosition(500, 550, 500, 100);
+                    movingBox2.MoveDirY = 1;
+
+                    movingBox3 = new MovingBox();
+                    movingBox3.setPosition(550, 525, 500, 100);
+                    movingBox3.MoveDirY = 1;
+
+                    movingBox4 = new MovingBox();
+                    movingBox4.setPosition(550, 575, 500, 100);
+                    movingBox4.MoveDirY = 1;
+
+                    movingBox5 = new MovingBox();
+                    movingBox5.setPosition(600, 550, 500, 100);
+                    movingBox5.MoveDirY = 1;
+
+                    movingBox6 = new MovingBox();
+                    movingBox6.setPosition(650, 575, 500, 100);
+                    movingBox6.MoveDirY = 1;
+
+
+                   
+                }
+                movingBox2.Transform.Y = position;
+                movingBox3.Transform.Y = position-25;
+                movingBox4.Transform.Y = position+25;
+                movingBox5.Transform.Y = position;
+                movingBox6.Transform.Y = position+25;
+            }
+            if (index == 2)
+            {
+                if (movingBox7 == null)
+                {
+                    movingBox7 = new MovingBox();
+                    movingBox7.setPosition(1150, 425, 300, 100);
+                    movingBox7.MoveDirY = 1;
+                }
+                movingBox7.Transform.Y = position;
+            }
 
         }
 
@@ -116,7 +186,7 @@ namespace Shard
                 player.ToBeDestroyed = true;
                 nPlayers.Remove(id);
             }
-            
+
         }
         public void removeNetworkedBullet(int id)
         {
@@ -134,27 +204,166 @@ namespace Shard
             if (nPlayers.ContainsKey(id))
             {
                 NetworkedPlayer player = nPlayers[id];
-                player.MoveBullet(x, y,sprite);
+                player.MoveBullet(x, y, sprite);
             }
         }
 
         public override void initialize()
         {
-            Box p;
+            Box b;
+            MovingBox mb;
             Bootstrap.getInput().addListener(this);
             rand = new Random();
 
-            
+
             Client client = Client.GetInstance();
             client.setGame(this);
             nPlayers = new Dictionary<int, NetworkedPlayer>();
 
 
-            p = new Box();
-            p.setPosition(0, 350, 600, 200);
+            //movingBox1 = new MovingBox();
+            //movingBox1.setPosition(0, 600, 300, 100);
+            //movingBox1.MoveDirY = 1;
 
-            p = new Box();
-            p.setPosition(200, 350, 600, 200);
+            b = new Box();
+            b.setPosition(50, 350, 0, 0);
+
+            b = new Box();
+            b.setPosition(100, 375, 0, 0);
+
+            b = new Box();
+            b.setPosition(150, 400, 0, 0);
+
+            b = new Box();
+            b.setPosition(100, 560, 0, 0);
+
+            b = new Box();
+            b.setPosition(150, 590, 0, 0);
+
+            b = new Box();
+            b.setPosition(200, 575, 0, 0);
+
+            b = new Box();
+            b.setPosition(250, 560, 0, 0);
+
+
+
+            b = new Box();
+            b.setPosition(350, 590, 0, 0);
+
+            b = new Box();
+            b.setPosition(400, 575, 0, 0);
+
+            b = new Box();
+            b.setPosition(450, 525, 0, 0);
+
+
+            //movingBox2 = new MovingBox();
+            //movingBox2.setPosition(500, 550, 500, 100);
+            //movingBox2.MoveDirY = 1;
+
+            //movingBox3 = new MovingBox();
+            //movingBox3.setPosition(550, 525, 500, 100);
+            //movingBox3.MoveDirY = 1;
+
+            //movingBox4 = new MovingBox();
+            //movingBox4.setPosition(550, 575, 500, 100);
+            //movingBox4.MoveDirY = 1;
+
+            //movingBox5 = new MovingBox();
+            //movingBox5.setPosition(600, 550, 500, 100);
+            //movingBox5.MoveDirY = 1;
+
+            //movingBox6 = new MovingBox();
+            //movingBox6.setPosition(650, 575, 500, 100);
+            //movingBox6.MoveDirY = 1;
+
+            b = new Box();
+            b.setPosition(700, 525, 0, 0);
+
+            b = new Box();
+            b.setPosition(750, 500, 0, 0);
+
+            b = new Box();
+            b.setPosition(800, 475, 0, 0);
+
+            b = new Box();
+            b.setPosition(900, 425, 0, 0);
+
+            b = new Box();
+            b.setPosition(950, 400, 0, 0);
+
+            b = new Box();
+            b.setPosition(1000, 375, 0, 0);
+
+            b = new Box();
+            b.setPosition(1050, 400, 0, 0);
+
+            b = new Box();
+            b.setPosition(1100, 425, 0, 0);
+
+
+            //movingBox7 = new MovingBox();
+            //movingBox7.setPosition(1150, 425, 300, 100);
+            //movingBox7.MoveDirY = 1;
+
+
+            b = new Box();
+            b.setPosition(770, 90, 0, 0);
+
+            b = new Box();
+            b.setPosition(750, 140, 0, 0);
+
+            b = new Box();
+            b.setPosition(750, 190, 0, 0);
+
+            b = new Box();
+            b.setPosition(750, 240, 0, 0);
+
+            b = new Box();
+            b.setPosition(800, 260, 0, 0);
+
+            b = new Box();
+            b.setPosition(850, 240, 0, 0);
+
+            b = new Box();
+            b.setPosition(900, 220, 0, 0);
+
+            b = new Box();
+            b.setPosition(950, 240, 0, 0);
+
+            b = new Box();
+            b.setPosition(1000, 220, 0, 0);
+
+            b = new Box();
+            b.setPosition(1050, 240, 0, 0);
+
+            b = new Box();
+            b.setPosition(0, 100, 0, 0);
+
+            b = new Box();
+            b.setPosition(50, 120, 0, 0);
+
+            b = new Box();
+            b.setPosition(100, 100, 0, 0);
+
+            b = new Box();
+            b.setPosition(150, 120, 0, 0);
+
+            b = new Box();
+            b.setPosition(200, 100, 0, 0);
+
+            b = new Box();
+            b.setPosition(300, 150, 0, 0);
+
+            b = new Box();
+            b.setPosition(350, 175, 0, 0);
+
+            b = new Box();
+            b.setPosition(400, 200, 0, 0);
+
+
+
 
         }
 
@@ -163,6 +372,6 @@ namespace Shard
         {
         }
 
-        
+
     }
 }

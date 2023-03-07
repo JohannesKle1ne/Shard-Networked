@@ -39,7 +39,7 @@ namespace JumpAndRun
         {
             Client client = Client.GetInstance();
 
-            if (updateCounter % 50 == 0)
+            if (updateCounter % 20 == 0)
             {
                 string message = new Position(client.id, MessageType.BulletPosition, this.Transform.X, this.Transform.Y, spriteName).ToJson();
                 client.Send(message);
@@ -61,7 +61,7 @@ namespace JumpAndRun
         {
             if (!this.ToBeDestroyed)
             {
-                if (Transform.X > 600 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
+                if (Transform.X > 1200 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
                 {
                     this.ToBeDestroyed = true;
                     sendDestroy();
@@ -79,11 +79,14 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag("NetworkedPlayer"))
+            if (x.Parent.checkTag("Box"))
             {
-                //Debug.Log("collistion found with Networked player");
-                //this.ToBeDestroyed = true;
-            }
+                this.ToBeDestroyed = true;
+                sendDestroy();
+            
+            //Debug.Log("collistion found with Networked player");
+            //this.ToBeDestroyed = true;
+        }
 
         }
 

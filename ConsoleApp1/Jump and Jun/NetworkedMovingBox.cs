@@ -3,7 +3,7 @@ using System;
 
 namespace JumpAndRun
 {
-    class Box : GameObject, CollisionHandler
+    class NetworkedMovingBox : GameObject, CollisionHandler
     {
         private int moveDirX, moveDirY;
         private int maxY, minY;
@@ -14,7 +14,7 @@ namespace JumpAndRun
         private int origX, origY;
         public int MoveDist { get => moveDist; set => moveDist = value; }
         public int MoveDirX { get => moveDirX; set => moveDirX = value; }
-        public int MoveDirY { get => moveDirY; set =>moveDirY = value; }
+        public int MoveDirY { get => moveDirY; set => moveDirY = value; }
         public int MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
 
         public override void initialize()
@@ -25,12 +25,11 @@ namespace JumpAndRun
             MyBody.Kinematic = true;
             this.Transform.SpritePath = "ManicMinerSprites/box.png";
 
-            addTag("Box");
+            addTag("MovingBox");
 
         }
 
-        public void setPosition(int x, int y, int dist, int speed)
-        {
+        public void setPosition(int x, int y, int dist, int speed) {
             origX = x;
             origY = y;
 
@@ -44,7 +43,7 @@ namespace JumpAndRun
 
             MoveSpeed = speed;
 
-            Transform.translate(x, y);
+            Transform.translate (x, y);
         }
 
         public void onCollisionEnter(PhysicsBody x)
@@ -62,38 +61,36 @@ namespace JumpAndRun
         public override void update()
         {
 
-            if (moveDirY != 0)
-            {
-                Transform.translate(0, moveSpeed * moveDirY * Bootstrap.getDeltaTime());
+            //if (moveDirY != 0)
+            //{
+            //    Transform.translate(0, moveSpeed * moveDirY * Bootstrap.getDeltaTime());
 
-                if (Transform.Y > maxY)
-                {
-                    MoveDirY = -1;
-                }
+            //    if (Transform.Y > maxY) {
+            //        MoveDirY = -1;
+            //    }
+            
+            //    if (Transform.Y < minY) {
+            //        MoveDirY = 1;
 
-                if (Transform.Y < minY)
-                {
-                    MoveDirY = 1;
-
-                }
-            }
+            //    }
+            //}
 
 
-            if (moveDirX != 0)
-            {
-                Transform.translate(moveSpeed * moveDirX * Bootstrap.getDeltaTime(), 0);
+            //if (moveDirX != 0)
+            //{
+            //    Transform.translate(moveSpeed * moveDirX * Bootstrap.getDeltaTime(), 0);
 
-                if (Transform.X > maxX)
-                {
-                    MoveDirX = -1;
-                }
+            //    if (Transform.X > maxX)
+            //    {
+            //        MoveDirX = -1;
+            //    }
 
-                if (Transform.X < minX)
-                {
-                    MoveDirX = 1;
+            //    if (Transform.X < minX)
+            //    {
+            //        MoveDirX = 1;
 
-                }
-            }
+            //    }
+            //}
 
 
 

@@ -27,11 +27,16 @@ namespace Shard
         internal int id;
         private readonly (int x, int y)[] startPositions = new[] {
         (50, 330),
-         (60, 330),
-          (70, 330),
-           (80, 330),
-            (90, 330),
-            (100, 330),
+        (50, 330),
+        (50, 330),
+        (50, 330),
+        (50, 330),
+        (50, 330),
+         //(60, 330),
+         // (70, 330),
+         //  (80, 330),
+         //   (90, 330),
+         //   (100, 330),
 
     };
 
@@ -91,7 +96,7 @@ namespace Shard
             {
                
                 Action a = JsonConvert.DeserializeObject<Action>(e.Data);
-                Debug.Log(a.color);
+               // Debug.Log(a.color);
                 if (isSet)
                 {
                     (int x, int y) sPos = GetRandomStartPosition();
@@ -107,7 +112,7 @@ namespace Shard
                 if (isSet)
                 {
                     game.MoveNetworkedPlayer(mPos.clientId, mPos.x, mPos.y, mPos.sprite);
-                    Debug.Log("Sprite: "+mPos.sprite);
+                    //Debug.Log("Sprite: "+mPos.sprite);
                 }
             }
             if (type == MessageType.BulletPosition)
@@ -167,6 +172,14 @@ namespace Shard
                     }
                     
 
+                }
+            }
+            if (type == MessageType.BoxPosition)
+            {
+                Action action = JsonConvert.DeserializeObject<Action>(e.Data);
+                if (isSet)
+                {
+                    game.setBoxPosition(action.position, action.index);
                 }
             }
 
