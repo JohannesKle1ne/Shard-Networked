@@ -152,6 +152,19 @@ namespace Shard
 
                 }
             }
+            if (type == MessageType.BulletCollision)
+            {
+                Action action = JsonConvert.DeserializeObject<Action>(e.Data);
+                if (isSet)
+                {
+                    if (action.bulletId == id)
+                    {
+                        game.myPlayer.bullet.ToBeDestroyed= true;
+                    }
+                    
+
+                }
+            }
 
         }
 

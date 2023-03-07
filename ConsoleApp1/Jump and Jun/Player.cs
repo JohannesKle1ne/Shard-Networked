@@ -17,7 +17,7 @@ namespace JumpAndRun
         private double fallCounter;
         private int updateCounter;
         private bool movingStarted;
-        private Bullet bullet;
+        public Bullet bullet;
         private int id;
         public string spriteColor = "red";
 

@@ -79,10 +79,10 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag("Enemy"))
+            if (x.Parent.checkTag("NetworkedPlayer"))
             {
-                this.ToBeDestroyed = true;
-                Debug.Log("Collsions");
+                //Debug.Log("collistion found with Networked player");
+                //this.ToBeDestroyed = true;
             }
 
         }

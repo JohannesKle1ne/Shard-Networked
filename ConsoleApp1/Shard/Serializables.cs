@@ -34,6 +34,7 @@ namespace Shard
         public int clientId;
         public MessageType type;
         public string color;
+        public int bulletId;
         public Action(int id, MessageType type)
         {
             clientId = id;
@@ -57,6 +58,7 @@ namespace Shard
         BulletPosition,
         PlayerDestroy,
         BulletDestroy,
+        BulletCollision,
         Color
         
     }

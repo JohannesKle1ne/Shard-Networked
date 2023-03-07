@@ -8,6 +8,11 @@ namespace JumpAndRun
     class NetworkedBullet : GameObject, CollisionHandler
     {
         private int id;
+
+        public NetworkedBullet(int id)
+        {
+            this.id = id;
+        }
         public override void initialize()
         {
             id= 1;
@@ -61,8 +66,12 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag ("Bullet")) {
+            if (x.Parent.checkTag ("Player")) {
                 this.ToBeDestroyed = true;
+                Client client = Client.GetInstance();
+                Shard.Action a = new Shard.Action(client.id, MessageType.BulletCollision);
+                a.bulletId = id;
+                client.Send(a.ToJson());
             }
 
         }

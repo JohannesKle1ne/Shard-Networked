@@ -32,7 +32,7 @@ namespace JumpAndRun
             spriteCounter = 1;
             //setPhysicsEnabled();
             //MyBody.addRectCollider();
-            addTag("MinerWilly");
+            addTag("NetworkedPlayer");
             spriteTimer = 0;
             jumpCount = 0;
             //MyBody.Mass = 1;
@@ -56,7 +56,7 @@ namespace JumpAndRun
             Debug.Log(sprite);
             if (nBullet == null)
             {
-                nBullet = new NetworkedBullet();
+                nBullet = new NetworkedBullet(id);
                 
             }
             nBullet.Move(x, y);
@@ -221,24 +221,32 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag ("Collectible")) {
-                return;
+
+            if (x.Parent.checkTag("Enemy"))
+            {
+                //Debug.Log("collistion found with Enemy");
+                //this.ToBeDestroyed = true;
             }
 
-            if (fallCounter > 2) {
-                ToBeDestroyed = true;
-            }
+
+            //if (x.Parent.checkTag ("Collectible")) {
+            //    return;
+            //}
+
+            //if (fallCounter > 2) {
+            //    ToBeDestroyed = true;
+            //}
             
-            fallCounter = 0;
+            //fallCounter = 0;
  
-            if (shouldReset(x))
-            {
-                fall = true;
-            }
-            else
-            {
-                fall = false;
-            }
+            //if (shouldReset(x))
+            //{
+            //    fall = true;
+            //}
+            //else
+            //{
+            //    fall = false;
+            //}
 
         }
 
