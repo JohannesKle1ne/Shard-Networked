@@ -72,7 +72,7 @@ namespace JumpAndRun
         {
             if (x.Parent.checkTag ("Player")) {
                 this.ToBeDestroyed = true;
-                Client client = Client.GetInstance();
+                NetworkClient client = NetworkClient.GetInstance();
                 Shard.Action a = new Shard.Action(client.id, MessageType.BulletCollision);
                 a.bulletId = id;
                 client.Send(a.ToJson());

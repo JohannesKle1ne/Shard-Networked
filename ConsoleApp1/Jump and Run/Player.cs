@@ -47,7 +47,7 @@ namespace JumpAndRun
             MyBody.Mass = 1;
             Bootstrap.getInput().addListener(this);
 
-            id = Client.GetInstance().id;
+            id = NetworkClient.GetInstance().id;
 
 
             Transform.translate(50, 330);
@@ -126,7 +126,7 @@ namespace JumpAndRun
 
         private void sendPosition()
         {
-            Client client = Client.GetInstance();
+            NetworkClient client = NetworkClient.GetInstance();
 
             if (updateCounter % 20 == 0)
             {
@@ -173,6 +173,7 @@ namespace JumpAndRun
 
             if (jumpUp)
             {
+
                 fall = false;
                 fallCounter = 0;
                 if (jumpCount < 0.3f)
@@ -192,7 +193,7 @@ namespace JumpAndRun
 
             if (shoot)
             {
-                if(bullet==null || bullet.ToBeDestroyed)
+                if (bullet==null || bullet.ToBeDestroyed)
                 {
                     bullet = new Bullet();
                     bullet.setSpriteName(spriteColor+"bullet");
@@ -291,13 +292,9 @@ namespace JumpAndRun
 
             if (x.Parent.checkTag("MovingBox"))
             {
-                ///Debug.Log("MovingBox collide");
                 sendPosition();
             }
-            //if (x.Parent.checkTag("Collectible"))
-            //{
-            //    return;
-            //}
+
 
             if (fallCounter > 2)
             {

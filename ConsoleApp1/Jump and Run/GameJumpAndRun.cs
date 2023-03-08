@@ -10,7 +10,7 @@ using System.Numerics;
 
 namespace Shard
 {
-    class GameJumpAndRun : Game, InputListener
+    class GameJumpAndRun : NetworkedGame, InputListener
     {
         Random rand;
         public Player myPlayer;
@@ -36,20 +36,9 @@ namespace Shard
             }
 
             return true;
-
-
-
-
         }
 
-        private void sendPlayerRemove()
-        {
-            Client client = Client.GetInstance();
 
-            string message = new Action(client.id, MessageType.PlayerDestroy).ToJson();
-            client.Send(message);
-
-        }
 
         public override void update()
         {
@@ -76,7 +65,7 @@ namespace Shard
 
                 if (respawnTime <= 0)
                 {
-                    Client client = Client.GetInstance();
+                    NetworkClient client = NetworkClient.GetInstance();
                     (int x, int y) sPos = client.GetRandomStartPosition();
                     string oldColor = myPlayer.spriteColor;
                     setPlayerStart(sPos.x, sPos.y);
@@ -87,6 +76,16 @@ namespace Shard
 
             }
 
+
+        }
+
+
+        private void sendPlayerRemove()
+        {
+            NetworkClient client = NetworkClient.GetInstance();
+
+            string message = new Action(client.id, MessageType.PlayerDestroy).ToJson();
+            client.Send(message);
 
         }
 
@@ -216,7 +215,7 @@ namespace Shard
             rand = new Random();
 
 
-            Client client = Client.GetInstance();
+            NetworkClient client = NetworkClient.GetInstance();
             client.setGame(this);
             nPlayers = new Dictionary<int, NetworkedPlayer>();
 
@@ -371,6 +370,8 @@ namespace Shard
         public void handleInput(InputEvent inp, string eventType)
         {
         }
+
+       
 
 
     }

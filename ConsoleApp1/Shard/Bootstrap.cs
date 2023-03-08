@@ -23,6 +23,7 @@ namespace Shard
         private static Sound soundEngine;
         private static InputSystem input;
         private static PhysicsManager phys;
+        private static NetworkManager netMan;
 
         private static int targetFrameRate;
         private static int millisPerFrame;
@@ -171,8 +172,6 @@ namespace Shard
             bool physUpdate = false;
 
 
-            Client client = Client.GetInstance();
-            client.Start();
 
             // Setup the engine.
             setup();
@@ -180,6 +179,16 @@ namespace Shard
             // When we start the program running.
             startTime = getCurrentMillis();
             frames = 0;
+
+            if(runningGame is NetworkedGame)
+            {
+                netMan =  new NetworkManager((NetworkedGame)runningGame);
+
+                NetworkClient client = NetworkClient.GetInstance();
+                client.Start();
+            }
+
+
             // Start the game running.
             runningGame.initialize();
 
@@ -200,8 +209,10 @@ namespace Shard
 
                 // Update 
                 runningGame.update();
-                // Input
 
+                netMan.update();
+
+                // Input
                 if (runningGame.isRunning() == true)
                 {
 

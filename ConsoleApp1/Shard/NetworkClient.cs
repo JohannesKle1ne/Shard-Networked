@@ -16,11 +16,13 @@ namespace Shard
     }
 
 
-    internal sealed class Client
+    internal sealed class 
+        
+        NetworkClient
     {
-        private Client() { }
+        private NetworkClient() { }
 
-        private static Client _instance;
+        private static NetworkClient _instance;
         private WebSocket ws;
         private GameJumpAndRun game;
         private bool isSet = false;
@@ -40,11 +42,11 @@ namespace Shard
 
     };
 
-        internal static Client GetInstance()
+        internal static NetworkClient GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new Client();
+                _instance = new NetworkClient();
             }
             return _instance;
         }

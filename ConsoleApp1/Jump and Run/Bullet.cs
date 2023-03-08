@@ -37,7 +37,7 @@ namespace JumpAndRun
 
         private void sendPosition()
         {
-            Client client = Client.GetInstance();
+            NetworkClient client = NetworkClient.GetInstance();
 
             if (updateCounter % 20 == 0)
             {
@@ -48,7 +48,7 @@ namespace JumpAndRun
 
         private void sendDestroy()
         {
-            Client client = Client.GetInstance();
+            NetworkClient client = NetworkClient.GetInstance();
 
 
             string message = new Shard.Action(client.id, MessageType.BulletDestroy).ToJson();
