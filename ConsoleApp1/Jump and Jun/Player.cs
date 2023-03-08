@@ -13,9 +13,11 @@ namespace JumpAndRun
         private int spriteCounter, spriteCounterDir;
         private string spriteName;
         private double spriteTimer, jumpCount;
-        private double speed = 100, jumpSpeed = 260;
+        
+        private double jumpSpeed = 260;
         private double fallCounter;
         private int updateCounter;
+        private double speed = 100;
         private bool movingStarted;
         public Bullet bullet;
         private int id;

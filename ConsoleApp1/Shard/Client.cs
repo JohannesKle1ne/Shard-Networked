@@ -123,22 +123,7 @@ namespace Shard
                     game.MoveNetworkedBullet(ePos.clientId, ePos.x, ePos.y,ePos.sprite);
                 }
             }
-            //if (type == MessageType.PlayerStartPosition)
-            //{
-            //    Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
-            //    if (isSet)
-            //    {
-            //        if (ePos.clientId == id)
-            //        {
-            //            game.setPlayerStart(ePos.x, ePos.y);
-            //        }
-            //        else
-            //        {
-            //            game.MoveNetworkedPlayer(id, ePos.x, ePos.y, "right");
-            //        }
-                    
-            //    }
-            //}
+            
             if (type == MessageType.PlayerDestroy)
             {
                 Action action = JsonConvert.DeserializeObject<Action>(e.Data);
