@@ -55,7 +55,6 @@ namespace Shard
                 Type t = Type.GetType(pos.objectType);
                 object[] constructorArgs = new object[] { true };
                 NetworkedObject ob = (NetworkedObject)Activator.CreateInstance(t, constructorArgs);
-                ob.syncedInitialize();
                 incomingObjects.Add(pos.objectId, ob);
             }
             NetworkedObject obj = incomingObjects[pos.objectId];

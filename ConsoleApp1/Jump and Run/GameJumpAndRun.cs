@@ -30,10 +30,10 @@ namespace Shard
         public override bool isRunning()
         {
 
-            if (myPlayer != null && myPlayer.ToBeDestroyed)
-            {
-                return false;
-            }
+            //if (myPlayer != null && myPlayer.ToBeDestroyed)
+            //{
+            //    return false;
+            //}
 
             return true;
         }
@@ -53,8 +53,8 @@ namespace Shard
             {
                 //Debug.Log(respawnTime.ToString());
                 Color col = Color.White;
-                Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
-                Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 30, 80, 20, col);
+               // Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
+                //Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 30, 80, 20, col);
 
 
 

@@ -85,6 +85,7 @@ namespace Shard
                 if (gob.ToBeDestroyed == true)
                 {
                     toDestroy.Add(i);
+                    Debug.Log("added objects to delete list");
                 }
             }
 
