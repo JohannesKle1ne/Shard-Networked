@@ -46,7 +46,6 @@ namespace Shard
             if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime <= 0)
             {
                 respawnTime = 5;
-                sendPlayerRemove();
             }
 
 
@@ -68,10 +67,11 @@ namespace Shard
                     NetworkClient client = NetworkClient.GetInstance();
                     (int x, int y) sPos = client.GetRandomStartPosition();
                     string oldColor = myPlayer.spriteColor;
+                    Debug.Log("resetting the player");
                     setPlayerStart(sPos.x, sPos.y);
                     setPlayerColor(oldColor);
-                    string message = new Position(client.id, MessageType.Position, myPlayer.ToString(), myPlayer.id, sPos.x, sPos.y, myPlayer.getFullSpriteName()).ToJson();
-                    client.Send(message);
+                    //string message = new Position(client.id, MessageType.Position, myPlayer.ToString(), myPlayer.id, sPos.x, sPos.y, myPlayer.getFullSpriteName()).ToJson();
+                    //client.Send(message);
                 }
 
             }
@@ -80,14 +80,7 @@ namespace Shard
         }
 
 
-        private void sendPlayerRemove()
-        {
-            NetworkClient client = NetworkClient.GetInstance();
 
-            string message = new Action(client.id, MessageType.PlayerDestroy).ToJson();
-            client.Send(message);
-
-        }
 
         public void setBoxPosition(int position, int index)
         {

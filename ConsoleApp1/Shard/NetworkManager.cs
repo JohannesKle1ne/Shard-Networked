@@ -83,45 +83,17 @@ namespace Shard
         public void update()
         {
             List<GameObject> objects = GameObjectManager.getInstance().getAllGameObjects();
-            if (updateCounter % 20 == 0)
-            {
-                foreach (GameObject obj in objects.ToList())
-                {
-                    if (obj is NetworkedObject)
-                    {
-                        NetworkedObject nObj = (NetworkedObject)obj;
-                        if (!nObj.isSynced())
-                        {
-                            if (!outgoingStates.ContainsKey(nObj))
-                            {
-                                outgoingStates.Add(nObj, new NetworkedObjectState());
-                            }
-                            NetworkedObjectState state = outgoingStates[nObj];
-                            double newX = nObj.Transform.X;
-                            double newY = nObj.Transform.Y;
-                            double oldX = state.x;
-                            double oldY = state.y;
-                            if (oldX != newX || oldY != newY)
-                            {
-                                sendObjectPosition(nObj);
-                            }
-                            state.x = newX;
-                            state.y = newY;
 
-
-                        }
-
-                    }
-
-
-                }
-            }
-
-
-
+            List<NetworkedObject> foundObjects = new List<NetworkedObject>();
 
             foreach (GameObject obj in objects.ToList())
             {
+                //if (obj.ToBeDestroyed)
+                //{
+                //    Debug.Log("found destroy");
+
+                   
+                //}
                 if (obj is NetworkedObject)
                 {
                     NetworkedObject nObj = (NetworkedObject)obj;
@@ -145,14 +117,30 @@ namespace Shard
                             }
                             state.x = newX;
                             state.y = newY;
+                            
                         }
+                        foundObjects.Add(nObj);
 
-                        if (nObj.ToBeDestroyed)
-                        {
-                            sendObjectDestroyed(nObj);
-                        }
+                        //if (nObj.ToBeDestroyed)
+                        //{
+                        //    Debug.Log("found destroy");
+
+                        //    sendObjectDestroyed(nObj);
+                        //}
                     }
 
+                }
+            }
+
+            Dictionary<NetworkedObject, NetworkedObjectState> copiedDict = new Dictionary<NetworkedObject, NetworkedObjectState>(outgoingStates);
+
+            foreach (KeyValuePair<NetworkedObject, NetworkedObjectState> kvp in copiedDict)
+            {
+                if (!foundObjects.Contains(kvp.Key))
+                {
+                    Debug.Log("remove this");
+                    sendObjectDestroyed(kvp.Key);
+                    outgoingStates.Remove(kvp.Key);
                 }
             }
 

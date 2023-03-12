@@ -80,9 +80,9 @@ namespace JumpAndRun
         {
             spriteName = "right";
             spriteCounter = 1;
-            //setPhysicsEnabled();
+           // setPhysicsEnabled();
             //MyBody.addRectCollider();
-            addTag("NetworkedPlayer");
+            ///addTag("NetworkedPlayer");
             spriteTimer = 0;
             jumpCount = 0;
             //MyBody.Mass = 1;
@@ -92,6 +92,7 @@ namespace JumpAndRun
             Transform.translate(50, 480);
             //MyBody.StopOnCollision = false;
             //MyBody.Kinematic = false;
+        
 
             spriteCounterDir = 1;
         }
@@ -318,15 +319,11 @@ namespace JumpAndRun
         public void onCollisionEnter(PhysicsBody x)
         {
 
-            if (x.Parent.checkTag("Enemy"))
+            if (x.Parent.checkTag("NetworkedBullet"))
             {
                 ToBeDestroyed = true;
             }
 
-            if (x.Parent.checkTag("MovingBox"))
-            {
-                //sendPosition();
-            }
 
 
             if (fallCounter > 2)

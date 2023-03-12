@@ -37,7 +37,7 @@ namespace JumpAndRun
         {
             setPhysicsEnabled();
 
-            addTag("Enemy");
+            addTag("NetworkedBullet");
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
             MyBody.PassThrough = true;
         }
@@ -83,6 +83,7 @@ namespace JumpAndRun
                 if (Transform.X > 1200 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
                 {
                     this.ToBeDestroyed = true;
+                    Debug.Log("set to be destroyd");
                 }
                 else
                 {
@@ -105,7 +106,7 @@ namespace JumpAndRun
         }
             if (x.Parent.checkTag("Player"))
             {
-                //this.ToBeDestroyed = true;
+                this.ToBeDestroyed = true;
 
                 Debug.Log("collistion found with Networked player");
             }
