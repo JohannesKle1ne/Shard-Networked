@@ -70,7 +70,7 @@ namespace Shard
                     string oldColor = myPlayer.spriteColor;
                     setPlayerStart(sPos.x, sPos.y);
                     setPlayerColor(oldColor);
-                    string message = new Position(client.id, MessageType.PlayerPosition, sPos.x, sPos.y, myPlayer.getFullSpriteName()).ToJson();
+                    string message = new Position(client.id, MessageType.Position, myPlayer.ToString(), myPlayer.id, sPos.x, sPos.y, myPlayer.getFullSpriteName()).ToJson();
                     client.Send(message);
                 }
 
@@ -161,51 +161,7 @@ namespace Shard
             myPlayer.spriteColor = color;
         }
 
-        public void MoveNetworkedPlayer(int id, double x, double y, string sprite)
-        {
-            NetworkedPlayer nPlayer;
-            if (nPlayers.ContainsKey(id))
-            {
-                nPlayer = nPlayers[id];
-            }
-            else
-            {
-                nPlayer = new NetworkedPlayer(id);
-                nPlayers.Add(id, nPlayer);
-            }
-            nPlayer.Move(x, y);
-            nPlayer.setSpriteName(sprite);
-        }
-
-        public void removeNetworkedPlayer(int id)
-        {
-            if (nPlayers.ContainsKey(id))
-            {
-                NetworkedPlayer player = nPlayers[id];
-                player.ToBeDestroyed = true;
-                nPlayers.Remove(id);
-            }
-
-        }
-        public void removeNetworkedBullet(int id)
-        {
-            if (nPlayers.ContainsKey(id))
-            {
-                NetworkedPlayer player = nPlayers[id];
-                player.nBullet.ToBeDestroyed = true;
-                player.nBullet = null;
-            }
-
-        }
-
-        public void MoveNetworkedBullet(int id, double x, double y, string sprite)
-        {
-            if (nPlayers.ContainsKey(id))
-            {
-                NetworkedPlayer player = nPlayers[id];
-                player.MoveBullet(x, y, sprite);
-            }
-        }
+       
 
         public override void initialize()
         {
@@ -216,7 +172,6 @@ namespace Shard
 
 
             NetworkClient client = NetworkClient.GetInstance();
-            client.setGame(this);
             nPlayers = new Dictionary<int, NetworkedPlayer>();
 
 

@@ -6,7 +6,7 @@ using System;
 
 namespace JumpAndRun
 {
-    class Player : GameObject, InputListener, CollisionHandler
+    class Player : NetworkedObject, InputListener, CollisionHandler
     {
         private string sprite;
         private bool left, right, jumpUp, jumpDown, fall, canJump, shoot;
@@ -22,6 +22,7 @@ namespace JumpAndRun
         public Bullet bullet;
         private int id;
         public string spriteColor = "red";
+        public bool synced;
 
         private List<int> xPositions = new List<int> { 50, 300 };
         private List<int> yPositions = new List<int> { 330, 330 };
@@ -31,9 +32,27 @@ namespace JumpAndRun
 
         }
 
+        public Player(bool synced)
+        {
+            Debug.Log("synced: "+synced);
+            syncedInitialize();
+            this.synced = true;
+
+        }
+        public Player()
+        {
+            Debug.Log("non synced");
+            localInitialize();
+            this.synced = false;
+        }
+
+        public override bool isSynced()
+        {
+            return synced;
+        }
 
 
-        public override void initialize()
+        public override void localInitialize()
         {
             spriteName = "right";
             spriteCounter = 1;
@@ -56,6 +75,30 @@ namespace JumpAndRun
 
             spriteCounterDir = 1;
         }
+
+        public override void syncedInitialize()
+        {
+            spriteName = "right";
+            spriteCounter = 1;
+            //setPhysicsEnabled();
+            //MyBody.addRectCollider();
+            addTag("NetworkedPlayer");
+            spriteTimer = 0;
+            jumpCount = 0;
+            //MyBody.Mass = 1;
+            //Bootstrap.getInput().addListener(this);
+
+
+            Transform.translate(50, 480);
+            //MyBody.StopOnCollision = false;
+            //MyBody.Kinematic = false;
+
+            spriteCounterDir = 1;
+        }
+
+ 
+
+
 
         public void Move(double x, double y)
         {
@@ -124,18 +167,8 @@ namespace JumpAndRun
 
         }
 
-        private void sendPosition()
-        {
-            NetworkClient client = NetworkClient.GetInstance();
 
-            if (updateCounter % 20 == 0)
-            {
-                string message = new Position(client.id, MessageType.PlayerPosition, this.Transform.X, this.Transform.Y,getFullSpriteName()).ToJson();
-                client.Send(message);
-            }
-        }
-
-        public string getFullSpriteName()
+        public override string getFullSpriteName()
         {
             return spriteColor + spriteName + spriteCounter;
         }
@@ -160,7 +193,7 @@ namespace JumpAndRun
             {
                 this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-                this.sendPosition();
+                //this.sendPosition();
             }
 
             if (right)
@@ -168,7 +201,7 @@ namespace JumpAndRun
                 this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
 
-                this.sendPosition();
+                //this.sendPosition();
             }
 
             if (jumpUp)
@@ -188,7 +221,7 @@ namespace JumpAndRun
                     fall = true;
 
                 }
-                this.sendPosition();
+                //this.sendPosition();
             }
 
             if (shoot)
@@ -245,7 +278,7 @@ namespace JumpAndRun
                 {
                     ToBeDestroyed = true;
                 }
-                this.sendPosition();
+                //this.sendPosition();
 
             }
 
@@ -292,7 +325,7 @@ namespace JumpAndRun
 
             if (x.Parent.checkTag("MovingBox"))
             {
-                sendPosition();
+                //sendPosition();
             }
 
 
@@ -327,7 +360,7 @@ namespace JumpAndRun
             if (x.Parent.checkTag("MovingBox"))
             {
                 //Debug.Log("MovingBox collide");
-                sendPosition();
+                //sendPosition();
             }
 
         }
@@ -337,7 +370,7 @@ namespace JumpAndRun
             if (x.Parent.checkTag("MovingBox"))
             {
                 //Debug.Log("MovingBox collide");
-                sendPosition();
+                //sendPosition();
             }
 
             if (x.Parent.checkTag("Collectible"))

@@ -25,6 +25,7 @@ namespace Shard
         private static NetworkClient _instance;
         private WebSocket ws;
         private GameJumpAndRun game;
+        private NetworkManager manager;
         private bool isSet = false;
         internal int id;
         private readonly (int x, int y)[] startPositions = new[] {
@@ -55,10 +56,10 @@ namespace Shard
         {
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
-            ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
-            //ws = new WebSocket("ws://localhost:3000");
-            Random rd = new Random();
+            //ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
+            ws = new WebSocket("ws://localhost:3000");
 
+            Random rd = new Random();
             id =  rd.Next(1000, 9999);
 
             ws.OnMessage += Ws_OnMessage;
@@ -81,9 +82,10 @@ namespace Shard
             ws.Send(message);
         }
 
-        internal void setGame(GameJumpAndRun g)
+        internal void setManager(NetworkManager m, GameJumpAndRun g)
         {
             game = g;
+            manager = m;
             isSet = true;
         }
 
@@ -98,52 +100,16 @@ namespace Shard
             {
                
                 Action a = JsonConvert.DeserializeObject<Action>(e.Data);
-               // Debug.Log(a.color);
                 if (isSet)
                 {
                     (int x, int y) sPos = GetRandomStartPosition();
                     game.setPlayerStart(sPos.x, sPos.y);
                     game.setPlayerColor(a.color);
-                    string message = new Position(id, MessageType.PlayerPosition, sPos.x, sPos.y,game.myPlayer.getFullSpriteName() ).ToJson();
+                    string message = new Position(id, MessageType.Position,game.myPlayer.ToString(), game.myPlayer.id, sPos.x, sPos.y,game.myPlayer.getFullSpriteName() ).ToJson();
                     Send(message);
                 }
             }
-            if (type == MessageType.PlayerPosition)
-            {
-                Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);
-                if (isSet)
-                {
-                    game.MoveNetworkedPlayer(mPos.clientId, mPos.x, mPos.y, mPos.sprite);
-                    //Debug.Log("Sprite: "+mPos.sprite);
-                }
-            }
-            if (type == MessageType.BulletPosition)
-            {
-                Position ePos = JsonConvert.DeserializeObject<Position>(e.Data);
-                if (isSet)
-                {
-                    game.MoveNetworkedBullet(ePos.clientId, ePos.x, ePos.y,ePos.sprite);
-                }
-            }
-            
-            if (type == MessageType.PlayerDestroy)
-            {
-                Action action = JsonConvert.DeserializeObject<Action>(e.Data);
-                if (isSet)
-                {
-                    game.removeNetworkedPlayer(action.clientId);
-
-                }
-            }
-            if (type == MessageType.BulletDestroy)
-            {
-                Action action = JsonConvert.DeserializeObject<Action>(e.Data);
-                if (isSet)
-                {
-                    game.removeNetworkedBullet(action.clientId);
-
-                }
-            }
+           
             if (type == MessageType.BulletCollision)
             {
                 Action action = JsonConvert.DeserializeObject<Action>(e.Data);
@@ -155,7 +121,7 @@ namespace Shard
                     }
                     else
                     {
-                        game.removeNetworkedBullet(action.bulletId);
+                        //game.removeNetworkedBullet(action.bulletId);
                     }
                     
 
@@ -167,6 +133,22 @@ namespace Shard
                 if (isSet)
                 {
                     game.setBoxPosition(action.position, action.index);
+                }
+            }
+            if (type == MessageType.Position)
+            {
+                Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);
+                if (isSet)
+                {
+                    manager.handleObjectPosition(mPos);
+                }
+            }
+            if (type == MessageType.Destroy)
+            {
+                Destroy mPos = JsonConvert.DeserializeObject<Destroy>(e.Data);
+                if (isSet)
+                {
+                    manager.handleObjectDestroy(mPos);
                 }
             }
 

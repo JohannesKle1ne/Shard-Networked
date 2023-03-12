@@ -10,17 +10,39 @@ namespace Shard
     class Position
     {
         public int clientId;
-        public double x; 
+        public double x;
         public double y;
         public string sprite;
         public MessageType type;
-        public Position(int id, MessageType type, double x, double y, string sprite)
+        public string objectType;
+        public int objectId;
+        public Position(int clientId, MessageType type, string objectType, int objectId, double x, double y, string sprite)
         {
-            clientId = id;
+            this.clientId = clientId;
             this.x = x;
             this.y = y;
             this.type = type;
             this.sprite = sprite;
+            this.objectType = objectType;
+            this.objectId = objectId;
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
+    class Destroy
+    {
+        public int clientId;
+        public MessageType type;
+        public int objectId;
+        public Destroy(int clientId, MessageType type, int objectId)
+        {
+            this.clientId = clientId;
+            this.type = type;
+            this.objectId = objectId;
         }
 
         public string ToJson()
@@ -62,7 +84,9 @@ namespace Shard
         BulletDestroy,
         BulletCollision,
         Color,
-        BoxPosition
-        
+        BoxPosition,
+        Position,
+        Destroy
+
     }
 }
