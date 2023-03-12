@@ -151,6 +151,14 @@ namespace Shard
                     manager.handleObjectDestroy(mPos);
                 }
             }
+            if (type == MessageType.DestroyRequest)
+            {
+                DestroyRequest mPos = JsonConvert.DeserializeObject<DestroyRequest>(e.Data);
+                if (isSet)
+                {
+                    manager.handleObjectDestroyRequest(mPos);
+                }
+            }
 
         }
 

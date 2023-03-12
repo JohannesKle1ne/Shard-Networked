@@ -51,6 +51,24 @@ namespace Shard
         }
     }
 
+    class DestroyRequest
+    {
+        public int clientId;
+        public MessageType type;
+        public int targetObjectId;
+        public DestroyRequest(int clientId, int targetObjectId)
+        {
+            this.clientId = clientId;
+            this.type = MessageType.DestroyRequest;
+            this.targetObjectId = targetObjectId;
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
     class Action
     {
         public int clientId;
@@ -86,7 +104,8 @@ namespace Shard
         Color,
         BoxPosition,
         Position,
-        Destroy
+        Destroy,
+        DestroyRequest
 
     }
 }

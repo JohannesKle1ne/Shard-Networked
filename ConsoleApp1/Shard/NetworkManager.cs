@@ -47,6 +47,13 @@ namespace Shard
             client.Send(destroy.ToJson());
         }
 
+        private void sendObjectDestroyRequest(int targetObjectId)
+        {
+            NetworkClient client = NetworkClient.GetInstance();
+            DestroyRequest destroy = new DestroyRequest(client.id, targetObjectId);
+            client.Send(destroy.ToJson());
+        }
+
         public void handleObjectPosition(Position pos)
         {
             if (!incomingObjects.ContainsKey(pos.objectId))
@@ -55,6 +62,7 @@ namespace Shard
                 Type t = Type.GetType(pos.objectType);
                 object[] constructorArgs = new object[] { true };
                 NetworkedObject ob = (NetworkedObject)Activator.CreateInstance(t, constructorArgs);
+                ob.setId(pos.objectId);
                 incomingObjects.Add(pos.objectId, ob);
             }
             NetworkedObject obj = incomingObjects[pos.objectId];
@@ -78,6 +86,17 @@ namespace Shard
             }
         }
 
+        public void handleObjectDestroyRequest(DestroyRequest dr)
+        {
+            foreach (KeyValuePair<NetworkedObject, NetworkedObjectState> kvp in outgoingStates)
+            {
+                if (kvp.Key.id == dr.targetObjectId)
+                {
+                    kvp.Key.ToBeDestroyed = true;
+                }
+            }
+        }
+
 
         public void update()
         {
@@ -87,12 +106,7 @@ namespace Shard
 
             foreach (GameObject obj in objects.ToList())
             {
-                //if (obj.ToBeDestroyed)
-                //{
-                //    Debug.Log("found destroy");
-
-                   
-                //}
+               
                 if (obj is NetworkedObject)
                 {
                     NetworkedObject nObj = (NetworkedObject)obj;
@@ -120,12 +134,13 @@ namespace Shard
                         }
                         foundObjects.Add(nObj);
 
-                        //if (nObj.ToBeDestroyed)
-                        //{
-                        //    Debug.Log("found destroy");
+                       
+                    }
 
-                        //    sendObjectDestroyed(nObj);
-                        //}
+                    if (nObj.isSynced() && nObj.RemoteDestroy )
+                    {
+                        sendObjectDestroyRequest(nObj.id);
+                        nObj.RemoteDestroy = false;
                     }
 
                 }

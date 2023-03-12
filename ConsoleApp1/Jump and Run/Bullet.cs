@@ -106,7 +106,8 @@ namespace JumpAndRun
         }
             if (x.Parent.checkTag("Player"))
             {
-                this.ToBeDestroyed = true;
+
+                this.RemoteDestroy = true;
 
                 Debug.Log("collistion found with Networked player");
             }

@@ -15,6 +15,8 @@ namespace Shard
 
         public int id;
 
+        public bool RemoteDestroy;
+
         public abstract string getFullSpriteName();
 
         public abstract bool isSynced();
@@ -22,10 +24,19 @@ namespace Shard
 
         public abstract void localInitialize();
 
+        public void setId(int id)
+        {
+            this.id = id;
+        }
+
+
         public NetworkedObject()
         {
             Random rd = new Random();
             id = rd.Next(0, 10000);
+
+            RemoteDestroy = false;
+
         }
     }
 }
