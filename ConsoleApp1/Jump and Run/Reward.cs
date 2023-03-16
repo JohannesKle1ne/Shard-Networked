@@ -1,10 +1,11 @@
 ﻿using Shard;
 using System;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace JumpAndRun
 {
-    class Diamond : NetworkedObject, CollisionHandler
+    abstract class Reward : NetworkedObject, CollisionHandler
     {
 
         private int direction = 1;
@@ -14,19 +15,9 @@ namespace JumpAndRun
         public bool synced;
 
 
-        public Diamond(bool synced)
-        {
-            Debug.Log("synced: " + synced);
-            syncedInitialize();
-            this.synced = true;
+        
 
-        }
-        public Diamond()
-        {
-            Debug.Log("non synced");
-            localInitialize();
-            this.synced = false;
-        }
+        
 
         public override bool isSynced()
         {
@@ -37,24 +28,21 @@ namespace JumpAndRun
         {
             setPhysicsEnabled();
 
-            addTag("NetworkedDiamond");
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
             MyBody.PassThrough = true;
-            spriteName = "diamond";
-            this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + ".png";
+            
+            
         }
 
         public override void localInitialize()
         {
             setPhysicsEnabled();
 
-            addTag("Diamond");
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
 
             MyBody.StopOnCollision = false;
             MyBody.Kinematic = false;
-            spriteName = "diamond";
-            this.Transform.SpritePath = "ManicMinerSprites/" + spriteName + ".png";
+            
         }
 
 
@@ -62,8 +50,8 @@ namespace JumpAndRun
 
         public void setSpriteName(string name)
         {
-            //this.spriteName = name;
-            //this.Transform.SpritePath = "ManicMinerSprites/" + name + ".png";
+            this.spriteName = name;
+            this.Transform.SpritePath = "ManicMinerSprites/" + name + ".png";
         }
 
         public override string getFullSpriteName()

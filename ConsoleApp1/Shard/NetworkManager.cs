@@ -34,7 +34,7 @@ namespace Shard
 
         private void sendObjectPosition(NetworkedObject obj)
         {
-            Debug.Log("Send object position");
+            //Debug.Log("Send object position");
             NetworkClient client = NetworkClient.GetInstance();
             Position position = new Position(client.id, MessageType.Position, obj.GetType().ToString(), obj.id, obj.Transform.X, obj.Transform.Y, obj.getFullSpriteName());
             client.Send(position.ToJson());

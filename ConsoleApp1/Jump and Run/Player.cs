@@ -13,19 +13,18 @@ namespace JumpAndRun
         private int spriteCounter, spriteCounterDir;
         private string spriteName;
         private double spriteTimer, jumpCount;
-        
+        private double jumpMax = 0.3;
+
         private double jumpSpeed = 260;
         private double fallCounter;
-        private int updateCounter;
         private double speed = 100;
         private bool movingStarted;
         public Bullet bullet;
         private int id;
         public string spriteColor = "red";
         public bool synced;
-
-        private List<int> xPositions = new List<int> { 50, 300 };
-        private List<int> yPositions = new List<int> { 330, 330 };
+        public double reload;
+        public double reloadTime;
 
         class Vector
         {
@@ -34,17 +33,16 @@ namespace JumpAndRun
 
         public Player(bool synced)
         {
-            Debug.Log("synced: "+synced);
-            syncedInitialize();
             this.synced = true;
-
+            syncedInitialize();
         }
         public Player()
-        {
-            Debug.Log("non synced");
-            localInitialize();
+        {           
             this.synced = false;
+            localInitialize();
         }
+
+        
 
         public override bool isSynced()
         {
@@ -56,13 +54,14 @@ namespace JumpAndRun
         {
             spriteName = "right";
             spriteCounter = 1;
-            updateCounter = 0;
             movingStarted = false;
             setPhysicsEnabled();
             MyBody.addRectCollider();
             addTag("Player");
             spriteTimer = 0;
             jumpCount = 0;
+            reloadTime = 2;
+            reload= 0;
             MyBody.Mass = 1;
             Bootstrap.getInput().addListener(this);
 
@@ -143,8 +142,13 @@ namespace JumpAndRun
                 }
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
                 {
-                    shoot = true;
-                    Debug.Log("Shoot");
+                    if (reload <=0)
+                    {
+                        shoot = true;
+                        reload= reloadTime;
+                        Debug.Log("Shoot with time: "+reload);
+                    }
+                    
                 }
             }
 
@@ -210,7 +214,7 @@ namespace JumpAndRun
 
                 fall = false;
                 fallCounter = 0;
-                if (jumpCount < 0.3f)
+                if (jumpCount < jumpMax)
                 {
                     this.Transform.translate(0, -1 * jumpSpeed * Bootstrap.getDeltaTime());
                     jumpCount += Bootstrap.getDeltaTime();
@@ -227,9 +231,9 @@ namespace JumpAndRun
 
             if (shoot)
             {
-                if (bullet==null || bullet.ToBeDestroyed)
+                if (true)
                 {
-                    bullet = new Bullet();
+                    Bullet bullet = new Bullet();
                     bullet.setSpriteName(spriteColor+"bullet");
                     if (spriteName == "right")
                     {
@@ -286,11 +290,14 @@ namespace JumpAndRun
             this.Transform.SpritePath = "ManicMinerSprites/" +getFullSpriteName()+ ".png";
 
             //Debug.Log(this.Transform.SpritePath);
+            if (reload > 0)
+            {
+                reload -= Bootstrap.getDeltaTime();
+            }
 
 
             Bootstrap.getDisplay().addToDraw(this);
 
-            updateCounter++;
         }
 
         public bool shouldReset(PhysicsBody x)
@@ -324,10 +331,26 @@ namespace JumpAndRun
                 ToBeDestroyed = true;
             }
 
-            if (x.Parent.checkTag("NetworkedDiamond"))
+            if (x.Parent.checkTag("Gun"))
             {
-                speed += 100;
+                reloadTime -= 0.5;
+
+                Debug.Log("collistion found with gun");
             }
+
+            if (x.Parent.checkTag("Boot"))
+            {
+                speed += 50;
+                Debug.Log("collistion found with boot");
+            }
+
+            if (x.Parent.checkTag("Spring"))
+            {
+                jumpMax += 0.1;
+            }
+
+
+
 
 
 

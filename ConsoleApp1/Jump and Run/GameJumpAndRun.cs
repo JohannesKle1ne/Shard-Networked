@@ -48,9 +48,28 @@ namespace Shard
                 respawnTime = 5;
                 if (myPlayer.Transform!=null)
                 {
-                    Diamond d = new Diamond();
-                    d.Transform.X = myPlayer.Transform.X;
-                    d.Transform.Y = myPlayer.Transform.Y;
+                    Random rd = new Random();
+                    int type  = rd.Next(0,3);
+                    Reward r;
+                    if (type == 0)
+                    {
+                        r = new Boot();
+                        r.Transform.X = myPlayer.Transform.X;
+                        r.Transform.Y = myPlayer.Transform.Y;
+                    }
+                    if (type == 1)
+                    {
+                        r = new Gun();
+                        r.Transform.X = myPlayer.Transform.X;
+                        r.Transform.Y = myPlayer.Transform.Y;
+                    }
+                    if (type == 2)
+                    {
+                        r = new Spring();
+                        r.Transform.X = myPlayer.Transform.X;
+                        r.Transform.Y = myPlayer.Transform.Y;
+                    }
+
                 }
                 
             }
@@ -179,6 +198,9 @@ namespace Shard
             //movingBox1 = new MovingBox();
             //movingBox1.setPosition(0, 600, 300, 100);
             //movingBox1.MoveDirY = 1;
+
+            b = new Box();
+            b.setPosition(0, 360, 0, 0);
 
             b = new Box();
             b.setPosition(50, 350, 0, 0);

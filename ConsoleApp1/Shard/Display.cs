@@ -6,7 +6,6 @@
 *   
 */
 
-using SDL2;
 using System.Drawing;
 
 namespace Shard
@@ -90,7 +89,6 @@ namespace Shard
             _height = h;
             _width = w;
         }
-
 
         public abstract void initialize();
         public abstract void clearDisplay();
