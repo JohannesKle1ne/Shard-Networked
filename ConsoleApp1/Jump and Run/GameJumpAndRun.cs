@@ -168,10 +168,11 @@ namespace Shard
             Box b;
             MovingBox mb;
             Bootstrap.getInput().addListener(this);
+            Bootstrap.getDisplay().setSize(1200, 600);
+            Bootstrap.getDisplay().setBackgroundColor(Color.LightSkyBlue);
             rand = new Random();
 
 
-            NetworkClient client = NetworkClient.GetInstance();
             nPlayers = new Dictionary<int, NetworkedPlayer>();
 
 

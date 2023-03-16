@@ -6,6 +6,7 @@
 *   
 */
 
+using SDL2;
 using System.Drawing;
 
 namespace Shard
@@ -58,6 +59,15 @@ namespace Shard
         {
         }
 
+        public virtual void setBackgroundColor(Color c)
+        {
+           
+        }
+
+        public virtual void updateWindowSize()
+        {
+        }
+
         public virtual void addToDraw(GameObject gob)
         {
         }
@@ -80,6 +90,7 @@ namespace Shard
             _height = h;
             _width = w;
         }
+
 
         public abstract void initialize();
         public abstract void clearDisplay();
