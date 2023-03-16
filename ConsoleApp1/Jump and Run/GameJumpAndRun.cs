@@ -46,6 +46,13 @@ namespace Shard
             if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime <= 0)
             {
                 respawnTime = 5;
+                if (myPlayer.Transform!=null)
+                {
+                    Diamond d = new Diamond();
+                    d.Transform.X = myPlayer.Transform.X;
+                    d.Transform.Y = myPlayer.Transform.Y;
+                }
+                
             }
 
 
@@ -53,8 +60,8 @@ namespace Shard
             {
                 //Debug.Log(respawnTime.ToString());
                 Color col = Color.White;
-               // Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
-                //Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 30, 80, 20, col);
+                Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
+                Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 30, 80, 20, col);
 
 
 

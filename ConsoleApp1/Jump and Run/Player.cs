@@ -324,6 +324,11 @@ namespace JumpAndRun
                 ToBeDestroyed = true;
             }
 
+            if (x.Parent.checkTag("NetworkedDiamond"))
+            {
+                speed += 100;
+            }
+
 
 
             if (fallCounter > 2)
