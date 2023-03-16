@@ -6,7 +6,7 @@ using System;
 
 namespace JumpAndRun
 {
-    class Player : NetworkedObject, InputListener, CollisionHandler
+    class Player : NetworkedObject, InputListener, PositionCollisionHandler
     {
         private string sprite;
         private bool left, right, jumpUp, jumpDown, fall, canJump, shoot;
@@ -37,12 +37,12 @@ namespace JumpAndRun
             syncedInitialize();
         }
         public Player()
-        {           
+        {
             this.synced = false;
             localInitialize();
         }
 
-        
+
 
         public override bool isSynced()
         {
@@ -57,12 +57,13 @@ namespace JumpAndRun
             movingStarted = false;
             setPhysicsEnabled();
             MyBody.addRectCollider();
+            MyBody.UsesGravity = true;
+            MyBody.Mass = 0.4f;
             addTag("Player");
             spriteTimer = 0;
             jumpCount = 0;
             reloadTime = 2;
-            reload= 0;
-            MyBody.Mass = 1;
+            reload = 0;
             Bootstrap.getInput().addListener(this);
 
             id = NetworkClient.GetInstance().id;
@@ -79,7 +80,7 @@ namespace JumpAndRun
         {
             spriteName = "right";
             spriteCounter = 1;
-           // setPhysicsEnabled();
+            // setPhysicsEnabled();
             //MyBody.addRectCollider();
             ///addTag("NetworkedPlayer");
             spriteTimer = 0;
@@ -91,12 +92,12 @@ namespace JumpAndRun
             Transform.translate(50, 480);
             //MyBody.StopOnCollision = false;
             //MyBody.Kinematic = false;
-        
+
 
             spriteCounterDir = 1;
         }
 
- 
+
 
 
 
@@ -142,13 +143,13 @@ namespace JumpAndRun
                 }
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
                 {
-                    if (reload <=0)
+                    if (reload <= 0)
                     {
                         shoot = true;
-                        reload= reloadTime;
-                        Debug.Log("Shoot with time: "+reload);
+                        reload = reloadTime;
+                        Debug.Log("Shoot with time: " + reload);
                     }
-                    
+
                 }
             }
 
@@ -212,8 +213,8 @@ namespace JumpAndRun
             if (jumpUp)
             {
 
-                fall = false;
-                fallCounter = 0;
+                //fall = false;
+                //fallCounter = 0;
                 if (jumpCount < jumpMax)
                 {
                     this.Transform.translate(0, -1 * jumpSpeed * Bootstrap.getDeltaTime());
@@ -223,7 +224,7 @@ namespace JumpAndRun
                 {
                     jumpCount = 0;
                     jumpUp = false;
-                    fall = true;
+                   // fall = true;
 
                 }
                 //this.sendPosition();
@@ -234,7 +235,7 @@ namespace JumpAndRun
                 if (true)
                 {
                     Bullet bullet = new Bullet();
-                    bullet.setSpriteName(spriteColor+"bullet");
+                    bullet.setSpriteName(spriteColor + "bullet");
                     if (spriteName == "right")
                     {
                         bullet.setPosition(Transform.X + 40, Transform.Y);
@@ -246,9 +247,9 @@ namespace JumpAndRun
                         bullet.setDirection(-1);
                     }
                 }
-                
-                
-               
+
+
+
                 shoot = false;
             }
 
@@ -276,18 +277,18 @@ namespace JumpAndRun
 
             if (fall)
             {
-                Transform.translate(0, jumpSpeed * Bootstrap.getDeltaTime());
-                fallCounter += Bootstrap.getDeltaTime();
+                //Transform.translate(0, jumpSpeed * Bootstrap.getDeltaTime());
+                //fallCounter += Bootstrap.getDeltaTime();
 
-                if (Transform.Y > 900)
-                {
-                    ToBeDestroyed = true;
-                }
+                //if (Transform.Y > 900)
+                //{
+                //    ToBeDestroyed = true;
+                //}
                 //this.sendPosition();
 
             }
 
-            this.Transform.SpritePath = "ManicMinerSprites/" +getFullSpriteName()+ ".png";
+            this.Transform.SpritePath = "ManicMinerSprites/" + getFullSpriteName() + ".png";
 
             //Debug.Log(this.Transform.SpritePath);
             if (reload > 0)
@@ -300,8 +301,9 @@ namespace JumpAndRun
 
         }
 
-        public bool shouldReset(PhysicsBody x)
+        public bool isCenterX(PhysicsBody x)
         {
+            
             float[] minAndMaxX = x.getMinAndMax(true);
             float[] minAndMaxY = x.getMinAndMax(false);
 
@@ -310,6 +312,7 @@ namespace JumpAndRun
                 if (Transform.X + Transform.Wid >= minAndMaxX[0] && Transform.X <= minAndMaxX[1])
                 {
                     // We're in the centre, so it's fine.
+                    return true;
 
                     if (Transform.Y + Transform.Ht >= minAndMaxY[0])
                     {
@@ -318,14 +321,28 @@ namespace JumpAndRun
                 }
             }
 
-            
+
 
             return false;
         }
 
         public void onCollisionEnter(PhysicsBody x)
         {
+        }
 
+        public void onCollisionExit(PhysicsBody x)
+        {
+        }
+
+        public void onCollisionStay(PhysicsBody x)
+        {
+        }
+
+        public void onCollisionEnter(PhysicsBody x, string direction)
+        {
+            MyBody.UsesGravity = false;
+
+            Debug.Log("direction: " + direction);
             if (x.Parent.checkTag("NetworkedBullet"))
             {
                 ToBeDestroyed = true;
@@ -351,51 +368,48 @@ namespace JumpAndRun
 
 
 
+            //if (fallCounter > 2)
+            //{
+            //    ToBeDestroyed = true;
+            //}
 
+            //fallCounter = 0;
 
-
-            if (fallCounter > 2)
-            {
-                ToBeDestroyed = true;
-            }
-
-            fallCounter = 0;
-
-            if (shouldReset(x))
-            {
-                fall = true;
-            }
-            else
-            {
-                fall = false;
-            }
-
+            //if (isCenterX(x))
+            //{
+            //    fall = true;
+            //}
+            //else
+            //{
+            //    fall = false;
+            //}
+            //canJump = true;
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsBody x, string direction)
         {
+            MyBody.UsesGravity = true;
             //if (x.Parent.checkTag("Collectible"))
             //{
             //    return;
             //}
 
             canJump = false;
-            fall = true;
+           // fall = true;
 
             if (x.Parent.checkTag("MovingBox"))
             {
                 //Debug.Log("MovingBox collide");
                 //sendPosition();
             }
-
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsBody x, string direction)
         {
             if (x.Parent.checkTag("MovingBox"))
             {
                 //Debug.Log("MovingBox collide");
-                //sendPosition();
+                //sendPosition();aw
             }
 
             if (x.Parent.checkTag("Collectible"))
@@ -403,17 +417,47 @@ namespace JumpAndRun
                 return;
             }
 
-            if (shouldReset(x))
+            if (direction=="Bottom")
             {
-                fall = false;
                 canJump = true;
-                fallCounter = 0;
             }
-            else
-            {
-                fall = true;
-            }
+            //if (direction == "Top")
+            //{
+            //    Transform.translate(0, 5);
+            //}
+            //if (direction == "Left")
+            //{
+            //    Transform.translate(5, 0);
+            //}
+            //if (direction == "Right")
+            //{
+            //    Transform.translate(-5, 0);
+            //}
+            //else
+            //{
+            //    //canJump = true;
+            //    Transform.translate(0, 1);
+            //    if (isRight)
+            //    {
+                    
+            //    }
+            //    else
+            //    {
+            //        Transform.translate(1, 0);
+            //    }
+            //}
 
+
+            //if (isCenterX(x))
+            //{
+            //    fall = false;
+            //    canJump = true;
+            //    fallCounter = 0;
+            //}
+            //else
+            //{
+            //    fall = true;
+            //}
         }
     }
 }

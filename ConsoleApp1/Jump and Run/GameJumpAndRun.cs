@@ -209,7 +209,7 @@ namespace Shard
             b.setPosition(100, 375, 0, 0);
 
             b = new Box();
-            b.setPosition(150, 400, 0, 0);
+            b.setPosition(150, 450, 0, 0);
 
             b = new Box();
             b.setPosition(100, 560, 0, 0);

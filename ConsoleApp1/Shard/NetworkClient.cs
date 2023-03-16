@@ -95,7 +95,7 @@ namespace Shard
 
 
             MessageType type = getMessageType(e.Data);
-            Debug.Log(type.ToString());
+            //Debug.Log(type.ToString());
             if (type == MessageType.Color)
             {
                

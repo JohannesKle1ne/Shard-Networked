@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shard
 {
@@ -275,15 +276,38 @@ namespace Shard
                 Vector impulse;
 
                 impulse = checkCollisionBetweenObjects(col.A, col.B);
+
+                //bool isRight = isRightOf(col.A, col.B);
+                //bool isBelow = isTopOf(col.A, col.B);
+
+                string direction = getCollisionDirection(col.A, col.B);
+
                 if (impulse != null)
                 {
                     ch.onCollisionStay(col.B);
                     ch2.onCollisionStay(col.A);
+                    if (col.A.Parent is PositionCollisionHandler)
+                    {
+                        ((PositionCollisionHandler)col.A.Parent).onCollisionStay(col.B, direction);
+                    }
+                    if (col.B.Parent is PositionCollisionHandler)
+                    {
+                        ((PositionCollisionHandler)col.B.Parent).onCollisionStay(col.A, inverseDirection(direction));
+                    }
                 }
                 else
                 {
                     ch.onCollisionExit(col.B);
                     ch2.onCollisionExit(col.A);
+                    if (col.A.Parent is PositionCollisionHandler)
+                    {
+                       
+                    ((PositionCollisionHandler)col.A.Parent).onCollisionExit(col.B, direction);
+                    }
+                    if (col.B.Parent is PositionCollisionHandler)
+                    {
+                       ((PositionCollisionHandler)col.B.Parent).onCollisionExit(col.A, inverseDirection(direction));
+                    }
                     toRemove.Add(col);
                 }
 
@@ -377,7 +401,7 @@ namespace Shard
                 }
             }
 
-            Debug.Log ("Checking " + collisionsToCheck.Count + " collisions");
+            Debug.Log("Checking " + collisionsToCheck.Count + " collisions");
 
         }
 
@@ -393,6 +417,101 @@ namespace Shard
 
             return false;
         }
+
+        public bool isRightOf(PhysicsBody a, PhysicsBody b)
+        {
+            float aMidX = a.MinAndMaxX[0] + (a.MinAndMaxX[1] - a.MinAndMaxX[0]) / 2;
+            float bMidX = b.MinAndMaxX[0] + (b.MinAndMaxX[1] - b.MinAndMaxX[0]) / 2;
+
+            float bMaxX = b.MinAndMaxX[1];
+            float aMinX = a.MinAndMaxX[0];
+
+
+
+            return aMinX >= bMaxX;
+
+            return (aMidX - bMidX) > 0;
+        }
+        public bool isTopOf(PhysicsBody a, PhysicsBody b)
+        {
+            //float aMidY = a.MinAndMaxY[0] + (a.MinAndMaxY[1] - a.MinAndMaxY[0]) / 2;
+            //float bMidY = b.MinAndMaxY[0] + (b.MinAndMaxY[1] - b.MinAndMaxY[0]) / 2;
+
+            //float bMinY = b.MinAndMaxY[0];
+            //float aMaxY = a.MinAndMaxY[1];
+
+            float bMinY = b.MinAndMaxY[0];
+            float bMaxY = b.MinAndMaxY[1];
+            float aMinY = a.MinAndMaxY[0];
+            float aMaxY = a.MinAndMaxY[1];
+
+            float distToTop = bMaxY - aMinY;
+
+            return bMaxY - aMinY < 5;
+
+            return aMaxY <= bMinY;
+
+            //return (aMidY -bMidY) > 0;
+        }
+        public string inverseDirection(string direction)
+        {
+            if (direction == "Right")
+            {
+                return "Left";
+            }
+            if (direction == "Left")
+            {
+                return "Right";
+            }
+            if (direction == "Top")
+            {
+                return "Bottom";
+            }
+
+            return "Top";
+
+        }
+        public string getCollisionDirection(PhysicsBody a, PhysicsBody b)
+        {
+            float bMinY =b.MinAndMaxY[0];
+            float bMaxY = b.MinAndMaxY[1];
+            float aMinY = a.MinAndMaxY[0];
+            float aMaxY = a.MinAndMaxY[1];
+
+            float bMinX = b.MinAndMaxX[0];
+            float bMaxX = b.MinAndMaxX[1];
+            float aMinX = a.MinAndMaxX[0];
+            float aMaxX = a.MinAndMaxX[1];
+
+            float diffTop = Math.Abs(bMaxY - aMinY);
+            float diffBottom = Math.Abs(bMinY - aMaxY);
+            float diffLeft = Math.Abs(bMaxX - aMinX);
+            float diffRight = Math.Abs(bMinX - aMaxX);
+
+            float[] diffs = { diffTop, diffBottom, diffLeft, diffRight };
+            float minValue = diffs.Min();
+
+            if (diffTop == minValue)
+            {
+                return "Top";
+            }
+
+            if (diffBottom == minValue)
+            {
+                return "Bottom";
+            }
+
+            if (diffLeft == minValue)
+            {
+                return "Left";
+            }
+
+
+            return "Right";
+
+
+        }
+
 
         private void narrowPass()
         {
@@ -478,16 +597,72 @@ namespace Shard
                     }
 
 
+
+                    //bool isRight = isRightOf(ob.A, ob.B);
+                    //bool isBelow = isTopOf(ob.A, ob.B);
+                    string direction = getCollisionDirection(ob.A, ob.B);
+
                     if (findColliding(ob.A, ob.B) == false)
                     {
                         ((CollisionHandler)ob.A.Parent).onCollisionEnter(ob.B);
                         ((CollisionHandler)ob.B.Parent).onCollisionEnter(ob.A);
+
+                        if (ob.A.Parent is PositionCollisionHandler)
+                        {
+                            ((PositionCollisionHandler)ob.A.Parent).onCollisionEnter(ob.B, direction);
+                            //float bMinY = ob.B.MinAndMaxY[0];
+                            //float aMaxY = ob.A.MinAndMaxY[1];
+
+                            //Debug.Log("A: " + aMaxY + " B: " + bMinY);
+                            //float aMidX = ob.A.MinAndMaxX[1] - ob.A.MinAndMaxX[0];
+                            //float bMidX = ob.B.MinAndMaxX[1] - ob.B.MinAndMaxX[0];
+                            //Debug.Log("amidx: " + aMidX);
+                            //Debug.Log("bmidx: " + bMidX);
+                        }
+                        if (ob.B.Parent is PositionCollisionHandler)
+                        {
+                            ((PositionCollisionHandler)ob.B.Parent).onCollisionEnter(ob.A, inverseDirection(direction));
+                            float bMinY = ob.B.MinAndMaxY[0];
+                            float bMaxY = ob.B.MinAndMaxY[1];
+                            float aMinY = ob.A.MinAndMaxY[0];
+                            float aMaxY = ob.A.MinAndMaxY[1];
+
+                            float bMinX = ob.B.MinAndMaxX[0];
+                            float bMaxX = ob.B.MinAndMaxX[1];
+                            float aMinX = ob.A.MinAndMaxX[0];
+                            float aMaxX = ob.A.MinAndMaxX[1];
+
+
+
+                           // Debug.Log("Diff Top: "+(bMaxY - aMinY));
+                            float diffTop = Math.Abs(bMaxY - aMinY);
+                           // Debug.Log("Diff Bottom: " + (bMinY - aMaxY));
+                            float diffBottom = Math.Abs(bMinY - aMaxY);
+                           // Debug.Log("Diff Left: " + (bMaxX - aMinX));
+                            float diffRight = Math.Abs(bMaxX - aMinX);
+                           // Debug.Log("Diff Right: " + (bMinX - aMaxX));
+                            float diffLeft = Math.Abs(bMinX - aMaxX);
+                            //if(bMaxY - aMinY<5)
+                            //float aMidX = ob.A.MinAndMaxX[1] - ob.A.MinAndMaxX[0];
+                            //float bMidX = ob.B.MinAndMaxX[1] - ob.B.MinAndMaxX[0];
+                            //Debug.Log("amidx: " + aMidX);
+                            //Debug.Log("bmidx: " + bMidX);
+                        }
+
                         colliding.Add(ob);
                     }
                     else
                     {
                         ((CollisionHandler)ob.A.Parent).onCollisionStay(ob.B);
                         ((CollisionHandler)ob.B.Parent).onCollisionStay(ob.A);
+                        if (ob.A.Parent is PositionCollisionHandler)
+                        {
+                            ((PositionCollisionHandler)ob.A.Parent).onCollisionStay(ob.B, direction);
+                        }
+                        if (ob.B.Parent is PositionCollisionHandler)
+                        {
+                            ((PositionCollisionHandler)ob.B.Parent).onCollisionStay(ob.A, inverseDirection(direction));
+                        }
                     }
 
 
