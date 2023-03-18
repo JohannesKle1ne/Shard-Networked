@@ -79,8 +79,8 @@ namespace Shard
             {
                 //Debug.Log(respawnTime.ToString());
                 Color col = Color.White;
-                Bootstrap.getDisplay().showText("You died!", 30, 30, 40, col);
-                Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 30, 80, 20, col);
+                Bootstrap.getDisplay().showText("You died!", 10, 10, 40, col);
+                Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 10, 60, 20, col);
 
 
 
@@ -195,12 +195,9 @@ namespace Shard
             nPlayers = new Dictionary<int, NetworkedPlayer>();
 
 
-            //movingBox1 = new MovingBox();
-            //movingBox1.setPosition(0, 600, 300, 100);
-            //movingBox1.MoveDirY = 1;
+           
 
-            b = new Box();
-            b.setPosition(0, 360, 0, 0);
+        
 
             b = new Box();
             b.setPosition(50, 350, 0, 0);
@@ -328,7 +325,7 @@ namespace Shard
             b.setPosition(150, 120, 0, 0);
 
             b = new Box();
-            b.setPosition(200, 100, 0, 0);
+            b.setPosition(200, 140, 0, 0);
 
             b = new Box();
             b.setPosition(300, 150, 0, 0);

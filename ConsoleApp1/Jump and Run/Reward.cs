@@ -28,8 +28,7 @@ namespace JumpAndRun
         {
             setPhysicsEnabled();
 
-            MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
-            MyBody.PassThrough = true;
+            MyBody.addRectCollider();
             
             
         }
@@ -38,11 +37,12 @@ namespace JumpAndRun
         {
             setPhysicsEnabled();
 
-            MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
+            MyBody.addRectCollider();
+            MyBody.UsesGravity= true;
+            MyBody.Mass = 0.4f;
 
-            MyBody.StopOnCollision = false;
-            MyBody.Kinematic = false;
-            
+
+
         }
 
 

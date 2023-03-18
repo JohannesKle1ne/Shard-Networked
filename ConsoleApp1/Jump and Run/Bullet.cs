@@ -101,9 +101,16 @@ namespace JumpAndRun
             if (x.Parent.checkTag("Box"))
             {
                 this.ToBeDestroyed = true;
-            
-           
-        }
+
+
+            }
+            if (x.Parent.checkTag("MovingBox"))
+            {
+                this.ToBeDestroyed = true;
+
+
+            }
+
             if (x.Parent.checkTag("Player"))
             {
 
