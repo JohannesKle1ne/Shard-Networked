@@ -70,13 +70,13 @@ namespace JumpAndRun
 
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag ("Player")) {
-                this.ToBeDestroyed = true;
-                NetworkClient client = NetworkClient.GetInstance();
-                Shard.Action a = new Shard.Action(client.id, MessageType.BulletCollision);
-                a.bulletId = id;
-                client.Send(a.ToJson());
-            }
+            //if (x.Parent.checkTag ("Player")) {
+            //    this.ToBeDestroyed = true;
+            //    NetworkClient client = NetworkClient.GetInstance();
+            //    Shard.Action a = new Shard.Action(client.id, MessageType.BulletCollision);
+            //    a.bulletId = id;
+            //    client.Send(a.ToJson());
+            //}
 
         }
 

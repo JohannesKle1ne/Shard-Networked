@@ -80,6 +80,7 @@ namespace Shard
             Debug.Log("handle destroy");
             if (incomingObjects.ContainsKey(d.objectId))
             {
+                Debug.Log("found");
                 NetworkedObject obj = incomingObjects[d.objectId];
                 obj.ToBeDestroyed = true;
                 incomingObjects.Remove(d.objectId);

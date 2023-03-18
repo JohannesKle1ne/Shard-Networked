@@ -57,7 +57,7 @@ namespace Shard
             // Create a scoped instance of a WS client that will be properly disposed
             //using (WebSocket ws = new WebSocket("ws://simple-websocket-server-echo.glitch.me/"))
             //ws = new WebSocket("ws://secret-island-78427.herokuapp.com");
-            ws = new WebSocket("ws://localhost:3000");
+            ws = new WebSocket("ws://localhost:3001");
 
             Random rd = new Random();
             id =  rd.Next(1000, 9999);
@@ -95,7 +95,7 @@ namespace Shard
 
 
             MessageType type = getMessageType(e.Data);
-            //Debug.Log(type.ToString());
+            Debug.Log(type.ToString());
             if (type == MessageType.Color)
             {
                
@@ -110,23 +110,23 @@ namespace Shard
                 }
             }
            
-            if (type == MessageType.BulletCollision)
-            {
-                Action action = JsonConvert.DeserializeObject<Action>(e.Data);
-                if (isSet)
-                {
-                    if (action.bulletId == id)
-                    {
-                        game.myPlayer.bullet.ToBeDestroyed= true;
-                    }
-                    else
-                    {
-                        //game.removeNetworkedBullet(action.bulletId);
-                    }
+            //if (type == MessageType.BulletCollision)
+            //{
+            //    Action action = JsonConvert.DeserializeObject<Action>(e.Data);
+            //    if (isSet)
+            //    {
+            //        if (action.bulletId == id)
+            //        {
+            //            game.myPlayer.bullet.ToBeDestroyed= true;
+            //        }
+            //        else
+            //        {
+            //            //game.removeNetworkedBullet(action.bulletId);
+            //        }
                     
 
-                }
-            }
+            //    }
+            //}
             if (type == MessageType.BoxPosition)
             {
                 Action action = JsonConvert.DeserializeObject<Action>(e.Data);
@@ -146,6 +146,7 @@ namespace Shard
             if (type == MessageType.Destroy)
             {
                 Destroy mPos = JsonConvert.DeserializeObject<Destroy>(e.Data);
+                Debug.Log("Recieved destroy");
                 if (isSet)
                 {
                     manager.handleObjectDestroy(mPos);

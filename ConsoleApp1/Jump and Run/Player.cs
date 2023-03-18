@@ -296,7 +296,7 @@ namespace JumpAndRun
                 reload -= Bootstrap.getDeltaTime();
             }
 
-            if (Transform.X > 1200 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
+            if (Transform.X > 1300 || Transform.X < -100 || Transform.Y > 700 || Transform.Y < -100)
             {
                 this.ToBeDestroyed = true;
                 Debug.Log("set to be destroyd");

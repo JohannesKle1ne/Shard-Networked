@@ -94,18 +94,11 @@ namespace Shard
 
     enum MessageType
     {
-        Unknown,
-        PlayerPosition,
-        PlayerStartPosition,
-        BulletPosition,
-        PlayerDestroy,
-        BulletDestroy,
-        BulletCollision,
-        Color,
-        BoxPosition,
         Position,
         Destroy,
-        DestroyRequest
-
+        DestroyRequest,
+        Color,
+        BoxPosition,
+        Unknown,
     }
 }
