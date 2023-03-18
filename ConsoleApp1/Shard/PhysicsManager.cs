@@ -18,6 +18,7 @@
 *   
 */
 
+using JumpAndRun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -455,24 +456,32 @@ namespace Shard
         }
         public string inverseDirection(string direction)
         {
-            if (direction == "Right")
-            {
-                return "Left";
-            }
-            if (direction == "Left")
-            {
-                return "Right";
-            }
-            if (direction == "Top")
-            {
-                return "Bottom";
-            }
 
-            return "Top";
+            Dictionary<string, string> inverse = new Dictionary<string, string>
+            {
+                {  "Top", "Bottom" },
+                {  "Bottom", "Top" },
+                {  "Left", "Right" },
+                {  "Right","Left" },
+                {  "TopLeft", "BottomRight" },
+                {  "BottomRight", "TopLeft" },
+                {  "TopRight", "BottomLeft" },
+                {  "BottomLeft", "TopRight" },
+            };
+            if (inverse.ContainsKey(direction)) {
+                return inverse[direction];
+            }
+            else
+            {
+                return "Unknown";
+            }
+               
 
         }
         public string getCollisionDirection(PhysicsBody a, PhysicsBody b)
         {
+            float cornerRange = 10;
+
             float bMinY =b.MinAndMaxY[0];
             float bMaxY = b.MinAndMaxY[1];
             float aMinY = a.MinAndMaxY[0];
@@ -483,32 +492,60 @@ namespace Shard
             float aMinX = a.MinAndMaxX[0];
             float aMaxX = a.MinAndMaxX[1];
 
-            float diffTop = Math.Abs(bMaxY - aMinY);
-            float diffBottom = Math.Abs(bMinY - aMaxY);
-            float diffLeft = Math.Abs(bMaxX - aMinX);
-            float diffRight = Math.Abs(bMinX - aMaxX);
-
-            float[] diffs = { diffTop, diffBottom, diffLeft, diffRight };
-            float minValue = diffs.Min();
-
-            if (diffTop == minValue)
+            Dictionary<string, float> distances = new Dictionary<string, float>
             {
-                return "Top";
+                {  "Top", Math.Abs(bMaxY - aMinY) },
+                {  "Bottom", Math.Abs(bMinY - aMaxY) },
+                {  "Left", Math.Abs(bMaxX - aMinX) },
+                {  "Right",Math.Abs(bMinX - aMaxX) }
+            };
+
+            float smallestValue = distances.OrderBy(d => d.Value).First().Value;
+            string smallestKey = distances.OrderBy(d => d.Value).First().Key;
+            float secondSmallestValue = distances.OrderBy(d => d.Value).ElementAt(1).Value;
+            string secondSmallestKey = distances.OrderBy(d => d.Value).ElementAt(1).Key;
+
+
+            bool isCorner()
+            {
+                return Math.Abs(smallestValue - secondSmallestValue)<cornerRange;
             }
 
-            if (diffBottom == minValue)
+            bool isCornerPair(string a, string b)
             {
-                return "Bottom";
+                if((smallestKey == a && secondSmallestKey == b)|| (smallestKey == b && secondSmallestKey == a))
+                {
+                    return true;
+                }
+                return false;
             }
 
-            if (diffLeft == minValue)
+
+            if (isCorner())
             {
-                return "Left";
+                if (isCornerPair("Top", "Left"))
+                {
+                    return "TopLeft";
+                }
+                if (isCornerPair("Top", "Right"))
+                {
+                    return "TopRight";
+                }
+                if (isCornerPair("Bottom", "Left"))
+                {
+                    return "BottomLeft";
+                }
+                if (isCornerPair("Bottom", "Right"))
+                {
+                    return "BottomRight";
+                }
+                return "Unknown";
+
             }
-
-
-            return "Right";
-
+            else
+            {
+                return smallestKey;
+            }
 
         }
 

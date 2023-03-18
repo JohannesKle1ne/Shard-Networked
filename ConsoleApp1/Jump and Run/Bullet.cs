@@ -76,9 +76,9 @@ namespace JumpAndRun
         
         
 
-        public override void update()
+        public override void localUpdate()
         {
-            if (!this.ToBeDestroyed && !this.synced)
+            if (!this.ToBeDestroyed)
             {
                 if (Transform.X > 1200 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
                 {

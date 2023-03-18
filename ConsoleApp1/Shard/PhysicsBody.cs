@@ -284,7 +284,7 @@ namespace Shard
 
             force = (force / Mass);
 
-            Debug.Log (Parent + " adding force " + dir + ", " + force);
+            //Debug.Log (Parent + " adding force " + dir + ", " + force);
             // Set a lower bound.
             if (Math.Abs(force) < 0.01)
             {

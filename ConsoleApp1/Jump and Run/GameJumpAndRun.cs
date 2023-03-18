@@ -188,7 +188,7 @@ namespace Shard
             MovingBox mb;
             Bootstrap.getInput().addListener(this);
             Bootstrap.getDisplay().setSize(1200, 600);
-            Bootstrap.getDisplay().setBackgroundColor(Color.LightSkyBlue);
+            Bootstrap.getDisplay().setBackgroundColor(Color.FromArgb(253, 219, 185));
             rand = new Random();
 
 

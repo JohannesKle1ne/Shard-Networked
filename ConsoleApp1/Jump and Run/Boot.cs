@@ -34,5 +34,7 @@ namespace JumpAndRun
             addTag("Boot");
             setSpriteName("boot");
         }
+
+
     }
 }

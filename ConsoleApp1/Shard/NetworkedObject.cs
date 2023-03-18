@@ -17,6 +17,8 @@ namespace Shard
 
         public bool RemoteDestroy;
 
+        public bool synced;
+
         public abstract string getFullSpriteName();
 
         public abstract bool isSynced();
@@ -24,9 +26,30 @@ namespace Shard
 
         public abstract void localInitialize();
 
+        public virtual void syncedUpdate()
+        {
+
+        }
+        public virtual void localUpdate()
+        {
+
+        }
+
         public void setId(int id)
         {
             this.id = id;
+        }
+
+        public override void update()
+        {
+            if (synced)
+            {
+                syncedUpdate();
+            }
+            else
+            {
+                localUpdate();
+            }
         }
 
 
