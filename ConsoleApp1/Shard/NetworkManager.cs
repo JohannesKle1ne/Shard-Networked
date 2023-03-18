@@ -23,6 +23,12 @@ namespace Shard
         Dictionary<NetworkedObject, NetworkedObjectState> outgoingStates;
 
         Dictionary<int, NetworkedObject> incomingObjects;
+
+        List<Position> positionQueue;
+        List<Destroy> destroyQueue;
+        List<DestroyRequest> destroyRequestQueue;
+
+        static object lockObject = new object();
         public NetworkManager(NetworkedGame game)
         {
 
@@ -30,6 +36,10 @@ namespace Shard
             updateCounter = 0;
             outgoingStates = new Dictionary<NetworkedObject, NetworkedObjectState>();
             incomingObjects = new Dictionary<int, NetworkedObject>();
+            positionQueue= new List<Position>();
+            destroyQueue = new List<Destroy>();
+            destroyRequestQueue = new List<DestroyRequest>();
+           
         }
 
         private void sendObjectPosition(NetworkedObject obj)
@@ -54,6 +64,30 @@ namespace Shard
             client.Send(destroy.ToJson());
         }
 
+        public void handleMessage(Position pos)
+        {
+            lock (lockObject)
+            {
+                positionQueue.Add(pos);
+            }
+               
+        }
+        public void handleMessage(Destroy d)
+        {
+            lock (lockObject)
+            {
+                destroyQueue.Add(d);
+            }
+           
+        }
+        public void handleMessage(DestroyRequest dr)
+        {
+            lock (lockObject)
+            {
+                destroyRequestQueue.Add(dr);
+            }
+           
+        }
         public void handleObjectPosition(Position pos)
         {
             if (!incomingObjects.ContainsKey(pos.objectId))
@@ -101,6 +135,23 @@ namespace Shard
 
         public void update()
         {
+
+            if (positionQueue.Any() || destroyQueue.Any() || destroyRequestQueue.Any())
+            {
+                lock (lockObject)
+                {
+                    positionQueue.ForEach(p => { handleObjectPosition(p); });
+                    positionQueue.Clear();
+                    destroyQueue.ForEach(d => { handleObjectDestroy(d); });
+                    destroyQueue.Clear();
+                    destroyRequestQueue.ForEach(dr => { handleObjectDestroyRequest(dr); });
+                    destroyRequestQueue.Clear();
+                }
+            }
+            
+
+
+
             List<GameObject> objects = GameObjectManager.getInstance().getAllGameObjects();
 
             List<NetworkedObject> foundObjects = new List<NetworkedObject>();

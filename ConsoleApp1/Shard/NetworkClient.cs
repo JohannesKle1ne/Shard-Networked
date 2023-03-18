@@ -136,7 +136,7 @@ namespace Shard
                 Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);
                 if (isSet)
                 {
-                    manager.handleObjectPosition(mPos);
+                    manager.handleMessage(mPos);
                 }
             }
             if (type == MessageType.Destroy)
@@ -145,7 +145,7 @@ namespace Shard
                 Debug.Log("Recieved destroy");
                 if (isSet)
                 {
-                    manager.handleObjectDestroy(mPos);
+                    manager.handleMessage(mPos);
                 }
             }
             if (type == MessageType.DestroyRequest)
@@ -153,7 +153,7 @@ namespace Shard
                 DestroyRequest mPos = JsonConvert.DeserializeObject<DestroyRequest>(e.Data);
                 if (isSet)
                 {
-                    manager.handleObjectDestroyRequest(mPos);
+                    manager.handleMessage(mPos);
                 }
             }
 

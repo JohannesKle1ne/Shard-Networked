@@ -11,21 +11,22 @@ namespace JumpAndRun
         private int updateCounter = 0;
         private int speed = 500;
         private string spriteName;
-        public bool synced;
 
 
         public Bullet(bool synced)
         {
             Debug.Log("synced: " + synced);
-            syncedInitialize();
             this.synced = true;
+            syncedInitialize();
+           
 
         }
         public Bullet()
         {
             Debug.Log("non synced");
-            localInitialize();
             this.synced = false;
+            localInitialize();
+            
         }
 
         public override bool isSynced()
@@ -73,8 +74,12 @@ namespace JumpAndRun
             Transform.translate(x, y);
         }
 
-        
-        
+
+        public override void syncedUpdate()
+        {
+            Bootstrap.getDisplay().addToDraw(this);
+        }
+
 
         public override void localUpdate()
         {
@@ -87,6 +92,7 @@ namespace JumpAndRun
                 }
                 else
                 {
+                    Debug.Log("Translate");
                     Transform.translate(direction * speed * Bootstrap.getDeltaTime(), 0);
                     //sendPosition();
                     updateCounter++;
