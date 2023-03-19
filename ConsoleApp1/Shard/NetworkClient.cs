@@ -123,14 +123,14 @@ namespace Shard
 
             //    }
             //}
-            if (type == MessageType.BoxPosition)
-            {
-                Action action = JsonConvert.DeserializeObject<Action>(e.Data);
-                if (isSet)
-                {
-                    game.setBoxPosition(action.position, action.index);
-                }
-            }
+            //if (type == MessageType.BoxPosition)
+            //{
+            //    Action action = JsonConvert.DeserializeObject<Action>(e.Data);
+            //    if (isSet)
+            //    {
+            //        game.setBoxPosition(action.position, action.index);
+            //    }
+            //}
             if (type == MessageType.Position)
             {
                 Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);

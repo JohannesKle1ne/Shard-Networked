@@ -127,66 +127,66 @@ namespace Shard
 
 
 
-        public void setBoxPosition(int position, int index)
-        {
+        //public void setBoxPosition(int position, int index)
+        //{
             
-            if (index == 0)
-            {
-                if (movingBox1 == null)
-                {
-                    movingBox1 = new MovingBox();
-                    movingBox1.setPosition(0, 600, 300, 100);
-                    movingBox1.MoveDirY = 1;
-                }
-                    movingBox1.Transform.Y = position;
-            }
-            if (index == 1)
-            {
-                if (movingBox2 == null)
-                {
+        //    if (index == 0)
+        //    {
+        //        if (movingBox1 == null)
+        //        {
+        //            movingBox1 = new MovingBox();
+        //            movingBox1.setPosition(0, 600, 300, 100);
+        //            movingBox1.MoveDirY = 1;
+        //        }
+        //            movingBox1.Transform.Y = position;
+        //    }
+        //    if (index == 1)
+        //    {
+        //        if (movingBox2 == null)
+        //        {
                    
 
-                    movingBox2 = new MovingBox();
-                    movingBox2.setPosition(500, 550, 500, 100);
-                    movingBox2.MoveDirY = 1;
+        //            movingBox2 = new MovingBox();
+        //            movingBox2.setPosition(500, 550, 500, 100);
+        //            movingBox2.MoveDirY = 1;
 
-                    movingBox3 = new MovingBox();
-                    movingBox3.setPosition(550, 525, 500, 100);
-                    movingBox3.MoveDirY = 1;
+        //            movingBox3 = new MovingBox();
+        //            movingBox3.setPosition(550, 525, 500, 100);
+        //            movingBox3.MoveDirY = 1;
 
-                    movingBox4 = new MovingBox();
-                    movingBox4.setPosition(550, 575, 500, 100);
-                    movingBox4.MoveDirY = 1;
+        //            movingBox4 = new MovingBox();
+        //            movingBox4.setPosition(550, 575, 500, 100);
+        //            movingBox4.MoveDirY = 1;
 
-                    movingBox5 = new MovingBox();
-                    movingBox5.setPosition(600, 550, 500, 100);
-                    movingBox5.MoveDirY = 1;
+        //            movingBox5 = new MovingBox();
+        //            movingBox5.setPosition(600, 550, 500, 100);
+        //            movingBox5.MoveDirY = 1;
 
-                    movingBox6 = new MovingBox();
-                    movingBox6.setPosition(650, 575, 500, 100);
-                    movingBox6.MoveDirY = 1;
+        //            movingBox6 = new MovingBox();
+        //            movingBox6.setPosition(650, 575, 500, 100);
+        //            movingBox6.MoveDirY = 1;
 
 
                    
-                }
-                movingBox2.Transform.Y = position;
-                movingBox3.Transform.Y = position-25;
-                movingBox4.Transform.Y = position+25;
-                movingBox5.Transform.Y = position;
-                movingBox6.Transform.Y = position+25;
-            }
-            if (index == 2)
-            {
-                if (movingBox7 == null)
-                {
-                    movingBox7 = new MovingBox();
-                    movingBox7.setPosition(1150, 425, 300, 100);
-                    movingBox7.MoveDirY = 1;
-                }
-                movingBox7.Transform.Y = position;
-            }
+        //        }
+        //        movingBox2.Transform.Y = position;
+        //        movingBox3.Transform.Y = position-25;
+        //        movingBox4.Transform.Y = position+25;
+        //        movingBox5.Transform.Y = position;
+        //        movingBox6.Transform.Y = position+25;
+        //    }
+        //    if (index == 2)
+        //    {
+        //        if (movingBox7 == null)
+        //        {
+        //            movingBox7 = new MovingBox();
+        //            movingBox7.setPosition(1150, 425, 300, 100);
+        //            movingBox7.MoveDirY = 1;
+        //        }
+        //        movingBox7.Transform.Y = position;
+        //    }
 
-        }
+        //}
 
         public void setPlayerStart(double x, double y)
         {
