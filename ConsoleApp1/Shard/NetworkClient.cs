@@ -29,9 +29,9 @@ namespace Shard
         private bool isSet = false;
         internal int id;
         private readonly (int x, int y)[] startPositions = new[] {
-        (60, 300),
-        (10, 40),
-        (810,200),
+        //(60, 300),
+        //(60, 40),
+        //(810,200),
         (1020,340)
 
 
@@ -165,7 +165,7 @@ namespace Shard
         public (int x, int y) GetRandomStartPosition()
         {
             Random rnd = new Random();
-            return startPositions[rnd.Next(0, 4)];
+            return startPositions[rnd.Next(0, 1)];
         }
 
 

@@ -172,7 +172,7 @@ namespace Shard
                     if (!nObj.isSynced())
                     {
 
-                        if (updateCounter % 50 == 0)
+                        if (updateCounter % 30 == 0)
                         {
                             if (!outgoingStates.ContainsKey(nObj))
                             {

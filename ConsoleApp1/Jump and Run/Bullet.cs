@@ -9,7 +9,7 @@ namespace JumpAndRun
 
         private int direction = 1;
         private int updateCounter = 0;
-        private int speed = 500;
+        private int speed = 200;
         private string spriteName;
 
 

@@ -332,9 +332,6 @@ namespace Shard
             b.setPosition(1050, 240, 0, 0);
 
             b = new Box();
-            b.setPosition(0, 140, 0, 0);
-
-            b = new Box();
             b.setPosition(50, 160, 0, 0);
 
             b = new Box();

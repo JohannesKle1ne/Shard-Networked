@@ -92,7 +92,7 @@ namespace JumpAndRun
                     MoveDirY = -1;
                 }
             
-                if (Transform.Y < 200) {
+                if (Transform.Y < 100) {
                     MoveDirY = 1;
 
                 }

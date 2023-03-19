@@ -241,12 +241,12 @@ namespace JumpAndRun
                     bullet.setSpriteName(spriteColor + "bullet");
                     if (spriteName == "right")
                     {
-                        bullet.setPosition(Transform.X + 40, Transform.Y);
+                        bullet.setPosition(Transform.X + Transform.Wid-10, Transform.Y+5);
                         bullet.setDirection(1);
                     }
                     else
                     {
-                        bullet.setPosition(Transform.X - 10, Transform.Y);
+                        bullet.setPosition(Transform.X, Transform.Y+5);
                         bullet.setDirection(-1);
                     }
                 }
