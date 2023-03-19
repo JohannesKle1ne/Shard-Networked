@@ -15,7 +15,6 @@ namespace JumpAndRun
 
         public Bullet(bool synced)
         {
-            Debug.Log("synced: " + synced);
             this.synced = true;
             syncedInitialize();
            
@@ -23,7 +22,6 @@ namespace JumpAndRun
         }
         public Bullet()
         {
-            Debug.Log("non synced");
             this.synced = false;
             localInitialize();
             
@@ -37,8 +35,8 @@ namespace JumpAndRun
         public override void syncedInitialize()
         {
             setPhysicsEnabled();
-
             addTag("NetworkedBullet");
+
             MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
             MyBody.PassThrough = true;
         }
@@ -46,12 +44,12 @@ namespace JumpAndRun
         public override void localInitialize()
         {
             setPhysicsEnabled();
-
             addTag("Bullet");
-            MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
 
+            MyBody.addRectCollider((int)Transform.X, (int)Transform.Y, 10, 10);
             MyBody.StopOnCollision = false;
             MyBody.Kinematic = false;
+
             this.Transform.SpritePath = "ManicMinerSprites/" + "bullet" + ".png";
         }
 
@@ -88,13 +86,10 @@ namespace JumpAndRun
                 if (Transform.X > 1200 || Transform.X < 0 || Transform.Y > 600 || Transform.Y < 0)
                 {
                     this.ToBeDestroyed = true;
-                    Debug.Log("set to be destroyd");
                 }
                 else
                 {
-                    Debug.Log("Translate");
                     Transform.translate(direction * speed * Bootstrap.getDeltaTime(), 0);
-                    //sendPosition();
                     updateCounter++;
                 }
             }
@@ -121,10 +116,8 @@ namespace JumpAndRun
             {
 
                 this.RemoteDestroy = true;
-
-                Debug.Log("collistion found with Networked player");
             }
-
+                
         }
 
         public void onCollisionExit(PhysicsBody x)

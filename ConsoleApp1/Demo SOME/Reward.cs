@@ -7,17 +7,7 @@ namespace JumpAndRun
 {
     abstract class Reward : NetworkedObject, CollisionHandler
     {
-
-        private int direction = 1;
-        private int updateCounter = 0;
-        private int speed = 500;
         private string spriteName;
-        public bool synced;
-
-
-        
-
-        
 
         public override bool isSynced()
         {
@@ -29,8 +19,8 @@ namespace JumpAndRun
             setPhysicsEnabled();
 
             MyBody.addRectCollider();
-            
-            
+
+
         }
 
         public override void localInitialize()
@@ -38,15 +28,10 @@ namespace JumpAndRun
             setPhysicsEnabled();
 
             MyBody.addRectCollider();
-            MyBody.UsesGravity= true;
+            MyBody.UsesGravity = true;
             MyBody.Mass = 0.4f;
 
-
-
         }
-
-
-
 
         public void setSpriteName(string name)
         {
@@ -64,19 +49,16 @@ namespace JumpAndRun
             Transform.translate(x, y);
         }
 
-        
-        
-
         public override void update()
         {
-            
+
             Bootstrap.getDisplay().addToDraw(this);
 
         }
 
         public void onCollisionEnter(PhysicsBody x)
         {
-           
+
             if (x.Parent.checkTag("Player"))
             {
                 if (this.synced)
@@ -87,9 +69,6 @@ namespace JumpAndRun
                 {
                     this.ToBeDestroyed = true;
                 }
-
-
-                Debug.Log("collistion found with player");
             }
 
         }
@@ -102,14 +81,6 @@ namespace JumpAndRun
         {
         }
 
-        public override string ToString()
-        {
-            return "City: [" + Transform.X + ", " + Transform.Y + "]";
-        }
 
-        internal void setDirection(int direction)
-        {
-            this.direction = direction;
-        }
     }
 }

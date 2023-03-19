@@ -3,7 +3,7 @@ using System;
 
 namespace JumpAndRun
 {
-    class MovingBox : NetworkedObject, CollisionHandler
+    class Box : GameObject, CollisionHandler
     {
         private int moveDirX, moveDirY;
         private int maxY, minY;
@@ -17,56 +17,33 @@ namespace JumpAndRun
         public int MoveDirY { get => moveDirY; set => moveDirY = value; }
         public int MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
 
-        public MovingBox(bool synced)
-        {
-            Debug.Log("synced: " + synced);
-            this.synced = true;
-            syncedInitialize();
-
-
-        }
-        public MovingBox()
-        {
-            Debug.Log("non synced");
-            this.synced = false;
-            localInitialize();
-
-        }
-        public override void syncedInitialize()
+        public override void initialize()
         {
             setPhysicsEnabled();
             MyBody.addRectCollider();
             MyBody.Mass = 10;
             MyBody.Kinematic = true;
-            moveDirY = 1;
-            moveSpeed = 100;
-           // setPosition(0,0)
             this.Transform.SpritePath = "ManicMinerSprites/box.png";
-
-            addTag("MovingBox");
+            addTag("Box");
 
         }
 
-        public override void localInitialize()
+        public void setPosition(int x, int y, int dist, int speed)
         {
+            origX = x;
+            origY = y;
 
-        }
+            MoveDist = dist;
 
-        public void setPosition(int x, int y, int dist, int speed) {
-            //origX = x;
-            //origY = y;
+            minY = origY - MoveDist;
+            maxY = origY;
 
-            //MoveDist = dist;
+            maxX = origX + MoveDist;
+            minX = origX;
 
-            //minY = origY - MoveDist;
-            //maxY = origY;
+            MoveSpeed = speed;
 
-            //maxX = origX + MoveDist;
-            //minX = origX;
-
-            //MoveSpeed = speed;
-
-           // Transform.translate (x, y);
+            Transform.translate(x, y);
         }
 
         public void onCollisionEnter(PhysicsBody x)
@@ -81,18 +58,20 @@ namespace JumpAndRun
         {
         }
 
-        public override void syncedUpdate()
+        public override void update()
         {
 
             if (moveDirY != 0)
             {
                 Transform.translate(0, moveSpeed * moveDirY * Bootstrap.getDeltaTime());
 
-                if (Transform.Y > 600) {
+                if (Transform.Y > maxY)
+                {
                     MoveDirY = -1;
                 }
-            
-                if (Transform.Y < 100) {
+
+                if (Transform.Y < minY)
+                {
                     MoveDirY = 1;
 
                 }
@@ -116,20 +95,8 @@ namespace JumpAndRun
             }
 
 
-
             Bootstrap.getDisplay().addToDraw(this);
         }
 
-        public override string getFullSpriteName()
-        {
-            return "box";
-        }
-
-        public override bool isSynced()
-        {
-            return synced;
-        }
-
-  
     }
 }

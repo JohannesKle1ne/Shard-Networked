@@ -130,9 +130,9 @@ namespace Shard
                     kvp.Key.ToBeDestroyed = true;
                     if(kvp.Key is Bullet)
                     {
-                        if(game is GameJumpAndRun)
+                        if(game is GameDemoSOME)
                         {
-                            ((GameJumpAndRun)game).myPlayer.killCounter++;
+                            ((GameDemoSOME)game).myPlayer.killCounter++;
                         }
                     }
                 }

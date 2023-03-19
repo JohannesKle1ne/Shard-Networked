@@ -186,7 +186,7 @@ namespace Shard
 
                 NetworkClient client = NetworkClient.GetInstance();
                 client.Start();
-                client.setManager(netMan, (GameJumpAndRun)runningGame);
+                client.setManager(netMan, (GameDemoSOME)runningGame);
             }
 
 

@@ -5,34 +5,33 @@ using System.Xml.Linq;
 
 namespace JumpAndRun
 {
-    class Gun : Reward
+    class Boot : Reward
     {
 
-        public Gun(bool synced)
+        public Boot(bool synced)
         {
-            Debug.Log("synced: " + synced);
             syncedInitialize();
             this.synced = true;
 
         }
-        public Gun()
+        public Boot()
         {
-            Debug.Log("non synced");
             localInitialize();
             this.synced = false;
         }
         public override void localInitialize()
         {
             base.localInitialize();
-            addTag("Gun");
-            setSpriteName("gun");
+            addTag("Boot");
+            setSpriteName("boot");
         }
 
         public override void syncedInitialize()
         {
             base.syncedInitialize();
-            addTag("Gun");
-            setSpriteName("gun");
+            addTag("Boot");
+            setSpriteName("boot");
         }
+
     }
 }

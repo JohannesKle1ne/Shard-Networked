@@ -24,7 +24,7 @@ namespace Shard
 
         private static NetworkClient _instance;
         private WebSocket ws;
-        private GameJumpAndRun game;
+        private GameDemoSOME game;
         private NetworkManager manager;
         private bool isSet = false;
         internal int id;
@@ -78,7 +78,7 @@ namespace Shard
             ws.Send(message);
         }
 
-        internal void setManager(NetworkManager m, GameJumpAndRun g)
+        internal void setManager(NetworkManager m, GameDemoSOME g)
         {
             game = g;
             manager = m;

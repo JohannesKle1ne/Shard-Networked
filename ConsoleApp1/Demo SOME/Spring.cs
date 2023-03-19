@@ -5,36 +5,32 @@ using System.Xml.Linq;
 
 namespace JumpAndRun
 {
-    class Boot : Reward
+    class Spring : Reward
     {
 
-        public Boot(bool synced)
+        public Spring(bool synced)
         {
-            Debug.Log("synced: " + synced);
             syncedInitialize();
             this.synced = true;
 
         }
-        public Boot()
+        public Spring()
         {
-            Debug.Log("non synced");
             localInitialize();
             this.synced = false;
         }
         public override void localInitialize()
         {
             base.localInitialize();
-            addTag("Boot");
-            setSpriteName("boot");
+            addTag("Spring");
+            setSpriteName("spring");
         }
 
         public override void syncedInitialize()
         {
             base.syncedInitialize();
-            addTag("Boot");
-            setSpriteName("boot");
+            addTag("Spring");
+            setSpriteName("spring");
         }
-
-
     }
 }

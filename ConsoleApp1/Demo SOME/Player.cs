@@ -8,17 +8,14 @@ namespace JumpAndRun
 {
     class Player : NetworkedObject, InputListener, PositionCollisionHandler
     {
-        private string sprite;
-        private bool left, right, jumpUp, jumpDown, fall, canJump, shoot;
+        private bool left, right, jumpUp, fall, canJump, shoot;
         private int spriteCounter, spriteCounterDir;
         private string spriteName;
         private double spriteTimer, jumpCount;
         private double jumpMax = 0.3;
 
         private double jumpSpeed = 260;
-        private double fallCounter;
         private double speed = 100;
-        private bool movingStarted;
         public Bullet bullet;
         private int id;
         public string spriteColor = "red";
@@ -27,11 +24,6 @@ namespace JumpAndRun
 
         public int rewardCounter = 0;
         public int killCounter = 0;
-
-        class Vector
-        {
-
-        }
 
         public Player(bool synced)
         {
@@ -56,7 +48,6 @@ namespace JumpAndRun
         {
             spriteName = "right";
             spriteCounter = 1;
-            movingStarted = false;
             setPhysicsEnabled();
             MyBody.addRectCollider();
             MyBody.UsesGravity = true;
@@ -82,20 +73,9 @@ namespace JumpAndRun
         {
             spriteName = "right";
             spriteCounter = 1;
-            // setPhysicsEnabled();
-            //MyBody.addRectCollider();
-            ///addTag("NetworkedPlayer");
             spriteTimer = 0;
             jumpCount = 0;
-            //MyBody.Mass = 1;
-            //Bootstrap.getInput().addListener(this);
-
-
             Transform.translate(50, 480);
-            //MyBody.StopOnCollision = false;
-            //MyBody.Kinematic = false;
-
-
             spriteCounterDir = 1;
         }
 
@@ -149,7 +129,6 @@ namespace JumpAndRun
                     {
                         shoot = true;
                         reload = reloadTime;
-                        Debug.Log("Shoot with time: " + reload);
                     }
 
                 }
@@ -194,7 +173,6 @@ namespace JumpAndRun
         public override void localUpdate()
         {
 
-            //Debug.Log("Fallcounter is " + fallCounter);
             double oldX = Transform.X;
             double oldY = Transform.Y;
 
@@ -202,22 +180,17 @@ namespace JumpAndRun
             {
                 this.Transform.translate(-1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-                //this.sendPosition();
             }
 
             if (right)
             {
                 this.Transform.translate(1 * speed * Bootstrap.getDeltaTime(), 0);
                 spriteTimer += Bootstrap.getDeltaTime();
-
-                //this.sendPosition();
             }
 
             if (jumpUp)
             {
 
-                //fall = false;
-                //fallCounter = 0;
                 if (jumpCount < jumpMax)
                 {
                     this.Transform.translate(0, -1 * jumpSpeed * Bootstrap.getDeltaTime());
@@ -227,10 +200,8 @@ namespace JumpAndRun
                 {
                     jumpCount = 0;
                     jumpUp = false;
-                   // fall = true;
 
                 }
-                //this.sendPosition();
             }
 
             if (shoot)
@@ -241,12 +212,12 @@ namespace JumpAndRun
                     bullet.setSpriteName(spriteColor + "bullet");
                     if (spriteName == "right")
                     {
-                        bullet.setPosition(Transform.X + Transform.Wid-10, Transform.Y+5);
+                        bullet.setPosition(Transform.X + Transform.Wid - 10, Transform.Y + 5);
                         bullet.setDirection(1);
                     }
                     else
                     {
-                        bullet.setPosition(Transform.X, Transform.Y+5);
+                        bullet.setPosition(Transform.X, Transform.Y + 5);
                         bullet.setDirection(-1);
                     }
                 }
@@ -278,22 +249,8 @@ namespace JumpAndRun
 
             }
 
-            if (fall)
-            {
-                //Transform.translate(0, jumpSpeed * Bootstrap.getDeltaTime());
-                //fallCounter += Bootstrap.getDeltaTime();
-
-                //if (Transform.Y > 900)
-                //{
-                //    ToBeDestroyed = true;
-                //}
-                //this.sendPosition();
-
-            }
-
             this.Transform.SpritePath = "ManicMinerSprites/" + getFullSpriteName() + ".png";
 
-            //Debug.Log(this.Transform.SpritePath);
             if (reload > 0)
             {
                 reload -= Bootstrap.getDeltaTime();
@@ -302,37 +259,11 @@ namespace JumpAndRun
             if (Transform.X > 1300 || Transform.X < -100 || Transform.Y > 700 || Transform.Y < -100)
             {
                 this.ToBeDestroyed = true;
-                Debug.Log("set to be destroyd");
             }
 
 
             Bootstrap.getDisplay().addToDraw(this);
 
-        }
-
-        public bool isCenterX(PhysicsBody x)
-        {
-            
-            float[] minAndMaxX = x.getMinAndMax(true);
-            float[] minAndMaxY = x.getMinAndMax(false);
-
-            if (Transform != null)
-            {
-                if (Transform.X + Transform.Wid >= minAndMaxX[0] && Transform.X <= minAndMaxX[1])
-                {
-                    // We're in the centre, so it's fine.
-                    return true;
-
-                    if (Transform.Y + Transform.Ht >= minAndMaxY[0])
-                    {
-                        return true;
-                    }
-                }
-            }
-
-
-
-            return false;
         }
 
         public void onCollisionEnter(PhysicsBody x)
@@ -349,10 +280,7 @@ namespace JumpAndRun
 
         public void handleCollistionDirection(string direction)
         {
-            //if (direction == "Top")
-            //{
-            //    Transform.translate(0, 0.1);
-            //}
+
             if (direction == "Bottom")
             {
                 canJump = true;
@@ -362,33 +290,18 @@ namespace JumpAndRun
             {
                 Transform.translate(0.1, 0);
             }
-            //if (direction == "Left")
-            //{
-            //    Transform.translate(0.1, 0.1);
-            //}
+
             if (direction == "BottomRight")
             {
                 Transform.translate(-0.1, 0);
             }
-            //if (direction == "Right")
-            //{
-            //    Transform.translate(-0.1, 0.1);
-            //}
-            //if (direction == "TopLeft")
-            //{
-            //    Transform.translate(0.1, 0.1);
-            //}
-            //if (direction == "TopRight")
-            //{
-            //    Transform.translate(-0.1, 0.1);
-            //}
+
         }
 
         public void onCollisionEnter(PhysicsBody x, string direction)
         {
-            
 
-            Debug.Log("direction: " + direction);
+
             if (x.Parent.checkTag("NetworkedBullet"))
             {
                 ToBeDestroyed = true;
@@ -399,14 +312,14 @@ namespace JumpAndRun
                 reloadTime -= 0.5;
                 rewardCounter++;
 
-                Debug.Log("collistion found with gun");
+
             }
 
             if (x.Parent.checkTag("Boot"))
             {
                 speed += 50;
                 rewardCounter++;
-                Debug.Log("collistion found with boot");
+
             }
 
             if (x.Parent.checkTag("Spring"))
@@ -436,7 +349,7 @@ namespace JumpAndRun
 
         public void onCollisionStay(PhysicsBody x, string direction)
         {
-            if(MyBody!=null && Transform != null)
+            if (MyBody != null && Transform != null)
             {
                 handleCollistionDirection(direction);
 
