@@ -45,7 +45,7 @@ namespace Shard
             //Debug.Log(Math.Round(Bootstrap.getDeltaTime()*1000).ToString());
             if (myPlayer != null && myPlayer.ToBeDestroyed && respawnTime <= 0)
             {
-                respawnTime = 5;
+                respawnTime = 7;
                 if (myPlayer.Transform!=null)
                 {
                     Random rd = new Random();
@@ -73,14 +73,33 @@ namespace Shard
                 }
                 
             }
-
+           
 
             if (respawnTime > 0)
             {
-                //Debug.Log(respawnTime.ToString());
-                Color col = Color.White;
-                Bootstrap.getDisplay().showText("You died!", 10, 10, 40, col);
-                Bootstrap.getDisplay().showText("Respawn in: " + (((int)respawnTime) + 1), 10, 60, 20, col);
+
+                Color col = Color.Black;
+
+                //if (myPlayer.spriteColor == "green")
+                //{
+                //    col = Color.Green;
+                //}
+                //if (myPlayer.spriteColor == "blue")
+                //{
+                //    col = Color.Blue;
+                //}
+                string gameover = "Game over!";
+                string kills = "Kills: " + myPlayer.killCounter + ", Items: " + myPlayer.rewardCounter;
+                string rewards = "Items: " + myPlayer.rewardCounter;
+                string respawn = "Respawn in: " + (((int)respawnTime) + 1);
+                string score = "Total Score: " + (myPlayer.killCounter * 2 + myPlayer.rewardCounter);
+
+                Bootstrap.getDisplay().showText(gameover, 10, 10, 40, col);
+                Bootstrap.getDisplay().showText(kills, 11, 52, 20, col);
+                //Bootstrap.getDisplay().showText(rewards, 10, 70, 20, col);
+                Bootstrap.getDisplay().showText(score, 11, 75, 20, col);
+                Bootstrap.getDisplay().showText(respawn, 950, 10, 40, col);
+
 
 
 
@@ -313,28 +332,28 @@ namespace Shard
             b.setPosition(1050, 240, 0, 0);
 
             b = new Box();
-            b.setPosition(0, 100, 0, 0);
+            b.setPosition(0, 140, 0, 0);
 
             b = new Box();
-            b.setPosition(50, 120, 0, 0);
+            b.setPosition(50, 160, 0, 0);
 
             b = new Box();
-            b.setPosition(100, 100, 0, 0);
+            b.setPosition(100, 140, 0, 0);
 
             b = new Box();
-            b.setPosition(150, 120, 0, 0);
+            b.setPosition(150, 160, 0, 0);
 
             b = new Box();
-            b.setPosition(200, 140, 0, 0);
+            b.setPosition(200, 180, 0, 0);
 
             b = new Box();
-            b.setPosition(300, 150, 0, 0);
+            b.setPosition(300, 190, 0, 0);
 
             b = new Box();
-            b.setPosition(350, 175, 0, 0);
+            b.setPosition(350, 215, 0, 0);
 
             b = new Box();
-            b.setPosition(400, 200, 0, 0);
+            b.setPosition(400, 240, 0, 0);
 
 
 

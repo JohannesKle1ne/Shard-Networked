@@ -128,6 +128,13 @@ namespace Shard
                 if (kvp.Key.id == dr.targetObjectId)
                 {
                     kvp.Key.ToBeDestroyed = true;
+                    if(kvp.Key is Bullet)
+                    {
+                        if(game is GameJumpAndRun)
+                        {
+                            ((GameJumpAndRun)game).myPlayer.killCounter++;
+                        }
+                    }
                 }
             }
         }

@@ -25,6 +25,9 @@ namespace JumpAndRun
         public double reload;
         public double reloadTime;
 
+        public int rewardCounter = 0;
+        public int killCounter = 0;
+
         class Vector
         {
 
@@ -394,6 +397,7 @@ namespace JumpAndRun
             if (x.Parent.checkTag("Gun"))
             {
                 reloadTime -= 0.5;
+                rewardCounter++;
 
                 Debug.Log("collistion found with gun");
             }
@@ -401,12 +405,14 @@ namespace JumpAndRun
             if (x.Parent.checkTag("Boot"))
             {
                 speed += 50;
+                rewardCounter++;
                 Debug.Log("collistion found with boot");
             }
 
             if (x.Parent.checkTag("Spring"))
             {
                 jumpMax += 0.1;
+                rewardCounter++;
             }
 
             if (MyBody != null && Transform != null)
