@@ -76,8 +76,7 @@ namespace Shard
 
             foreach (KeyValuePair<string, string> kvp in config)
             {
-                Debug.getInstance().log(kvp.Value);
-                Debug.getInstance().log("Shard." + kvp.Value);
+     
 
                 
                 t = Type.GetType("Shard." + kvp.Value);

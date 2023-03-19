@@ -12,7 +12,7 @@ namespace Shard
 {
     abstract class NetworkedGame : Game
     {
-
+        //This class is empty but NetworkedGames can be identified by extending from it
 
     }
 }

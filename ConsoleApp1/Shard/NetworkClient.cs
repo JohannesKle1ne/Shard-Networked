@@ -29,9 +29,9 @@ namespace Shard
         private bool isSet = false;
         internal int id;
         private readonly (int x, int y)[] startPositions = new[] {
-        //(60, 300),
-        //(60, 40),
-        //(810,200),
+        (60, 300),
+       (60, 40),
+        (810,200),
         (1020,340)
 
 
@@ -64,11 +64,9 @@ namespace Shard
 
             ws.Connect();
 
-            //ws.Send($"{234},{234},{23432}");
             ws.Send($"{id}");
             Debug.Log("Connected");
             Console.WriteLine("Connected 2");
-            //Console.ReadKey();
 
         }
 
@@ -106,31 +104,6 @@ namespace Shard
                 }
             }
            
-            //if (type == MessageType.BulletCollision)
-            //{
-            //    Action action = JsonConvert.DeserializeObject<Action>(e.Data);
-            //    if (isSet)
-            //    {
-            //        if (action.bulletId == id)
-            //        {
-            //            game.myPlayer.bullet.ToBeDestroyed= true;
-            //        }
-            //        else
-            //        {
-            //            //game.removeNetworkedBullet(action.bulletId);
-            //        }
-                    
-
-            //    }
-            //}
-            //if (type == MessageType.BoxPosition)
-            //{
-            //    Action action = JsonConvert.DeserializeObject<Action>(e.Data);
-            //    if (isSet)
-            //    {
-            //        game.setBoxPosition(action.position, action.index);
-            //    }
-            //}
             if (type == MessageType.Position)
             {
                 Position mPos = JsonConvert.DeserializeObject<Position>(e.Data);
@@ -142,7 +115,6 @@ namespace Shard
             if (type == MessageType.Destroy)
             {
                 Destroy mPos = JsonConvert.DeserializeObject<Destroy>(e.Data);
-                Debug.Log("Recieved destroy");
                 if (isSet)
                 {
                     manager.handleMessage(mPos);
@@ -165,7 +137,7 @@ namespace Shard
         public (int x, int y) GetRandomStartPosition()
         {
             Random rnd = new Random();
-            return startPositions[rnd.Next(0, 1)];
+            return startPositions[rnd.Next(0, 4)];
         }
 
 
@@ -200,35 +172,6 @@ namespace Shard
         private void Ws_OnError(object sender, ErrorEventArgs e)
         {
             Debug.Log("Received from the server: " + e.Message);
-        }
-
-        private void DrawDot(double xpos, double ypos, int width, int height, int borderWidth)
-        {
-            // Convert from normalized coordinates to "pixel" coordinates
-            int x = (int)Math.Round(xpos * width);
-            int y = (int)Math.Round(ypos * height);
-
-            for (int j = 0; j < height; j++)
-            {
-                for (int i = 0; i < width; i++)
-                {
-                    if (i == x && j == y)
-                    {
-                        Console.Write("O");
-                    }
-                    else if (j < borderWidth || j > height - 1 - borderWidth
-                        || i < borderWidth || i > width - 1 - borderWidth)
-                    {
-                        Console.Write('#');
-                    }
-                    else
-                    {
-                        Console.Write(' ');
-                    }
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
         }
     }
 }

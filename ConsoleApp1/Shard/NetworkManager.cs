@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using WebSocketSharp;
-using Newtonsoft.Json;
 using JumpAndRun;
-using System.Reflection;
-using System.Collections;
-using System.Xml.Linq;
+
 
 namespace Shard
 {
@@ -36,15 +30,14 @@ namespace Shard
             updateCounter = 0;
             outgoingStates = new Dictionary<NetworkedObject, NetworkedObjectState>();
             incomingObjects = new Dictionary<int, NetworkedObject>();
-            positionQueue= new List<Position>();
+            positionQueue = new List<Position>();
             destroyQueue = new List<Destroy>();
             destroyRequestQueue = new List<DestroyRequest>();
-           
+
         }
 
         private void sendObjectPosition(NetworkedObject obj)
         {
-            //Debug.Log("Send object position");
             NetworkClient client = NetworkClient.GetInstance();
             Position position = new Position(client.id, MessageType.Position, obj.GetType().ToString(), obj.id, obj.Transform.X, obj.Transform.Y, obj.getFullSpriteName());
             client.Send(position.ToJson());
@@ -70,7 +63,7 @@ namespace Shard
             {
                 positionQueue.Add(pos);
             }
-               
+
         }
         public void handleMessage(Destroy d)
         {
@@ -78,7 +71,7 @@ namespace Shard
             {
                 destroyQueue.Add(d);
             }
-           
+
         }
         public void handleMessage(DestroyRequest dr)
         {
@@ -86,13 +79,12 @@ namespace Shard
             {
                 destroyRequestQueue.Add(dr);
             }
-           
+
         }
         public void handleObjectPosition(Position pos)
         {
             if (!incomingObjects.ContainsKey(pos.objectId))
             {
-                Debug.Log(pos.objectType);
                 Type t = Type.GetType(pos.objectType);
                 object[] constructorArgs = new object[] { true };
                 NetworkedObject ob = (NetworkedObject)Activator.CreateInstance(t, constructorArgs);
@@ -111,10 +103,8 @@ namespace Shard
 
         public void handleObjectDestroy(Destroy d)
         {
-            Debug.Log("handle destroy");
             if (incomingObjects.ContainsKey(d.objectId))
             {
-                Debug.Log("found");
                 NetworkedObject obj = incomingObjects[d.objectId];
                 obj.ToBeDestroyed = true;
                 incomingObjects.Remove(d.objectId);
@@ -128,9 +118,9 @@ namespace Shard
                 if (kvp.Key.id == dr.targetObjectId)
                 {
                     kvp.Key.ToBeDestroyed = true;
-                    if(kvp.Key is Bullet)
+                    if (kvp.Key is Bullet)
                     {
-                        if(game is GameDemoSOME)
+                        if (game is GameDemoSOME)
                         {
                             ((GameDemoSOME)game).myPlayer.killCounter++;
                         }
@@ -155,7 +145,7 @@ namespace Shard
                     destroyRequestQueue.Clear();
                 }
             }
-            
+
 
 
 
@@ -165,7 +155,7 @@ namespace Shard
 
             foreach (GameObject obj in objects.ToList())
             {
-               
+
                 if (obj is NetworkedObject)
                 {
                     NetworkedObject nObj = (NetworkedObject)obj;
@@ -189,14 +179,14 @@ namespace Shard
                             }
                             state.x = newX;
                             state.y = newY;
-                            
+
                         }
                         foundObjects.Add(nObj);
 
-                       
+
                     }
 
-                    if (nObj.isSynced() && nObj.RemoteDestroy )
+                    if (nObj.isSynced() && nObj.RemoteDestroy)
                     {
                         sendObjectDestroyRequest(nObj.id);
                         nObj.RemoteDestroy = false;
@@ -211,7 +201,6 @@ namespace Shard
             {
                 if (!foundObjects.Contains(kvp.Key))
                 {
-                    Debug.Log("remove this");
                     sendObjectDestroyed(kvp.Key);
                     outgoingStates.Remove(kvp.Key);
                 }

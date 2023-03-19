@@ -419,41 +419,7 @@ namespace Shard
             return false;
         }
 
-        public bool isRightOf(PhysicsBody a, PhysicsBody b)
-        {
-            float aMidX = a.MinAndMaxX[0] + (a.MinAndMaxX[1] - a.MinAndMaxX[0]) / 2;
-            float bMidX = b.MinAndMaxX[0] + (b.MinAndMaxX[1] - b.MinAndMaxX[0]) / 2;
-
-            float bMaxX = b.MinAndMaxX[1];
-            float aMinX = a.MinAndMaxX[0];
-
-
-
-            return aMinX >= bMaxX;
-
-            return (aMidX - bMidX) > 0;
-        }
-        public bool isTopOf(PhysicsBody a, PhysicsBody b)
-        {
-            //float aMidY = a.MinAndMaxY[0] + (a.MinAndMaxY[1] - a.MinAndMaxY[0]) / 2;
-            //float bMidY = b.MinAndMaxY[0] + (b.MinAndMaxY[1] - b.MinAndMaxY[0]) / 2;
-
-            //float bMinY = b.MinAndMaxY[0];
-            //float aMaxY = a.MinAndMaxY[1];
-
-            float bMinY = b.MinAndMaxY[0];
-            float bMaxY = b.MinAndMaxY[1];
-            float aMinY = a.MinAndMaxY[0];
-            float aMaxY = a.MinAndMaxY[1];
-
-            float distToTop = bMaxY - aMinY;
-
-            return bMaxY - aMinY < 5;
-
-            return aMaxY <= bMinY;
-
-            //return (aMidY -bMidY) > 0;
-        }
+        
         public string inverseDirection(string direction)
         {
 
@@ -634,9 +600,6 @@ namespace Shard
                     }
 
 
-
-                    //bool isRight = isRightOf(ob.A, ob.B);
-                    //bool isBelow = isTopOf(ob.A, ob.B);
                     string direction = getCollisionDirection(ob.A, ob.B);
 
                     if (findColliding(ob.A, ob.B) == false)
@@ -647,43 +610,11 @@ namespace Shard
                         if (ob.A.Parent is PositionCollisionHandler)
                         {
                             ((PositionCollisionHandler)ob.A.Parent).onCollisionEnter(ob.B, direction);
-                            //float bMinY = ob.B.MinAndMaxY[0];
-                            //float aMaxY = ob.A.MinAndMaxY[1];
-
-                            //Debug.Log("A: " + aMaxY + " B: " + bMinY);
-                            //float aMidX = ob.A.MinAndMaxX[1] - ob.A.MinAndMaxX[0];
-                            //float bMidX = ob.B.MinAndMaxX[1] - ob.B.MinAndMaxX[0];
-                            //Debug.Log("amidx: " + aMidX);
-                            //Debug.Log("bmidx: " + bMidX);
+                          
                         }
                         if (ob.B.Parent is PositionCollisionHandler)
                         {
                             ((PositionCollisionHandler)ob.B.Parent).onCollisionEnter(ob.A, inverseDirection(direction));
-                            float bMinY = ob.B.MinAndMaxY[0];
-                            float bMaxY = ob.B.MinAndMaxY[1];
-                            float aMinY = ob.A.MinAndMaxY[0];
-                            float aMaxY = ob.A.MinAndMaxY[1];
-
-                            float bMinX = ob.B.MinAndMaxX[0];
-                            float bMaxX = ob.B.MinAndMaxX[1];
-                            float aMinX = ob.A.MinAndMaxX[0];
-                            float aMaxX = ob.A.MinAndMaxX[1];
-
-
-
-                           // Debug.Log("Diff Top: "+(bMaxY - aMinY));
-                            float diffTop = Math.Abs(bMaxY - aMinY);
-                           // Debug.Log("Diff Bottom: " + (bMinY - aMaxY));
-                            float diffBottom = Math.Abs(bMinY - aMaxY);
-                           // Debug.Log("Diff Left: " + (bMaxX - aMinX));
-                            float diffRight = Math.Abs(bMaxX - aMinX);
-                           // Debug.Log("Diff Right: " + (bMinX - aMaxX));
-                            float diffLeft = Math.Abs(bMinX - aMaxX);
-                            //if(bMaxY - aMinY<5)
-                            //float aMidX = ob.A.MinAndMaxX[1] - ob.A.MinAndMaxX[0];
-                            //float bMidX = ob.B.MinAndMaxX[1] - ob.B.MinAndMaxX[0];
-                            //Debug.Log("amidx: " + aMidX);
-                            //Debug.Log("bmidx: " + bMidX);
                         }
 
                         colliding.Add(ob);

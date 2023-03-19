@@ -120,7 +120,6 @@ namespace JumpAndRun
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_W && canJump == true)
                 {
                     jumpUp = true;
-                    Debug.Log("Jumping up");
 
                 }
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
